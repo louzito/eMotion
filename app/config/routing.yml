@@ -1,3 +1,7 @@
+app_offre_location:
+    resource: "@AppBundle/Controller/Admin/OffreLocationController.php"
+    type:     annotation
+
 app_vehicule:
     resource: "@AppBundle/Controller/Admin/VehiculeController.php"
     type:     annotation

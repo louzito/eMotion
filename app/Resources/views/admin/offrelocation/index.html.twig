@@ -1,0 +1,43 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body %}
+    <h1>Offrelocations list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datedebut</th>
+                <th>Datefin</th>
+                <th>Prixjournalier</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for offreLocation in offreLocations %}
+            <tr>
+                <td><a href="{{ path('admin_offrelocation_show', { 'id': offreLocation.id }) }}">{{ offreLocation.id }}</a></td>
+                <td>{% if offreLocation.dateDebut %}{{ offreLocation.dateDebut|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if offreLocation.dateFin %}{{ offreLocation.dateFin|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ offreLocation.prixJournalier }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_offrelocation_show', { 'id': offreLocation.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_offrelocation_edit', { 'id': offreLocation.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_offrelocation_new') }}">Create a new offreLocation</a>
+        </li>
+    </ul>
+{% endblock %}
