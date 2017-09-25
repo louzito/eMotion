@@ -1,5 +1,5 @@
 app_vehicule:
-    resource: "@AppBundle/Controller/VehiculeController.php"
+    resource: "@AppBundle/Controller/Admin/VehiculeController.php"
     type:     annotation
 
 fos_user:
