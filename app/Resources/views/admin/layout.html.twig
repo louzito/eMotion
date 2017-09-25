@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/bootstrap-theme.min.css') }}" rel="stylesheet" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+{% block nav %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path('home_admin') }}">Emotion</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="#">Gestion des utilisateurs</a></li>
+                <li><a href="#">Gestion offres locations</a></li>
+                <li><a href="#">Gestions véhicules</a></li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+<style>
+    body{
+        background-color: whitesmoke;
+    }
+</style>
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>
+
+
