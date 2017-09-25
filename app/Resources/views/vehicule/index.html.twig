@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Vehicules list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Marque</th>
+                <th>Modele</th>
+                <th>Numserie</th>
+                <th>Couleur</th>
+                <th>Plaqueimmatriculation</th>
+                <th>Nbkilometres</th>
+                <th>Dateachat</th>
+                <th>Prixachat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vehicule in vehicules %}
+            <tr>
+                <td><a href="{{ path('admin_vehicule_show', { 'id': vehicule.id }) }}">{{ vehicule.id }}</a></td>
+                <td>{{ vehicule.marque }}</td>
+                <td>{{ vehicule.modele }}</td>
+                <td>{{ vehicule.numSerie }}</td>
+                <td>{{ vehicule.couleur }}</td>
+                <td>{{ vehicule.plaqueImmatriculation }}</td>
+                <td>{{ vehicule.nbKilometres }}</td>
+                <td>{% if vehicule.dateAchat %}{{ vehicule.dateAchat|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ vehicule.prixAchat }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_vehicule_show', { 'id': vehicule.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_vehicule_edit', { 'id': vehicule.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_vehicule_new') }}">Create a new vehicule</a>
+        </li>
+    </ul>
+{% endblock %}
