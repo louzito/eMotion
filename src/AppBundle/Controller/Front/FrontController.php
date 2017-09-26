@@ -4,7 +4,10 @@ namespace AppBundle\Controller\Front;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\ReservationType;
+use AppBundle\Entity\Reservation;
 
 class FrontController extends Controller
 {
@@ -16,4 +19,27 @@ class FrontController extends Controller
         // replace this example code with whatever you need
         return $this->render('front/homepage.html.twig');
     }
+
+    /**
+     * @Route("/reservation", name="front_reservation")
+     * @Security("has_role('ROLE_USER')")
+     */
+     public function reservationAction(Request $request)
+     {
+        $em = $this->getDoctrine()->getManager();
+        $reservation = new Reservation();
+        $form = $this->createForm(ReservationType::class, $reservation);
+
+        if($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em->persist($toolOrSkill);
+            $em->flush();
+
+            return $this->redirectToRoute('front_homepage');
+        }
+
+        return $this->render('front/reservation.html.twig', [
+            'form' => $form->createView(),
+        ]);
+     }
+
 }
