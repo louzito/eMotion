@@ -127,7 +127,7 @@ class Image
             return;
         }
 
-        $this->url = $this->file->guessExtension();
+        $this->url = uniqid() . '-' . $this->file->getClientOriginalName();
         $this->alt = $this->file->getClientOriginalName();
     }
 
@@ -142,15 +142,15 @@ class Image
         }
 
         if(null !== $this->tempFilename){
-            $oldFile = $this->getUploadRootDir().'/'.$this->id.'.'.$this->tempFilename;
+            $oldFile = $this->getUploadRootDir().'/'.$this->tempFilename;
             if(file_exists($oldFile)){
                 unlink($oldFile);
             }
         }
-
+        
         $this->file->move(
             $this->getUploadRootDir(),
-            $this->id.'.'.$this->url
+            $this->url
             );
     }
 
@@ -159,7 +159,7 @@ class Image
      */
     public function preRemoveUpload()
     {
-        $this->tempFilename = $this->getUploadRootDir().'/'.$this->id.'.'.$this->url;
+        $this->tempFilename = $this->getUploadRootDir().'/'.$this->url;
     }
 
     /**
@@ -184,7 +184,7 @@ class Image
 
     public function getWebPath()
     {
-        return '/'.$this->getUploadDir().'/'.$this->getId().'.'.$this->getUrl();
+        return '/'.$this->getUploadDir().'/'.$this->url;
     }
 }
 
