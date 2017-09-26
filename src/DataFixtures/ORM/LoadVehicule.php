@@ -6,16 +6,20 @@
  * Time: 10:12
  */
 
-namespace Doctrine;
+namespace AppBundle\DataFixtures\ORM;
 
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Vehicule;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints\Date;
+use AppBundle\Entity\OffreLocation;
+use Symfony\Component\Validator\Constraints\DateTime;
 
-class VehiculeFixture extends Fixture
+class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -74,18 +78,28 @@ class VehiculeFixture extends Fixture
         $vehicule6
             ->setModele("i3")
             ->setCouleur("Grise")
-            ->setDateAchat(new \DateTime("2017-26-09"))
+            ->setDateAchat(new \DateTime("2017-01-01"))
             ->setMarque("BMW")
             ->setNbKilometres(0)
             ->setNumSerie("WZY45FT6")
             ->setPrixAchat(60500)
             ->setPlaqueImmatriculation("XE-666-WS");
 
-        $user1 = new User();
+        for ($i=1;$i<=6;$i++) {
+            $location = new OffreLocation();
+            $vehicule = 'vehicule'.$i;
+            $location->setVehicule($$vehicule);
+            $location->setDateDebut(new \DateTime('2017-06-01'));
+            $location->setDateFin(new \DateTime('2020-01-01'));
+            $location->setPrixJournalier(rand(10, 50));
+            $manager->persist($$vehicule);
+            $manager->persist($location);
+            $manager->flush();
+        }
 
+    }
+    public function getOrder(){
 
-
-        $manager->flush();
-
+        return 9;
     }
 }
