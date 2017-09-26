@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Vehicule;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,7 +26,7 @@ class VehiculeController extends Controller
 
         $vehicules = $em->getRepository('AppBundle:Vehicule')->findAll();
 
-        return $this->render('vehicule/index.html.twig', array(
+        return $this->render('admin/vehicule/index.html.twig', array(
             'vehicules' => $vehicules,
         ));
     }
@@ -51,7 +51,7 @@ class VehiculeController extends Controller
             return $this->redirectToRoute('admin_vehicule_show', array('id' => $vehicule->getId()));
         }
 
-        return $this->render('vehicule/new.html.twig', array(
+        return $this->render('admin/vehicule/new.html.twig', array(
             'vehicule' => $vehicule,
             'form' => $form->createView(),
         ));
@@ -67,7 +67,7 @@ class VehiculeController extends Controller
     {
         $deleteForm = $this->createDeleteForm($vehicule);
 
-        return $this->render('vehicule/show.html.twig', array(
+        return $this->render('admin/vehicule/show.html.twig', array(
             'vehicule' => $vehicule,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -91,7 +91,7 @@ class VehiculeController extends Controller
             return $this->redirectToRoute('admin_vehicule_edit', array('id' => $vehicule->getId()));
         }
 
-        return $this->render('vehicule/edit.html.twig', array(
+        return $this->render('admin/vehicule/edit.html.twig', array(
             'vehicule' => $vehicule,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
