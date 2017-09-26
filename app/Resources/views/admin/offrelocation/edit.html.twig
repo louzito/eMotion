@@ -1,7 +1,7 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <h1>Vehicule edit</h1>
+    <h1>Offrelocation edit</h1>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
@@ -10,7 +10,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('admin_vehicule_index') }}">Back to the list</a>
+            <a href="{{ path('admin_offrelocation_index') }}">Back to the list</a>
         </li>
         <li>
             {{ form_start(delete_form) }}

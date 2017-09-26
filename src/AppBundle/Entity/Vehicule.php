@@ -78,6 +78,17 @@ class Vehicule
     private $prixAchat;
 
 
+    public function __toString()
+    {
+        return $this->getInfos();
+    }
+
+    public function getInfos()
+    {
+        $nom = $this->getMarque() .' '. $this->getModele() .' ' . $this->getPlaqueImmatriculation();
+        return $nom;
+    }
+
     /**
      * Get id
      *
