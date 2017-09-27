@@ -1,0 +1,38 @@
+{% extends ':front:layout.html.twig' %}
+{% block body %}
+    <section id="profil">
+        <a href="{{ path('fos_user_profile_show') }}" class="retour">Retour</a> 
+        <h1><span class="glyphicon glyphicon-user"></span> Mon profil</h1>
+        <div class="mes-infos">
+            <h2>Mes informations</h2>
+            {% block fos_user_content %}
+                {% trans_default_domain 'FOSUserBundle' %}
+                {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+
+                {{ form_errors(form) }}
+
+                {{ form_row(form.username) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.telephone) }}
+                {{ form_row(form.nom) }}
+                {{ form_row(form.prenom) }}
+                {{ form_row(form.dateDeNaissance) }}
+                {{ form_row(form.adresse) }}
+                {{ form_row(form.cp) }}
+                {{ form_row(form.ville) }}
+                {{ form_row(form.telephone) }}
+                {{ form_row(form.numPermis) }}
+                {{ form_row(form.current_password) }}
+                <div>
+                    <a href="{{ path('fos_user_change_password') }}" title="">Modifier mot de passe</a>
+                </div>
+                <div>
+                    <input type="submit" value="{{ 'profile.edit.submit'|trans }}" />
+                </div>
+
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            {% endblock fos_user_content %}
+        </div>
+    </section>
+{% endblock %}
