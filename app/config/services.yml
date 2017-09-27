@@ -46,3 +46,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Vehicule }
         public: true
+
+    admin.location:
+            class: AppBundle\Admin\LocationAdmin
+            arguments: [~, AppBundle\Entity\OffreLocation, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: Location }
+            public: true
