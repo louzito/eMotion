@@ -10,6 +10,10 @@
                 <td>{{ offreLocation.id }}</td>
             </tr>
             <tr>
+                <th>Véhicule</th>
+                <td>{{ offreLocation.vehicule }}</td>
+            </tr>
+            <tr>
                 <th>Datedebut</th>
                 <td>{% if offreLocation.dateDebut %}{{ offreLocation.dateDebut|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>

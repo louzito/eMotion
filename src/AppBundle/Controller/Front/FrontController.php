@@ -42,4 +42,17 @@ class FrontController extends Controller
         ]);
      }
 
+    /**
+     * @Route("/nos-offres", name="front_offres")
+     */
+     public function nosOffresAction(Request $request)
+     {
+        $em = $this->getDoctrine()->getManager();
+        $offres = $em->getRepository('AppBundle:OffreLocation')->findAll();
+
+        return $this->render('front/nos-offres.html.twig', [
+            'offres' => $offres,
+        ]);
+     }
+
 }
