@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 /**
  * metier controller.
  *
- * @Route("/admin")
+ * @Route("/manager")
  */
 class AdminController extends Controller
 {
