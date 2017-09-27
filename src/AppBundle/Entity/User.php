@@ -39,6 +39,7 @@ class User extends BaseUser
      */
     private $dateDeNaissance;
 
+
     /**
      * @var string
      *
