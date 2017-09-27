@@ -1,0 +1,22 @@
+{% extends ':front:layout.html.twig' %}
+{% block body %}
+    <section id="profil">
+        <h1><span class="glyphicon glyphicon-user"></span> Mon profil</h1>
+        <div class="mes-infos">
+            <h2>Mes informations</h2>
+            {% block fos_user_content %}
+                <span class="username"><b>Nom d'utilisateur:</b> {{ user.username }}</span>
+                <span class="email"><b>E-mail:</b> {{ user.email }}</span>
+                <span class="nom"><b>Nom:</b> {{ user.nom }}</span>
+                <span class="prenom"><b>Prénom:</b> {{ user.prenom }}</span>
+                <span class="date-naissance"><b>Date de naissance:</b> {{ user.dateDeNaissance|date("d/m/Y") }}</span>
+                <span class="adresse"><b>Adresse:</b> {{ user.adresse }}<br />
+                    {{ user.cp }} {{ user.ville }}
+                </span>
+                <span class="telephone"><b>Téléphone:</b> {{ user.telephone }}</span>
+                <span class="num-permis"><b>Numéro de permis:</b> {{ user.numPermis }}</span>
+            {% endblock fos_user_content %}
+                <a href="{{ path('fos_user_profile_edit') }}" title="Modifier mes infos" class="modifier-btn">Modifier mes infos</a>
+        </div>
+    </section>
+{% endblock %}
