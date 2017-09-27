@@ -75,3 +75,24 @@ fos_user:
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
+
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        app: 
+            index_name: emotion  
+            types:
+                offreLocation:
+                    mappings:
+                        vehicule: ~
+                        dateDebut: ~
+                        dateFin: ~
+                    persistence:
+                        # the driver can be orm, mongodb, phpcr or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: AppBundle\Entity\OffreLocation
+                        provider: ~
+                        finder: ~

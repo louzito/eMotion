@@ -1,5 +1,22 @@
 {% extends ':front:layout.html.twig' %}
 
 {%  block body %}
+    {{ form(rechercheForm) }}
+
+    {% if results is not null %}
+        {% for result in results %}
+            {{ result.vehicule.marque }}
+        {% endfor %}
+
+    {% endif %}
+    <script>
+        $( function() {
+            $('#recherche_date').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
+            });
+        } );
+    </script>
 
 {% endblock %}

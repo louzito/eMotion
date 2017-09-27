@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\Front;
 
+use AppBundle\Form\RechercheType;
+use AppBundle\Traits\filterRechercheTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -11,13 +13,24 @@ use AppBundle\Entity\Reservation;
 
 class FrontController extends Controller
 {
+    use filterRechercheTrait;
+
     /**
      * @Route("/", name="front_homepage")
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('front/homepage.html.twig');
+        $filter = null;
+        $rechercheForm = $this->createForm(RechercheType::class);
+
+        if($request->isMethod('POST')) {
+            $results = $this->getFilter($request);
+        }
+
+        return $this->render('front/homepage.html.twig', array(
+            'rechercheForm' => $rechercheForm->createView(),
+            'results' => $results,
+        ));
     }
 
     /**

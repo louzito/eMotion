@@ -31,14 +31,14 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
         $vehicule6 = new Vehicule();
 
         $vehicule1
-        ->setModele("Zoé")
-        ->setCouleur("Grise")
-        ->setDateAchat(new \DateTime("2013-06-22"))
-        ->setMarque("Renault")
-        ->setNbKilometres(25110)
-        ->setNumSerie("AZS1542D")
-        ->setPrixAchat(17000)
-        ->setPlaqueImmatriculation("AF-564-KP");
+            ->setModele("Zoé")
+            ->setCouleur("Grise")
+            ->setDateAchat(new \DateTime("2013-06-22"))
+            ->setMarque("Renault")
+            ->setNbKilometres(25110)
+            ->setNumSerie("AZS1542D")
+            ->setPrixAchat(17000)
+            ->setPlaqueImmatriculation("AF-564-KP");
         $vehicule2
             ->setModele("i8")
             ->setCouleur("Bleu")
