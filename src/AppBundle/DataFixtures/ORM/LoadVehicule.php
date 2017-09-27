@@ -78,7 +78,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setModele("i8")
             ->setCouleur("Bleu")
             ->setDateAchat(new \DateTime("2016-04-18"))
-            ->setMarque("BNW")
+            ->setMarque("BMW")
             ->setNbKilometres(8000)
             ->setNumSerie("BCDFE745")
             ->setPrixAchat(130000)
