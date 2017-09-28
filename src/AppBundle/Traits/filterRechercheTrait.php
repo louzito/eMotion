@@ -14,30 +14,35 @@ trait filterRechercheTrait
 {
     public function getFilter($request)
     {
-        $elasticSearchParameters = array();
+        $filter = array();
 
-        if ($date = explode(' - ', $request->get('recherche')['date'])) {
-            $elasticSearchParameters['dateDebut'] = $date[0];
-            $elasticSearchParameters['dateFin'] = $date[1];
+        if ($tab = explode(' - ', $request->get('recherche')['date'])) {
+            $date = new \DateTime($tab[0]);
+            $date = $date->format(DATE_ATOM);
+            $filter['dateDebut'] = $date;
+
+            $date = new \DateTime($tab[1]);
+            $date = $date->format(DATE_ATOM);
+            $filter['dateFin'] = $date;
         }
 
-        return $this->getResultFilter($elasticSearchParameters);
+        return $this->getResultFilter($filter);
     }
 
     public function getResultFilter($filter)
     {
         $finder = $this->container->get('fos_elastica.finder.app.offreLocation');
-        $filter['dateDebut'] = '2017-06';
 
         $boolQuery = new \Elastica\Query\BoolQuery();
 
         if (!empty($filter['dateDebut'])){
-            $dateDebutQuery = new \Elastica\Query\Terms();
-            $dateDebutQuery->setTerms('dateDebut', array($filter['dateDebut']));
-            $boolQuery->addMust($dateDebutQuery);
+            $boolQuery->addMust(new Query\Range('dateDebut', array('lte' => $filter['dateDebut'])));
         }
 
+        if (!empty($filter['dateFin'])){
+            $boolQuery->addMust(new Query\Range('dateFin', array('gte' => $filter['dateFin'])));
+        }
 
-        dump( $finder->find($boolQuery));die;
+        return $finder->find($boolQuery);
     }
 }

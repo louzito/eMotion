@@ -101,8 +101,12 @@ fos_elastica:
                 offreLocation:
                     mappings:
                         vehicule: ~
-                        dateDebut: ~
-                        dateFin: ~
+                        dateDebut:
+                          type: date
+                          format: YYYY-MM-dd'T'HH:mm:ssZ
+                        dateFin:
+                          type: date
+                          format: YYYY-MM-dd'T'HH:mm:ssZ
                     persistence:
                         # the driver can be orm, mongodb, phpcr or propel
                         # listener and finder are not supported by

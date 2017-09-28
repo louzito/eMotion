@@ -22,17 +22,32 @@ class FrontController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $filter = null;
-        $rechercheForm = $this->createForm(RechercheType::class);
-
-        if($request->isMethod('POST')) {
-            $results = $this->getFilter($request);
-        }
+        $rechercheForm = $this->createForm(RechercheType::class, null, array(
+            'action' => $this->generateUrl('front_offres'),
+            'method' => 'POST',
+        ));
 
         return $this->render('front/homepage.html.twig', array(
             'rechercheForm' => $rechercheForm->createView(),
-            'results' => $results,
         ));
+    }
+
+    /**
+     * @Route("/nos-offres", name="front_offres")
+     */
+    public function nosOffresAction(Request $request)
+    {
+        $offres = null;
+
+        if($request->isMethod('POST')) {
+            $offres = $this->getFilter($request);
+            $dateDebut = new \DateTime('NOW');
+            $dateFin = new \DateTime('NOW');
+        }
+
+        return $this->render('front/nos-offres.html.twig', [
+            'offres' => $offres,
+        ]);
     }
 
     /**
@@ -62,19 +77,6 @@ class FrontController extends Controller
         return $this->render('front/reservation.html.twig', [
             'vehicule' => $vehicule,
             'form' => $form->createView(),
-        ]);
-     }
-
-    /**
-     * @Route("/nos-offres", name="front_offres")
-     */
-     public function nosOffresAction(Request $request)
-     {
-        $em = $this->getDoctrine()->getManager();
-        $offres = $em->getRepository('AppBundle:OffreLocation')->findAll();
-
-        return $this->render('front/nos-offres.html.twig', [
-            'offres' => $offres,
         ]);
      }
 

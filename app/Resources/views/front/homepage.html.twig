@@ -3,12 +3,6 @@
 {%  block body %}
     {{ form(rechercheForm) }}
 
-    {% if results is not null %}
-        {% for result in results %}
-            {{ result.vehicule.marque }}
-        {% endfor %}
-
-    {% endif %}
     <script>
         $( function() {
             $('#recherche_date').daterangepicker({
