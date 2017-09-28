@@ -1,5 +1,9 @@
 {% extends ':front:layout.html.twig' %}
 
+{% block moduleDeRecherche %}
+    {{ render(controller('AppBundle:Front/Front:moduleRecherche')) }}
+{% endblock %}
+
 {%  block body %}
     {% for message in app.session.flashbag.get('success') %}
         <div class="alert alert-success">
@@ -53,6 +57,7 @@
             background-color: #aa141e;
         }
     </style>
+    
     <div class="resultat-listing">
         {% if offres is not null %}
             {% for offre in offres %}

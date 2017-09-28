@@ -15,17 +15,17 @@ trait filterRechercheTrait
     public function getFilter($request)
     {
         $filter = array();
-
-        if ($tab = explode(' - ', $request->get('recherche')['date'])) {
-            $date = new \DateTime($tab[0]);
+        
+        if ($request->get('recherche')['dateDebut']) {
+            $date = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateDebut']);
             $date = $date->format(DATE_ATOM);
             $filter['dateDebut'] = $date;
 
-            $date = new \DateTime($tab[1]);
+            $date = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateFin']);
             $date = $date->format(DATE_ATOM);
             $filter['dateFin'] = $date;
         }
-
+        
         return $this->getResultFilter($filter);
     }
 
