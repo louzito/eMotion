@@ -1,0 +1,75 @@
+{% extends ':front:layout.html.twig' %}
+
+{%  block body %}
+    {% for message in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <style>
+        .vehicule-image img{
+            max-width: 250px;
+        }
+        .vehicule {
+            padding: 30px 0 40px 0;
+            border-bottom: 1px solid lightgray;
+        }
+        .vehicule .vehicule-infos > span{
+            display: block;
+        }
+        .vehicule .vehicule-infos .nom{
+            text-transform: uppercase;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: slategray;
+            margin-bottom: 10px;
+        }
+        .vehicule .vehicule-infos .prix {
+            font-size: 1.3em;
+            margin-top: 10px;
+            text-align: right;
+        }
+        .vehicule .vehicule-infos .prix b {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: darkred;
+        }
+
+        .vehicule .vehicule-resa a.resa-btn {
+            background-color: #ca181a;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+            color: #FFFFFF;
+            font-size: 1.2em;
+            line-height: 50px;
+            display: block;
+            height: 50px;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .vehicule .vehicule-resa a.resa-btn:hover {
+            background-color: #aa141e;
+        }
+    </style>
+    <div class="resultat-listing">
+        {% for offre in offres %}
+            <div class="row vehicule">
+                <div class="col-lg-4 vehicule-image">
+                    <img src="{{ offre.vehicule.image.webPath }}" alt="{{ offre.vehicule.modele ~ " " ~ offre.vehicule.marque }}">
+                </div>
+                <div class="col-lg-4 vehicule-infos">
+                    <span class="nom">{{ offre.vehicule.modele ~ " " ~ offre.vehicule.marque }}</span>
+                    <span><u>Inclus avec l'offre :</u> <b>kilomètres illimité.</b></span>
+                    <span class="couleur">Couleur : {{ offre.vehicule.couleur }}</span>
+                    <span class="prix">À partir de : <b>{{ offre.prixJournalier }}€</b> par jour*</span>
+                </div>
+                <div class="col-lg-4 vehicule-resa">
+                    <a href="{{ path('front_reservation', {id : offre.id}) }}" title="Réserver maintenant" class="resa-btn">Réserver maintenant</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

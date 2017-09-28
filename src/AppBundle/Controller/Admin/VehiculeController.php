@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Vehicule controller.
  *
- * @Route("admin/vehicule")
+ * @Route("manager/vehicule")
  */
 class VehiculeController extends Controller
 {

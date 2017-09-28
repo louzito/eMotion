@@ -3,6 +3,14 @@
 {% block body %}
     <h1>Vehicules list</h1>
 
+    <style>
+        th, td{
+            height: 70px;
+        }
+        th img, td img{
+            max-height: 100%;
+        }
+    </style>
     <table>
         <thead>
             <tr>
@@ -15,6 +23,7 @@
                 <th>Nbkilometres</th>
                 <th>Dateachat</th>
                 <th>Prixachat</th>
+                <th>Image</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -30,6 +39,7 @@
                 <td>{{ vehicule.nbKilometres }}</td>
                 <td>{% if vehicule.dateAchat %}{{ vehicule.dateAchat|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ vehicule.prixAchat }}</td>
+                <td><img src="{{ vehicule.image.webPath }}" alt="{{ vehicule.image.alt }}"></td>
                 <td>
                     <ul>
                         <li>

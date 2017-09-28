@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Offrelocation controller.
  *
- * @Route("admin/offrelocation")
+ * @Route("manager/offrelocation")
  */
 class OffreLocationController extends Controller
 {
