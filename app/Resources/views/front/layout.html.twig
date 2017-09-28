@@ -34,34 +34,47 @@
             .mes-infos > form > div, .mes-infos > form > #fos_user_change_password_form > div, .mes-infos > form > #fos_user_registration_form > div  {padding: 2px 0;}
             .mes-infos form label{color: darkolivegreen;margin-right: 15px;}
             .mes-infos form input, .mes-infos form select {padding: 3px 5px;}
+            .header-image{position: relative;margin-top: -20px;}
+            .header-image img{width: 100%}
         </style>
     </head>
 
 </head>
 <body>
-{% block nav %}
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{{ path('front_homepage') }}">Emotion</a>
+    <header>
+        {% block nav %}
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ path('front_homepage') }}">Emotion</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ path('front_offres') }}">Nos offres</a></li>
+                    {% if app.user %}
+                    <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                    {% else %}
+                        <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                    {% endif %}
+                </ul>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{{ path('front_offres') }}">Nos offres</a></li>
-                {% if app.user %}
-                   <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
-                {% else %}
-                    <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
-                {% endif %}
-            </ul>
+        </nav>
+        <div class="header-image">
+            <img src="{{ asset('images/ban1.jpg') }}" alt="Bienvenue sur eMotion">
+            {% block moduleDeRecherche %}
+            {% endblock %}
         </div>
-    </nav>
-{% endblock %}
+    {% endblock %}
+    </header>
+
 <style>
     body{
         background-color: whitesmoke;
     }
 </style>
-{% block body %}{% endblock %}
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+
 {% block javascripts %}{% endblock %}
 </body>
 </html>

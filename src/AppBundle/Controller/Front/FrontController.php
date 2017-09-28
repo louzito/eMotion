@@ -22,14 +22,7 @@ class FrontController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $rechercheForm = $this->createForm(RechercheType::class, null, array(
-            'action' => $this->generateUrl('front_offres'),
-            'method' => 'POST',
-        ));
-
-        return $this->render('front/homepage.html.twig', array(
-            'rechercheForm' => $rechercheForm->createView(),
-        ));
+        return $this->render('front/homepage.html.twig');
     }
 
     /**
@@ -79,5 +72,17 @@ class FrontController extends Controller
             'form' => $form->createView(),
         ]);
      }
+
+
+    public function moduleRechercheAction(){
+        $rechercheForm = $this->createForm(RechercheType::class, null, array(
+        'action' => $this->generateUrl('front_offres'),
+        'method' => 'POST',
+        ));
+
+        return $this->render('front/module-de-recherche.html.twig', array(
+            'form' => $rechercheForm->createView(),
+        ));
+    }
 
 }
