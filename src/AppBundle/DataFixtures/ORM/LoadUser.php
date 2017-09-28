@@ -25,7 +25,7 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setRoles(['ROLE_ADMIN'])
             ->setEmail("admin@emotion.com")
             ->setDateDeNaissance(new \DateTime("1989-05-12"))
-            ->setPassword("admin")
+            ->setPassword("$2y$13$2bT7Lk90LgvTDaeP7yCAv.IgoIUDvQ38i1YMq.01G87CoVLZ8Mxym")
             ->setUsername("admin")
             ->setAdresse("8 rue de Londre")
             ->setCp(75015)
@@ -34,13 +34,14 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setPrenom("Maurice")
             ->setNumPermis("5A12DF56")
             ->setTelephone("0689457823")
+            ->setEnabled(1)
             ;
 
         $user2
             ->setRoles(['ROLE_USER'])
             ->setEmail("pierre.dupont@gmail.com")
             ->setDateDeNaissance(new \DateTime("1990-08-30"))
-            ->setPassword("admin")
+            ->setPassword("$2y$13$2bT7Lk90LgvTDaeP7yCAv.IgoIUDvQ38i1YMq.01G87CoVLZ8Mxym")
             ->setUsername("pierreD")
             ->setAdresse("45 rue des roses")
             ->setCp(75006)
@@ -48,13 +49,15 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setNom("Dupont")
             ->setPrenom("Pierre")
             ->setNumPermis("D5DF5255")
-            ->setTelephone("0645789545");
+            ->setTelephone("0645789545")
+            ->setEnabled(1)
+            ;
 
         $user3
             ->setRoles(['ROLE_USER'])
             ->setEmail("julien.durand@gmail.com")
             ->setDateDeNaissance(new \DateTime("1974-05-04"))
-            ->setPassword("admin")
+            ->setPassword("$2y$13$2bT7Lk90LgvTDaeP7yCAv.IgoIUDvQ38i1YMq.01G87CoVLZ8Mxym")
             ->setUsername("julienD")
             ->setAdresse("6 rue de la bruyère")
             ->setCp(45000)
@@ -62,9 +65,14 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setNom("Durand")
             ->setPrenom("Julien")
             ->setNumPermis("5DFG2645")
-            ->setTelephone("0689457820");
+            ->setTelephone("0689457820")
+            ->setEnabled(1)
+            ;
 
 
+        $manager->persist($user1);
+        $manager->persist($user2);
+        $manager->persist($user3);
         $manager->flush();
 
 

@@ -1,0 +1,16 @@
+{% extends ':front:layout.html.twig' %}
+{% block body %}
+    <section id="profil">
+        <h1><span class="glyphicon glyphicon-user"></span> Inscription</h1>
+        <div class="mes-infos">
+            <h2>Mes informations</h2>
+            {% block fos_user_content %}
+                {% trans_default_domain 'FOSUserBundle' %}
+                <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+                {% if targetUrl %}
+                <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
+                {% endif %}
+            {% endblock fos_user_content %}
+        </div>
+    </section>
+{% endblock %}

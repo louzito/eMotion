@@ -2,6 +2,10 @@
 
 namespace AppBundle\Controller\Front;
 
+use AppBundle\Form\RechercheType;
+use AppBundle\Traits\filterRechercheTrait;
+use AppBundle\AppBundle;
+use AppBundle\Entity\Vehicule;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -11,35 +15,74 @@ use AppBundle\Entity\Reservation;
 
 class FrontController extends Controller
 {
+    use filterRechercheTrait;
+
     /**
      * @Route("/", name="front_homepage")
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
         return $this->render('front/homepage.html.twig');
     }
 
     /**
-     * @Route("/reservation", name="front_reservation")
+     * @Route("/nos-offres", name="front_offres")
+     */
+    public function nosOffresAction(Request $request)
+    {
+        $offres = null;
+
+        if($request->isMethod('POST')) {
+            $offres = $this->getFilter($request);
+            $dateDebut = new \DateTime('NOW');
+            $dateFin = new \DateTime('NOW');
+        }
+
+        return $this->render('front/nos-offres.html.twig', [
+            'offres' => $offres,
+        ]);
+    }
+
+    /**
+     * @Route("/reservation/{id}", name="front_reservation")
      * @Security("has_role('ROLE_USER')")
      */
-     public function reservationAction(Request $request)
+     public function reservationAction(Request $request, $id)
      {
         $em = $this->getDoctrine()->getManager();
+        $vehicule = $em->getRepository('AppBundle:Vehicule')->findOneBy(array('id' => $id));
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
 
-        if($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $em->persist($toolOrSkill);
+        $form->handleRequest($request);
+
+         if ($form->isSubmitted() && $form->isValid()) {
+             $reservation->setVehicule($vehicule);
+             $reservation->setUser($this->getUser());
+            $em->persist($reservation);
             $em->flush();
 
-            return $this->redirectToRoute('front_homepage');
+            $this->addFlash('success', 'Félicitation votre réservation à bien été enregistré');
+
+            return $this->redirectToRoute('front_offres');
         }
 
         return $this->render('front/reservation.html.twig', [
+            'vehicule' => $vehicule,
             'form' => $form->createView(),
         ]);
      }
+
+
+    public function moduleRechercheAction(){
+        $rechercheForm = $this->createForm(RechercheType::class, null, array(
+        'action' => $this->generateUrl('front_offres'),
+        'method' => 'POST',
+        ));
+
+        return $this->render('front/module-de-recherche.html.twig', array(
+            'form' => $rechercheForm->createView(),
+        ));
+    }
 
 }

@@ -3,6 +3,14 @@
 {% block body %}
     <h1>Vehicule</h1>
 
+    <style>
+        td{
+            height: 70px;
+        }
+        td img{
+            max-height: 100%;
+        }
+    </style>
     <table>
         <tbody>
             <tr>
@@ -36,6 +44,10 @@
             <tr>
                 <th>Dateachat</th>
                 <td>{% if vehicule.dateAchat %}{{ vehicule.dateAchat|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td><img src="{{ vehicule.image.webPath }}" alt="{{ vehicule.image.alt }}"></td>
             </tr>
             <tr>
                 <th>Prixachat</th>

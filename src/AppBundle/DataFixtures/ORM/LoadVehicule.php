@@ -18,11 +18,44 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints\Date;
 use AppBundle\Entity\OffreLocation;
 use Symfony\Component\Validator\Constraints\DateTime;
+use AppBundle\Entity\Image;
 
 class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $image1 = new Image();
+        $image2 = new Image();
+        $image3 = new Image();
+        $image4 = new Image();
+        $image5 = new Image();
+        $image6 = new Image();
+
+        $image1
+            ->setUrl("zoe.jpg")
+            ->setAlt("zoe.jpg");
+        
+        $image2
+            ->setUrl("BMW-i8.jpg")
+            ->setAlt("BMW-i8.jpg");
+
+        $image3
+            ->setUrl("chevrolet-spark.jpg")
+            ->setAlt("chevrolet-spark.jpg");
+
+        $image4
+            ->setUrl("peugeot_ion.jpg")
+            ->setAlt("peugeot_ion.jpg");
+
+        $image5
+            ->setUrl("tesla-s.jpg")
+            ->setAlt("tesla-s.jpg");
+
+        $image6
+            ->setUrl("bmw.jpg")
+            ->setAlt("bmw.jpg");
+
+
         $vehicule1 = new Vehicule();
         $vehicule2 = new Vehicule();
         $vehicule3 = new Vehicule();
@@ -31,24 +64,27 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
         $vehicule6 = new Vehicule();
 
         $vehicule1
-        ->setModele("Zoé")
-        ->setCouleur("Grise")
-        ->setDateAchat(new \DateTime("2013-06-22"))
-        ->setMarque("Renault")
-        ->setNbKilometres(25110)
-        ->setNumSerie("AZS1542D")
-        ->setPrixAchat(17000)
-        ->setPlaqueImmatriculation("AF-564-KP");
+            ->setImage($image1)
+            ->setModele("Zoé")
+            ->setCouleur("Grise")
+            ->setDateAchat(new \DateTime("2013-06-22"))
+            ->setMarque("Renault")
+            ->setNbKilometres(25110)
+            ->setNumSerie("AZS1542D")
+            ->setPrixAchat(17000)
+            ->setPlaqueImmatriculation("AF-564-KP");
         $vehicule2
+            ->setImage($image2)
             ->setModele("i8")
             ->setCouleur("Bleu")
             ->setDateAchat(new \DateTime("2016-04-18"))
-            ->setMarque("BNW")
+            ->setMarque("BMW")
             ->setNbKilometres(8000)
             ->setNumSerie("BCDFE745")
             ->setPrixAchat(130000)
             ->setPlaqueImmatriculation("MV-647-WP");
         $vehicule3
+            ->setImage($image3)
             ->setModele("Spark")
             ->setCouleur("Grise")
             ->setDateAchat(new \DateTime("2017-01-02"))
@@ -58,6 +94,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setPrixAchat(600)
             ->setPlaqueImmatriculation("WY-679-JD");
         $vehicule4
+            ->setImage($image4)
             ->setModele("Ion")
             ->setCouleur("Bleu")
             ->setDateAchat(new \DateTime("2017-06-25"))
@@ -67,6 +104,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setPrixAchat(14000)
             ->setPlaqueImmatriculation("PK-555-RD");
         $vehicule5
+            ->setImage($image5)
             ->setModele("S")
             ->setCouleur("Grise")
             ->setDateAchat(new \DateTime("2015-12-30"))
@@ -76,6 +114,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setPrixAchat(76000)
             ->setPlaqueImmatriculation("PQ-251-GF");
         $vehicule6
+            ->setImage($image6)
             ->setModele("i3")
             ->setCouleur("Grise")
             ->setDateAchat(new \DateTime("2017-01-01"))

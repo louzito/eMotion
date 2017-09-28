@@ -77,6 +77,11 @@ class Vehicule
      */
     private $prixAchat;
 
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"persist", "remove"})
+     */
+    private $image;
+
 
     public function __toString()
     {
@@ -290,5 +295,28 @@ class Vehicule
     {
         return $this->prixAchat;
     }
-}
 
+    /**
+     * Set image
+     *
+     * @param \AppBundle\Entity\Image $image
+     *
+     * @return Vehicule
+     */
+    public function setImage(\AppBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \AppBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+}
