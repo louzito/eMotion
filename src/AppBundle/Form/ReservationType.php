@@ -14,7 +14,7 @@ class ReservationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('dateDebut')->add('dateFin')->add('prixTotal')->add('vehicule')->add('submit',SubmitType::class);
+        $builder->add('dateDebut')->add('dateFin')->add('prixTotal')->add('submit',SubmitType::class);
     }
     
     /**
