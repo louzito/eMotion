@@ -1,5 +1,16 @@
 {% extends ':front:layout.html.twig' %}
 
 {%  block body %}
+    {{ form(rechercheForm) }}
+
+    <script>
+        $( function() {
+            $('#recherche_date').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
+            });
+        } );
+    </script>
 
 {% endblock %}

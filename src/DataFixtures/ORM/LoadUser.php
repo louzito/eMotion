@@ -22,10 +22,10 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
         $user3 = new User();
 
         $user1
-            ->setRoles(['ROLE_ADMIN'])
+            ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setEmail("admin@emotion.com")
             ->setDateDeNaissance(new DateTime("1989-05-12"))
-            ->setPassword("admin")
+            ->setPassword("$2y$13$2bT7Lk90LgvTDaeP7yCAv.IgoIUDvQ38i1YMq.01G87CoVLZ8Mxym")
             ->setUsername("admin")
             ->setAdresse("8 rue de Londre")
             ->setCp(75015)
@@ -66,8 +66,7 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
 
 
         $manager->flush();
-
-
+        
     }
 
     public function getOrder(){

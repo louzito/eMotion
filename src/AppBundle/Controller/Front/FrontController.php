@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\Front;
 
+use AppBundle\Form\RechercheType;
+use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Vehicule;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,13 +15,39 @@ use AppBundle\Entity\Reservation;
 
 class FrontController extends Controller
 {
+    use filterRechercheTrait;
+
     /**
      * @Route("/", name="front_homepage")
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('front/homepage.html.twig');
+        $rechercheForm = $this->createForm(RechercheType::class, null, array(
+            'action' => $this->generateUrl('front_offres'),
+            'method' => 'POST',
+        ));
+
+        return $this->render('front/homepage.html.twig', array(
+            'rechercheForm' => $rechercheForm->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/nos-offres", name="front_offres")
+     */
+    public function nosOffresAction(Request $request)
+    {
+        $offres = null;
+
+        if($request->isMethod('POST')) {
+            $offres = $this->getFilter($request);
+            $dateDebut = new \DateTime('NOW');
+            $dateFin = new \DateTime('NOW');
+        }
+
+        return $this->render('front/nos-offres.html.twig', [
+            'offres' => $offres,
+        ]);
     }
 
     /**
@@ -49,19 +77,6 @@ class FrontController extends Controller
         return $this->render('front/reservation.html.twig', [
             'vehicule' => $vehicule,
             'form' => $form->createView(),
-        ]);
-     }
-
-    /**
-     * @Route("/nos-offres", name="front_offres")
-     */
-     public function nosOffresAction(Request $request)
-     {
-        $em = $this->getDoctrine()->getManager();
-        $offres = $em->getRepository('AppBundle:OffreLocation')->findAll();
-
-        return $this->render('front/nos-offres.html.twig', [
-            'offres' => $offres,
         ]);
      }
 

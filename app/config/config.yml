@@ -91,3 +91,27 @@ sonata_block:
         # enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts: [admin]
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        app:
+            index_name: emotion
+            types:
+                offreLocation:
+                    mappings:
+                        vehicule: ~
+                        dateDebut:
+                          type: date
+                          format: YYYY-MM-dd'T'HH:mm:ssZ
+                        dateFin:
+                          type: date
+                          format: YYYY-MM-dd'T'HH:mm:ssZ
+                    persistence:
+                        # the driver can be orm, mongodb, phpcr or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: AppBundle\Entity\OffreLocation
+                        provider: ~
+                        finder: ~
