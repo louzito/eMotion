@@ -1,41 +1,51 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>{% block title %}Bienvenue sur Switch{% endblock %}</title>
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-            integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-                crossorigin="anonymous"></script>
-        <style>
-            h1 {font-size: 2em;margin-left: 50px;}
-            h2 {font-size: 1.7em;}
-            .mes-infos{margin-left: 100px;}
-            .mes-infos > span{display: block;margin: 4px 0;}
-            .mes-infos > span b{color: darkolivegreen;}
-            .mes-infos a.modifier-btn, .mes-infos input[type=submit], #profil a.retour{background-color: darkolivegreen;text-transform: uppercase;font-weight: bold;text-align: center;color: #FFFFFF;font-size: 1.2em;line-height: 45px;display: inline-block;height: 45px;padding: 0 20px;margin: 20px auto;border: none;}
-            .mes-infos a.modifier-btn:hover, .mes-infos input[type=submit]:hover, #profil a.retour:hover {background-color: #34421b;text-decoration: none;}
-            .retour{float: right;margin-right: 50px;}
-            .mes-infos > form > div, .mes-infos > form > #fos_user_change_password_form > div, .mes-infos > form > #fos_user_registration_form > div  {padding: 2px 0;}
-            .mes-infos form label{color: darkolivegreen;margin-right: 15px;}
-            .mes-infos form input, .mes-infos form select {padding: 3px 5px;}
-        </style>
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
 
-    <body>
-        {% include ':front:header.html.twig' %}
-        <div class="container">
-        {% block body %}
-
-        {% endblock %}
+</head>
+<body>
+{% block nav %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path('front_homepage') }}">Emotion</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{{ path('front_offres') }}">Nos offres</a></li>
+                {% if app.user %}
+                   <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                {% endif %}
+            </ul>
         </div>
-        {% include ':front:footer.html.twig' %}
-    </body>
-
+    </nav>
+{% endblock %}
+<style>
+    body{
+        background-color: whitesmoke;
+    }
+</style>
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
 </html>
+
+
+
+
+
