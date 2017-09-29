@@ -42,13 +42,13 @@ class FrontController extends Controller
     {
         $offres = null;
 
-        if($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
             $session = new Session();
             $dateDebut = new \DateTime('NOW');
             $dateFin = new \DateTime('NOW');
-            $session->set('dateDebut',$dateDebut);
-            $session->set('dateFin',$dateDebut);
+            $session->set('dateDebut', $dateDebut);
+            $session->set('dateFin', $dateDebut);
         }
 
         return $this->render('front/nos-offres.html.twig', [
@@ -60,15 +60,15 @@ class FrontController extends Controller
      * @Route("/reservation/{id}", name="front_reservation")
      * @Security("has_role('ROLE_USER')")
      */
-     public function reservationAction($id, OffreService $offreService)
-     {
+    public function reservationAction($id, OffreService $offreService)
+    {
 
-         $etat = $this->getParameter('nonpayee');
-         $offreService->newReservation($id,$etat);
+        $etat = $this->getParameter('nonpayee');
+        $offreService->newReservation($id, $etat);
 
-         return $this->redirectToRoute('front_reservation_list');
+        return $this->redirectToRoute('front_reservation_list');
 
-     }
+    }
 
     /**
      * @Route("/reservation", name="front_reservation_list")
@@ -77,7 +77,7 @@ class FrontController extends Controller
     public function listReservationAction(Request $request, OffreService $offreService)
     {
 
-        if($request->get('stripeToken') != null){
+        if ($request->get('stripeToken') != null) {
             $offreService->getIfPaid();
         }
 
@@ -94,13 +94,13 @@ class FrontController extends Controller
      * @Route("/reservation/payment/{id}", name="payment_reservation")
      * @Security("has_role('ROLE_USER')")
      */
-    public function paymentAction($id , OffreService $offreService)
+    public function paymentAction($id, OffreService $offreService)
     {
 
         $etat = $this->getParameter('payee');
-        $reservation = $offreService->paymentReservation($id,$etat);
+        $reservation = $offreService->paymentReservation($id, $etat);
 
-        return $this->render('front/_payment.html.twig',array(
+        return $this->render('front/_payment.html.twig', array(
             'reservation' => $reservation
         ));
 
