@@ -45,8 +45,8 @@ class RechercheType extends AbstractType
             ))
             ->add('ville', ChoiceType::class, array(
                 'choices'  => array(
-                    'Paris' => 'paris',
-                    'Lyon' => 'lyon',
+                    'Paris' => 'Paris',
+                    'Lyon' => 'Lyon',
                 ),
             ))
             ->add('submit', SubmitType::class);
