@@ -1,0 +1,33 @@
+body{background-color: whitesmoke;}
+.vehicule-image img{max-width: 250px;}
+.vehicule {padding: 30px 0 40px 0;border-bottom: 1px solid lightgray;}
+.vehicule .vehicule-infos > span{display: block;}
+.vehicule .vehicule-infos .nom{text-transform: uppercase;font-size: 1.5em;font-weight: bold;color: slategray;margin-bottom: 10px;}
+.vehicule .vehicule-infos .prix {font-size: 1.3em;margin-top: 10px;text-align: right;}
+.vehicule .vehicule-infos .prix b {font-size: 1.8em;font-weight: bold;color: darkred;}
+.vehicule .vehicule-resa a.resa-btn {background-color: #ca181a;text-transform: uppercase;font-weight: bold;text-align: center;color: #FFFFFF;font-size: 1.2em;line-height: 50px;display: block;height: 50px;width: 80%;margin: 20px auto;}
+.vehicule .vehicule-resa a.resa-btn:hover {background-color: #aa141e;}
+h1 {font-size: 2em;margin-left: 50px;}
+h2 {font-size: 1.7em;}
+.mes-infos{margin-left: 100px;}
+.mes-infos > span{display: block;margin: 4px 0;}
+.mes-infos > span b{color: darkolivegreen;}
+.mes-infos a.modifier-btn, .mes-infos input[type=submit], #profil a.retour{background-color: darkolivegreen;text-transform: uppercase;font-weight: bold;text-align: center;color: #FFFFFF;font-size: 1.2em;line-height: 45px;display: inline-block;height: 45px;padding: 0 20px;margin: 20px auto;border: none;}
+.mes-infos a.modifier-btn:hover, .mes-infos input[type=submit]:hover, #profil a.retour:hover {background-color: #34421b;text-decoration: none;}
+.retour{float: right;margin-right: 50px;}
+.mes-infos > form > div, .mes-infos > form > #fos_user_change_password_form > div, .mes-infos > form > #fos_user_registration_form > div  {padding: 2px 0;}
+.mes-infos form label{color: darkolivegreen;margin-right: 15px;}
+.mes-infos form input, .mes-infos form select {padding: 3px 5px;}
+.header-image{position: relative;margin-top: -20px;}
+.header-image img{width: 100%}
+#module-de-recherche > div {display: inline-block;}
+#module-de-recherche{padding : 15px 0;width: 800px;margin: 0 auto;text-align: center;background-color: #1a1103;background-color: rgba(26,17,3,.9);position: absolute;left: 50%;bottom: 0;margin-left: -400px;}
+#module-de-recherche label{color: #FFFFFF;padding: 0 5px 0 15px;}
+#module-de-recherche input{padding: 5px;}
+#module-de-recherche select{height: 34px;padding: 0 15px;background: #FFFFFF;}
+#module-de-recherche button[type=submit]{height: 36px;border: none;display: inline-block;padding: 0 25px;text-transform: uppercase;color: #FFFFFF;font-weight: bold;background: #ca181a;}
+#module-de-recherche button[type=submit]:hover{background-color: #aa141e;}
+#module-de-recherche .daterangepicker {top: 50px!important;left: 52px!important;position: absolute!important;background-color: #1a1103;background-color: rgba(26,17,3,.9);border-radius: 0;}
+.daterangepicker td.disabled, .daterangepicker option.disabled {text-decoration: none;}
+.daterangepicker td.active, .daterangepicker td.active:hover {background: #ca181a;}
+#module-de-recherche .daterangepicker .calendar.left .daterangepicker_input, #module-de-recherche .daterangepicker .calendar.right .daterangepicker_input{display: none;}
