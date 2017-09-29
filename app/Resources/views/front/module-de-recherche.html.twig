@@ -4,25 +4,45 @@
     {{ form_errors(form) }}
     
     <input type="hidden" name="" class="daterangeSelect">
-
+    <input type="hidden" name="prixMinJ" id="prixMinJ" value="-1">
+    <input type="hidden" name="prixMaxJ" id="prixMaxJ" value="-1">
     {{ form_widget(form.dateDebut) }}
 
     {{ form_widget(form.dateFin) }}
 
     {{ form_widget(form.ville) }}
 
+    {{ form_widget(form.typeVehicule) }}
+
     {{ form_widget(form.submit) }}
 
     {{ form_rest(form) }}
   
     {{ form_end(form) }}
+    <span id="plus-options">Afficher plus d'option <span class="glyphicon glyphicon-triangle-top"></span></span>
+    <div id="module-recherche-options" class="hide">
+        <div class="par-prix">
+            <span>Fourchette de prix</span>
+            <div class="select-price">
+                <span id="min-select">{{ minP }}€</span><span id="max-select">{{ maxP }}€</span>
+            </div>
+            <div id="slider-range"></div>
+        </div>
+        <div class="par-vehicule">
+            <span>Choissez votre véhicule</span>
+            <select name="idVehicule">
+                <option value="0"></option>
+            {% for vehicule in vehicules %}
+                <option value="{{ vehicule.id }}">{{ vehicule.marque }} {{ vehicule.modele }}</option>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
 </div>
 <script>
     $( function() {
 
         var now = new Date();
-        console.log(now);
-
         $('.daterangeSelect').daterangepicker({
             "autoApply": true,
             "cancelClass": "hide",
@@ -44,6 +64,27 @@
             $('#recherche_dateDebut').val(picker.startDate.format('DD/MM/YYYY'));
             $('#recherche_dateFin').val(picker.endDate.format('DD/MM/YYYY'));
             $('.bouton.actualiser').trigger('click');
+        });
+
+        $( "#slider-range" ).slider({
+            range: true,
+            min: {{ minP }},
+            max: {{ maxP }},
+            values: [ {{ minP }}, {{ maxP }} ],
+            slide: function( event, ui ) {
+                $( "#prixMinJ" ).val(ui.values[0] + "€"); 
+                $( "#prixMaxJ" ).val(ui.values[1] + "€");
+                $( "#min-select" ).html(ui.values[0] + "€");
+                $( "#max-select" ).html(ui.values[1] + "€");
+            }
+        });
+        $( "#prixMinJ" ).val($("#slider-range").slider("values",0) + "€"); 
+        $( "#prixMaxJ" ).val($("#slider-range").slider("values",1) + "€");
+
+        $('#plus-options').on('click', function(){
+            $('#module-recherche-options').toggleClass('hide');
+            $('#plus-options .glyphicon').toggleClass('glyphicon-triangle-bottom');
+            $('#plus-options .glyphicon').toggleClass('glyphicon-triangle-top');
         });
 
     } );
