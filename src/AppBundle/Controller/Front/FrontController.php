@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Front;
 
 use AppBundle\Form\RechercheType;
+use AppBundle\Service\OffreService;
 use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Vehicule;
@@ -12,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ReservationType;
 use AppBundle\Entity\Reservation;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class FrontController extends Controller
 {
@@ -22,7 +24,16 @@ class FrontController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('front/homepage.html.twig');
+
+        $rechercheForm = $this->createForm(RechercheType::class, null, array(
+            'action' => $this->generateUrl('front_offres'),
+            'method' => 'POST',
+        ));
+
+        return $this->render('front/homepage.html.twig', array(
+            'rechercheForm' => $rechercheForm->createView(),
+        ));
+
     }
 
     /**
@@ -32,10 +43,13 @@ class FrontController extends Controller
     {
         $offres = null;
 
-        if($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
+            $session = new Session();
             $dateDebut = new \DateTime('NOW');
             $dateFin = new \DateTime('NOW');
+            $session->set('dateDebut', $dateDebut);
+            $session->set('dateFin', $dateDebut);
         }
 
         return $this->render('front/nos-offres.html.twig', [
@@ -47,32 +61,51 @@ class FrontController extends Controller
      * @Route("/reservation/{id}", name="front_reservation")
      * @Security("has_role('ROLE_USER')")
      */
-     public function reservationAction(Request $request, $id)
-     {
-        $em = $this->getDoctrine()->getManager();
-        $vehicule = $em->getRepository('AppBundle:Vehicule')->findOneBy(array('id' => $id));
-        $reservation = new Reservation();
-        $form = $this->createForm(ReservationType::class, $reservation);
+    public function reservationAction($id, OffreService $offreService)
+    {
 
-        $form->handleRequest($request);
+        $etat = $this->getParameter('nonpayee');
+        $offreService->newReservation($id, $etat);
 
-         if ($form->isSubmitted() && $form->isValid()) {
-             $reservation->setVehicule($vehicule);
-             $reservation->setUser($this->getUser());
-            $em->persist($reservation);
-            $em->flush();
+        return $this->redirectToRoute('front_reservation_list');
 
-            $this->addFlash('success', 'Félicitation votre réservation à bien été enregistré');
+    }
 
-            return $this->redirectToRoute('front_offres');
+    /**
+     * @Route("/reservation", name="front_reservation_list")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function listReservationAction(Request $request, OffreService $offreService)
+    {
+
+        if ($request->get('stripeToken') != null) {
+            $offreService->getIfPaid();
         }
 
-        return $this->render('front/reservation.html.twig', [
-            'vehicule' => $vehicule,
-            'form' => $form->createView(),
-        ]);
-     }
+        $offreService->getLengthReservation();
+        $reservations = $offreService->getReservation();
 
+        return $this->render('front/reservation.html.twig', array(
+            'reservations' => $reservations
+        ));
+
+    }
+
+    /**
+     * @Route("/reservation/payment/{id}", name="payment_reservation")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function paymentAction($id, OffreService $offreService)
+    {
+
+        $etat = $this->getParameter('payee');
+        $reservation = $offreService->paymentReservation($id, $etat);
+
+        return $this->render('front/_payment.html.twig', array(
+            'reservation' => $reservation
+        ));
+
+    }
 
     public function moduleRechercheAction(){
         $rechercheForm = $this->createForm(RechercheType::class, null, array(

@@ -1,0 +1,17 @@
+{% extends ':front:layout.html.twig' %}
+
+{%  block body %}
+    <form action="{{ path('front_reservation_list') }}" method="POST">
+        <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_Ri6gb4pQk6YXytYxQxyZEpTM"
+                data-amount="{{ reservation.prixTotal * 100 }}"
+                data-name="Emotion"
+                data-description="{{ reservation.vehicule.infos }}"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto"
+                data-zip-code="true"
+                data-currency="eur">
+        </script>
+    </form>
+{% endblock %}

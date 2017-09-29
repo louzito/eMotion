@@ -1,6 +1,42 @@
 {% extends ':front:layout.html.twig' %}
 
 {%  block body %}
-    <h1>{{ vehicule.infos }}</h1>
-    {{ form(form) }}
+    {% for message in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Véhicule</th>
+                <th>Période du</th>
+                <th>Au</th>
+                <th>Prix total</th>
+                <th>Payé</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                {% for reservation in reservations %}
+                    <th scope="row">{{ reservation.id }}</th>
+                    <td>{{ reservation.vehicule.infos }}</td>
+                    <td>{{ reservation.dateDebut|date('d-m-Y') }}</td>
+                    <td>{{ reservation.dateFin|date('d-m-Y') }}</td>
+                    <td>{{ reservation.prixTotal }} €</td>
+                    {% if reservation.etat == '0' %}
+                        <td><a class="btn-info btn " href="{{ path('payment_reservation',{id : reservation.id} ) }}">Payé</a></td>
+                    {% else %}
+                        <td>Déjà payé</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+        {% endfor %}
+        </table>
+    </div>
+
+
 {% endblock %}
