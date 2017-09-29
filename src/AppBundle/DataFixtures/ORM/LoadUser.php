@@ -25,7 +25,7 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setEmail("admin@emotion.com")
             ->setDateDeNaissance(new \DateTime("1989-05-12"))
-            ->setPassword("$2y$13$2bT7Lk90LgvTDaeP7yCAv.IgoIUDvQ38i1YMq.01G87CoVLZ8Mxym")
+            ->setPassword("admin")
             ->setUsername("admin")
             ->setAdresse("8 rue de Londre")
             ->setCp(75015)
@@ -34,6 +34,7 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setPrenom("Maurice")
             ->setNumPermis("5A12DF56")
             ->setTelephone("0689457823")
+            ->setEnabled(1)
             ;
 
         $user2
@@ -48,6 +49,7 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setNom("Dupont")
             ->setPrenom("Pierre")
             ->setNumPermis("D5DF5255")
+            ->setEnabled(1)
             ->setTelephone("0645789545");
 
         $user3
@@ -61,9 +63,13 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setVille("Orléan")
             ->setNom("Durand")
             ->setPrenom("Julien")
+            ->setEnabled(1)
             ->setNumPermis("5DFG2645")
             ->setTelephone("0689457820");
 
+        $manager->persist($user1);
+        $manager->persist($user2);
+        $manager->persist($user3);
 
         $manager->flush();
         
