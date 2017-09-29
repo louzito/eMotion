@@ -1,11 +1,6 @@
 {% extends ':front:layout.html.twig' %}
 
 {%  block body %}
-    {% for message in app.session.flashbag.get('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
     <style>
         .vehicule-image img{
             max-width: 250px;

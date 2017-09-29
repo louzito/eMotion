@@ -54,6 +54,13 @@ class Reservation
      */
     private $prixTotal;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="etat", type="string", length=1)
+     */
+    private $etat;
+
 
     /**
      * Get id
@@ -184,5 +191,29 @@ class Reservation
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set etat
+     *
+     * @param string $etat
+     *
+     * @return Reservation
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * Get etat
+     *
+     * @return string
+     */
+    public function getEtat()
+    {
+        return $this->etat;
     }
 }
