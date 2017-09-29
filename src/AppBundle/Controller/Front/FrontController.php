@@ -33,6 +33,7 @@ class FrontController extends Controller
         return $this->render('front/homepage.html.twig', array(
             'rechercheForm' => $rechercheForm->createView(),
         ));
+
     }
 
     /**
@@ -104,6 +105,17 @@ class FrontController extends Controller
             'reservation' => $reservation
         ));
 
+    }
+
+    public function moduleRechercheAction(){
+        $rechercheForm = $this->createForm(RechercheType::class, null, array(
+        'action' => $this->generateUrl('front_offres'),
+        'method' => 'POST',
+        ));
+
+        return $this->render('front/module-de-recherche.html.twig', array(
+            'form' => $rechercheForm->createView(),
+        ));
     }
 
 }

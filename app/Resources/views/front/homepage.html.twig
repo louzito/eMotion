@@ -1,16 +1,10 @@
 {% extends ':front:layout.html.twig' %}
 
-{%  block body %}
-    {{ form(rechercheForm) }}
 
-    <script>
-        $( function() {
-            $('#recherche_date').daterangepicker({
-                locale: {
-                    format: 'YYYY-MM-DD'
-                }
-            });
-        } );
-    </script>
+{% block moduleDeRecherche %}
+    {{ render(controller('AppBundle:Front/Front:moduleRecherche')) }}
+{% endblock %}
+
+{%  block body %}
 
 {% endblock %}

@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>{% block title %}Bienvenue sur E-Motion{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}" />
         <!-- JQuery -->
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
         <!-- Latest compiled and minified CSS -->
@@ -20,51 +21,38 @@
         <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
-
-
-        <style>
-            h1 {font-size: 2em;margin-left: 50px;}
-            h2 {font-size: 1.7em;}
-            .mes-infos{margin-left: 100px;}
-            .mes-infos > span{display: block;margin: 4px 0;}
-            .mes-infos > span b{color: darkolivegreen;}
-            .mes-infos a.modifier-btn, .mes-infos input[type=submit], #profil a.retour{background-color: darkolivegreen;text-transform: uppercase;font-weight: bold;text-align: center;color: #FFFFFF;font-size: 1.2em;line-height: 45px;display: inline-block;height: 45px;padding: 0 20px;margin: 20px auto;border: none;}
-            .mes-infos a.modifier-btn:hover, .mes-infos input[type=submit]:hover, #profil a.retour:hover {background-color: #34421b;text-decoration: none;}
-            .retour{float: right;margin-right: 50px;}
-            .mes-infos > form > div, .mes-infos > form > #fos_user_change_password_form > div, .mes-infos > form > #fos_user_registration_form > div  {padding: 2px 0;}
-            .mes-infos form label{color: darkolivegreen;margin-right: 15px;}
-            .mes-infos form input, .mes-infos form select {padding: 3px 5px;}
-        </style>
     </head>
-
-</head>
 <body>
-{% block nav %}
-    {% set ReservationLength = app.session.get('reservation') %}
-
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{{ path('front_homepage') }}">Emotion</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{{ path('front_offres') }}">Nos offres</a></li>
-                {% if app.user %}
+    <header>
+        {% block nav %}
+            {% set ReservationLength = app.session.get('reservation') %}
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ path('front_homepage') }}">Emotion</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ path('front_offres') }}">Nos offres</a></li>
+                    {% if app.user %}
                     <li><a href="{{ path('front_reservation_list') }}">Mes réservations <span class="badge">{{ ReservationLength }}</span></a></li>
                     <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
-                {% else %}
-                    <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
-                {% endif %}
-            </ul>
+                    {% else %}
+                        <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <div class="header-image">
+            <img src="{{ asset('images/ban1.jpg') }}" alt="Bienvenue sur eMotion">
+            {% block moduleDeRecherche %}
+            {% endblock %}
         </div>
-    </nav>
-{% endblock %}
-<style>
-    body{
-        background-color: whitesmoke;
-    }
-</style>
-{% block body %}{% endblock %}
+    {% endblock %}
+    </header>
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+
 {% block javascripts %}{% endblock %}
 </body>
 </html>

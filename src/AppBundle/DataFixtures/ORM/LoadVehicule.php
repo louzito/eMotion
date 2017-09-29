@@ -34,7 +34,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
         $image1
             ->setUrl("zoe.jpg")
             ->setAlt("zoe.jpg");
-        
+
         $image2
             ->setUrl("BMW-i8.jpg")
             ->setAlt("BMW-i8.jpg");
@@ -72,6 +72,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setNbKilometres(25110)
             ->setNumSerie("AZS1542D")
             ->setPrixAchat(17000)
+            ->setType('Voiture')
             ->setPlaqueImmatriculation("AF-564-KP");
         $vehicule2
             ->setImage($image2)
@@ -81,6 +82,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setMarque("BMW")
             ->setNbKilometres(8000)
             ->setNumSerie("BCDFE745")
+            ->setType('Voiture')
             ->setPrixAchat(130000)
             ->setPlaqueImmatriculation("MV-647-WP");
         $vehicule3
@@ -89,6 +91,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setCouleur("Grise")
             ->setDateAchat(new \DateTime("2017-01-02"))
             ->setMarque("Chevrolet")
+            ->setType('Voiture')
             ->setNbKilometres(3600)
             ->setNumSerie("GRDE7469")
             ->setPrixAchat(600)
@@ -100,6 +103,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setDateAchat(new \DateTime("2017-06-25"))
             ->setMarque("Peugeot")
             ->setNbKilometres(1250)
+            ->setType('Voiture')
             ->setNumSerie("RQ7DE8ZE")
             ->setPrixAchat(14000)
             ->setPlaqueImmatriculation("PK-555-RD");
@@ -110,6 +114,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setDateAchat(new \DateTime("2015-12-30"))
             ->setMarque("Tesla")
             ->setNbKilometres(30000)
+            ->setType('Voiture')
             ->setNumSerie("QEZ84RD6")
             ->setPrixAchat(76000)
             ->setPlaqueImmatriculation("PQ-251-GF");
@@ -122,6 +127,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setNbKilometres(0)
             ->setNumSerie("WZY45FT6")
             ->setPrixAchat(60500)
+            ->setType('Scooter')
             ->setPlaqueImmatriculation("XE-666-WS");
 
         for ($i=1;$i<=6;$i++) {
@@ -131,6 +137,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             $location->setDateDebut(new \DateTime('2017-06-01'));
             $location->setDateFin(new \DateTime('2020-01-01'));
             $location->setPrixJournalier(rand(10, 50));
+            $location->setVille('Paris');
             $manager->persist($$vehicule);
             $manager->persist($location);
             $manager->flush();
