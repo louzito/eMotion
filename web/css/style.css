@@ -28,6 +28,6 @@ h2 {font-size: 1.7em;}
 #module-de-recherche button[type=submit]{height: 36px;border: none;display: inline-block;padding: 0 25px;text-transform: uppercase;color: #FFFFFF;font-weight: bold;background: #ca181a;}
 #module-de-recherche button[type=submit]:hover{background-color: #aa141e;}
 #module-de-recherche .daterangepicker {top: 50px!important;left: 52px!important;position: absolute!important;background-color: #1a1103;background-color: rgba(26,17,3,.9);border-radius: 0;}
-.daterangepicker td.disabled, .daterangepicker option.disabled {text-decoration: none;}
-.daterangepicker td.active, .daterangepicker td.active:hover {background: #ca181a;}
+#module-de-recherche .daterangepicker td.disabled,#module-de-recherche .daterangepicker option.disabled {text-decoration: none;}
+#module-de-recherche .daterangepicker td.active,#module-de-recherche .daterangepicker td.active:hover {background: #ca181a;}
 #module-de-recherche .daterangepicker .calendar.left .daterangepicker_input, #module-de-recherche .daterangepicker .calendar.right .daterangepicker_input{display: none;}
