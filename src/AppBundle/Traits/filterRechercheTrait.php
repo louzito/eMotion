@@ -25,6 +25,10 @@ trait filterRechercheTrait
             $date = $date->format(DATE_ATOM);
             $filter['dateFin'] = $date;
         }
+
+        if ($request->get('recherche')['ville']) {
+            $filter['ville'] = $request->get('recherche')['ville'];
+        }
         
         return $this->getResultFilter($filter);
     }
@@ -41,6 +45,10 @@ trait filterRechercheTrait
 
         if (!empty($filter['dateFin'])){
             $boolQuery->addMust(new Query\Range('dateFin', array('gte' => $filter['dateFin'])));
+        }
+
+        if (!empty($filter['ville'])) {
+            $boolQuery->addMust(new Query\QueryString($filter['ville']));
         }
 
         return $finder->find($boolQuery);

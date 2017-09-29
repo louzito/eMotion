@@ -47,6 +47,12 @@ class OffreLocation
      */
     private $prixJournalier;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville", type="string")
+     */
+    private $ville;
 
     /**
      * Get id
@@ -152,5 +158,29 @@ class OffreLocation
     public function getPrixJournalier()
     {
         return $this->prixJournalier;
+    }
+
+    /**
+     * Set ville
+     *
+     * @param string $ville
+     *
+     * @return OffreLocation
+     */
+    public function setVille($ville)
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * Get ville
+     *
+     * @return string
+     */
+    public function getVille()
+    {
+        return $this->ville;
     }
 }
