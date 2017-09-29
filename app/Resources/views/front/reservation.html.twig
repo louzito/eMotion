@@ -28,7 +28,7 @@
                     <td>{{ reservation.dateFin|date('d-m-Y') }}</td>
                     <td>{{ reservation.prixTotal }} €</td>
                     {% if reservation.etat == '0' %}
-                        <td><a class="btn-info btn " href="{{ path('payment_reservation',{id : reservation.id} ) }}">Payé</a></td>
+                        <td><a class="btn-info btn " href="{{ path('payment_reservation',{id : reservation.id} ) }}">Payer</a></td>
                     {% else %}
                         <td>Déjà payé</td>
                     {% endif %}
