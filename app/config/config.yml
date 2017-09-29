@@ -7,6 +7,8 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    nonpayee: 0
+    payee: 1
 
 framework:
     #esi: ~
@@ -107,11 +109,25 @@ fos_elastica:
                         dateFin:
                           type: date
                           format: YYYY-MM-dd'T'HH:mm:ssZ
+                        ville:
+                          type: string
                     persistence:
                         # the driver can be orm, mongodb, phpcr or propel
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
                         model: AppBundle\Entity\OffreLocation
+                        provider: ~
+                        finder: ~
+                vehicule:
+                    mappings:
+                        type:
+                            type: string
+                    persistence:
+                        # the driver can be orm, mongodb, phpcr or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: AppBundle\Entity\Vehicule
                         provider: ~
                         finder: ~

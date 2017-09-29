@@ -82,6 +82,13 @@ class Vehicule
      */
     private $image;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string")
+     */
+    private $type;
+
 
     public function __toString()
     {
@@ -318,5 +325,29 @@ class Vehicule
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Vehicule
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }
