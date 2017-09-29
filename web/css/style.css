@@ -21,7 +21,7 @@ h2 {font-size: 1.7em;}
 .header-image{position: relative;margin-top: -20px;}
 .header-image img{width: 100%}
 #module-de-recherche > div {display: inline-block;}
-#module-de-recherche {width: 800px;margin: -66px auto;position: relative;bottom: 0;min-height: 95px;}
+#module-de-recherche {width: 800px; margin: -66px auto 0px auto;position: relative;bottom: 0;min-height: 95px;}
 #module-de-recherche .daterangepicker.openscenter:after,#module-de-recherche .daterangepicker.openscenter:before{ left: -45px; }
 #module-de-recherche form{padding : 15px 0;text-align: center;background-color: #1a1103;background-color: rgba(26,17,3,.9);}
 #module-de-recherche label{color: #FFFFFF;padding: 0 5px 0 15px;}
