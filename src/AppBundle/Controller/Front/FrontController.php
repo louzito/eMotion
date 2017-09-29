@@ -108,6 +108,10 @@ class FrontController extends Controller
     }
 
     public function moduleRechercheAction(){
+        $em = $this->getDoctrine()->getManager();
+        $minEtmaxPrix = $em->getRepository('AppBundle:OffreLocation')->findMinEtMaxPrix();
+        $vehicules = $em->getRepository('AppBundle:Vehicule')->findAll();
+
         $rechercheForm = $this->createForm(RechercheType::class, null, array(
         'action' => $this->generateUrl('front_offres'),
         'method' => 'POST',
@@ -115,6 +119,9 @@ class FrontController extends Controller
 
         return $this->render('front/module-de-recherche.html.twig', array(
             'form' => $rechercheForm->createView(),
+            'minP' => $minEtmaxPrix['minP'],
+            'maxP' => $minEtmaxPrix['maxP'],
+            'vehicules' => $vehicules,
         ));
     }
 

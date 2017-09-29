@@ -49,7 +49,15 @@ class RechercheType extends AbstractType
                     'Lyon' => 'Lyon',
                 ),
             ))
-            ->add('submit', SubmitType::class);
+            ->add('typeVehicule', ChoiceType::class, array(
+                'choices'  => array(
+                    'Voiture' => 'voiture',
+                    'Scooter' => 'scooter',
+                ),
+            ))
+            ->add('submit', SubmitType::class, array(
+                'label' => 'Rechercher',
+            ));
     }
 
 }
