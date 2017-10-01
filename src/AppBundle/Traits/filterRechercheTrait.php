@@ -30,6 +30,8 @@ trait filterRechercheTrait
             $filter['ville'] = $request->get('recherche')['ville'];
         }
         
+        dump($this->getResa($filter));
+        die;
         return $this->getResultFilter($filter);
     }
 
@@ -51,6 +53,31 @@ trait filterRechercheTrait
             $boolQuery->addMust(new Query\QueryString($filter['ville']));
         }
 
+        return $finder->find($boolQuery);
+    }
+
+    public function getResa($filter)
+    {
+        $finder = $this->container->get('fos_elastica.finder.app.reservation');
+        $boolQuery = new \Elastica\Query\BoolQuery();
+        if (!empty($filter['dateDebut']) && !empty($filter['dateFin'])){
+            $boolQuery->addShould(new Query\Range('dateDebut', array(
+                'gte' => $filter['dateDebut'],
+                'lte' => $filter['dateFin']
+                ))); // CAS B ET D
+            $boolQuery->addShould(new Query\Range('dateFin', array(
+                'gte' => $filter['dateDebut'],
+                'lte' => $filter['dateFin']
+                ))); // CAS C ET D
+            $boolQuery->addShould(new Query\Range('dateDebut', array(
+                'lte' => $filter['dateDebut']
+                ))); // CAS E ET C
+            $boolQuery->addShould(new Query\Range('dateFin', array(
+                'gte' => $filter['dateFin']
+                ))); // CAS E ET B
+            $boolQuery->setMinimumNumberShouldMatch(2);
+        }
+        
         return $finder->find($boolQuery);
     }
 }

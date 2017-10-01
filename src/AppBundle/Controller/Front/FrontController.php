@@ -46,10 +46,10 @@ class FrontController extends Controller
         if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
             $session = new Session();
-            $dateDebut = new \DateTime('NOW');
-            $dateFin = new \DateTime('NOW');
+            $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateDebut']);
+            $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateFin']);
             $session->set('dateDebut', $dateDebut);
-            $session->set('dateFin', $dateDebut);
+            $session->set('dateFin', $dateFin);
         }
 
         return $this->render('front/nos-offres.html.twig', [

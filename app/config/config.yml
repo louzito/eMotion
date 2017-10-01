@@ -131,3 +131,19 @@ fos_elastica:
                         model: AppBundle\Entity\Vehicule
                         provider: ~
                         finder: ~
+                reservation:
+                    mappings:
+                        dateDebut:
+                            type: date
+                            format: YYYY-MM-dd'T'HH:mm:ssZ
+                        dateFin:
+                            type: date
+                            format: YYYY-MM-dd'T'HH:mm:ssZ
+                    persistence:
+                        # the driver can be orm, mongodb, phpcr or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: AppBundle\Entity\Reservation
+                        provider: ~
+                        finder: ~
