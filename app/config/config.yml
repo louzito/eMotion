@@ -102,15 +102,20 @@ fos_elastica:
             types:
                 offreLocation:
                     mappings:
-                        vehicule: ~
+                        vehicule.id:
+                            type: integer
+                        vehicule.type:
+                            type: string
                         dateDebut:
-                          type: date
-                          format: YYYY-MM-dd'T'HH:mm:ssZ
+                            type: date
+                            format: YYYY-MM-dd'T'HH:mm:ssZ
                         dateFin:
-                          type: date
-                          format: YYYY-MM-dd'T'HH:mm:ssZ
+                            type: date
+                            format: YYYY-MM-dd'T'HH:mm:ssZ
                         ville:
-                          type: string
+                            type: string
+                        prixJournalier:
+                            type: float
                     persistence:
                         # the driver can be orm, mongodb, phpcr or propel
                         # listener and finder are not supported by
@@ -119,20 +124,10 @@ fos_elastica:
                         model: AppBundle\Entity\OffreLocation
                         provider: ~
                         finder: ~
-                vehicule:
-                    mappings:
-                        type:
-                            type: string
-                    persistence:
-                        # the driver can be orm, mongodb, phpcr or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
-                        driver: orm
-                        model: AppBundle\Entity\Vehicule
-                        provider: ~
-                        finder: ~
                 reservation:
                     mappings:
+                        vehicule.id:
+                            type: integer
                         dateDebut:
                             type: date
                             format: YYYY-MM-dd'T'HH:mm:ssZ

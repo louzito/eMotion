@@ -42,7 +42,7 @@ class FrontController extends Controller
     public function nosOffresAction(Request $request)
     {
         $offres = null;
-
+        
         if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
             $session = new Session();

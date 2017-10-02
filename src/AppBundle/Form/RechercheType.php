@@ -12,6 +12,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -54,6 +55,16 @@ class RechercheType extends AbstractType
                     'Voiture' => 'voiture',
                     'Scooter' => 'scooter',
                 ),
+            ))
+            ->add('prixMinJ', HiddenType::class, array(
+                'attr' => [
+                    'value' => -1,
+                ],
+           ))
+            ->add('prixMaxJ', HiddenType::class, array(
+                'attr' => [
+                    'value' => -1,
+                ],
             ))
             ->add('submit', SubmitType::class, array(
                 'label' => 'Rechercher',
