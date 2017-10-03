@@ -1,42 +1,37 @@
 {% extends ':front:layout.html.twig' %}
 
 {%  block body %}
-    {% for message in app.session.flashbag.get('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-
-    <div class="container">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Véhicule</th>
-                <th>Période du</th>
-                <th>Au</th>
-                <th>Prix total</th>
-                <th>Payé</th>
-            </tr>
-            </thead>
-            <tbody>
+    <div class="jumbotron">
+         <table class="table">
+                <thead>
                 <tr>
-                {% for reservation in reservations %}
-                    <th scope="row">{{ reservation.id }}</th>
-                    <td>{{ reservation.vehicule.infos }}</td>
-                    <td>{{ reservation.dateDebut|date('d-m-Y') }}</td>
-                    <td>{{ reservation.dateFin|date('d-m-Y') }}</td>
-                    <td>{{ reservation.prixTotal }} €</td>
-                    {% if reservation.etat == '0' %}
-                        <td><a class="btn-info btn " href="{{ path('payment_reservation',{id : reservation.id} ) }}">Payer</a></td>
-                    {% else %}
-                        <td>Déjà payé</td>
-                    {% endif %}
+                    <th>#</th>
+                    <th>Véhicule</th>
+                    <th>Période du</th>
+                    <th>Au</th>
+                    <th>Prix total</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            </tbody>
-        {% endfor %}
+                </thead>
+                <tbody>
+                    <tr>
+                    {% for reservation in reservations %}
+                        <th scope="row">{{ reservation.id }}</th>
+                        <td>{{ reservation.vehicule.infos }}</td>
+                        <td>{{ reservation.dateDebut|date('d-m-Y') }}</td>
+                        <td>{{ reservation.dateFin|date('d-m-Y') }}</td>
+                        <td>{{ reservation.prixTotal }} €</td>
+                        <td>
+                            <a href="{{ path('front_reservation_detail',{id : reservation.id}) }}"><i class="glyphicon glyphicon-plus-sign"></i></a>
+                        </td>
+                        {#<td>#}
+                            {#<a class="remove-notif" href="{{ path('remove_notif', {id : reservation.id}) }}"><i class="glyphicon glyphicon-ok-circle"></i></a>#}
+                        {#</td>#}
+                    </tr>
+                </tbody>
+            {% endfor %}
         </table>
     </div>
-
 
 {% endblock %}

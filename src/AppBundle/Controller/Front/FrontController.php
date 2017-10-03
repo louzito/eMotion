@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ReservationType;
 use AppBundle\Entity\Reservation;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\VarDumper\Tests\Fixture\DumbFoo;
 
 class FrontController extends Controller
 {
@@ -39,17 +40,15 @@ class FrontController extends Controller
     /**
      * @Route("/nos-offres", name="front_offres")
      */
-    public function nosOffresAction(Request $request)
+    public function nosOffresAction(Request $request, OffreService $offreService)
     {
         $offres = null;
 
         if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
-            $session = new Session();
-            $dateDebut = new \DateTime('NOW');
-            $dateFin = new \DateTime('NOW');
-            $session->set('dateDebut', $dateDebut);
-            $session->set('dateFin', $dateDebut);
+
+            $offreService->traitementDatePicker();
+
         }
 
         return $this->render('front/nos-offres.html.twig', [
@@ -58,16 +57,43 @@ class FrontController extends Controller
     }
 
     /**
-     * @Route("/reservation/{id}", name="front_reservation")
+     * @Route("/reservation/offre/{id}", name="front_reservation")
      * @Security("has_role('ROLE_USER')")
      */
-    public function reservationAction($id, OffreService $offreService)
+    public function reservationAction(Request $request,$id, OffreService $offreService)
     {
 
         $etat = $this->getParameter('nonpayee');
-        $offreService->newReservation($id, $etat);
+        $reservation = $offreService->newReservation($id, $etat);
 
-        return $this->redirectToRoute('front_reservation_list');
+        if ($request->get('stripeToken') != null) {
+            $etat = $this->getParameter('payee');
+            $reservationPaid = $offreService->getIfPaid($etat);
+            return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId())));
+        }
+
+        return $this->render('front/reservation-detail.html.twig',[
+            'reservation' => $reservation['reservation'],
+            'days' => $reservation['days'],
+            'offre' => $reservation['offre']
+        ]);
+
+    }
+
+    /**
+     * @Route("/reservation/{id}", name="front_reservation_detail")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function reservationDetailAction($id, OffreService $offreService)
+    {
+
+        $reservation = $offreService->infoReservation($id);
+
+        return $this->render('front/reservation-detail.html.twig',[
+            'reservation' => $reservation['reservation'],
+            'days' => $reservation['days'],
+            'offre' => $reservation['offre']
+        ]);
 
     }
 
@@ -78,12 +104,7 @@ class FrontController extends Controller
     public function listReservationAction(Request $request, OffreService $offreService)
     {
 
-        if ($request->get('stripeToken') != null) {
-            $offreService->getIfPaid();
-        }
-
-        $offreService->getLengthReservation();
-        $reservations = $offreService->getReservation();
+        $reservations = $offreService->reservationToken();
 
         return $this->render('front/reservation.html.twig', array(
             'reservations' => $reservations
@@ -92,20 +113,18 @@ class FrontController extends Controller
     }
 
     /**
-     * @Route("/reservation/payment/{id}", name="payment_reservation")
+     * @Route("/reservation/remove/{id}", name="remove_notif")
      * @Security("has_role('ROLE_USER')")
      */
-    public function paymentAction($id, OffreService $offreService)
+    public function checkNotifReservationAction(Request $request, OffreService $offreService)
     {
 
-        $etat = $this->getParameter('payee');
-        $reservation = $offreService->paymentReservation($id, $etat);
+        $offreService->getLengthReservation(false);
 
-        return $this->render('front/_payment.html.twig', array(
-            'reservation' => $reservation
-        ));
+        return $this->redirectToRoute('front_reservation_list');
 
     }
+
 
     public function moduleRechercheAction(){
         $rechercheForm = $this->createForm(RechercheType::class, null, array(
