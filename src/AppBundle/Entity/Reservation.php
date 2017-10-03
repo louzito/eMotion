@@ -54,6 +54,27 @@ class Reservation
      */
     private $prixTotal;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="etat", type="string", length=1)
+     */
+    private $etat;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateReservation", type="datetime")
+     */
+    private $dateReservation;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datePaiement", type="datetime")
+     */
+    private $datePaiement;
+
 
     /**
      * Get id
@@ -184,5 +205,77 @@ class Reservation
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set etat
+     *
+     * @param string $etat
+     *
+     * @return Reservation
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * Get etat
+     *
+     * @return string
+     */
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * Set dateReservation
+     *
+     * @param \DateTime $dateReservation
+     *
+     * @return Reservation
+     */
+    public function setDateReservation($dateReservation)
+    {
+        $this->dateReservation = $dateReservation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateReservation
+     *
+     * @return \DateTime
+     */
+    public function getDateReservation()
+    {
+        return $this->dateReservation;
+    }
+
+    /**
+     * Set datePaiement
+     *
+     * @param \DateTime $datePaiement
+     *
+     * @return Reservation
+     */
+    public function setDatePaiement($datePaiement)
+    {
+        $this->datePaiement = $datePaiement;
+
+        return $this;
+    }
+
+    /**
+     * Get datePaiement
+     *
+     * @return \DateTime
+     */
+    public function getDatePaiement()
+    {
+        return $this->datePaiement;
     }
 }

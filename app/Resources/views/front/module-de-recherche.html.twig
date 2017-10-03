@@ -1,89 +1,48 @@
-<style>
-    #module-de-recherche > div {
-        display: inline-block;
-    }
-    #module-de-recherche{
-        padding : 15px 0;
-        width: 800px;
-        margin: 0 auto;
-        text-align: center;
-        background-color: #1a1103;
-        background-color: rgba(26,17,3,.9);
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        margin-left: -400px;
-    }
-    #module-de-recherche label{
-        color: #FFFFFF;
-        padding: 0 5px 0 15px;
-    }
-    #module-de-recherche input{
-        padding: 5px;
-    }
-    #module-de-recherche select{
-        height: 34px;
-        padding: 0 15px;
-        background: #FFFFFF;
-    }
-    #module-de-recherche button[type=submit]
-    {
-        height: 36px;
-        border: none;
-        display: inline-block;
-        padding: 0 25px;
-        text-transform: uppercase;
-        color: #FFFFFF;
-        font-weight: bold;
-        background: #ca181a;
-    }
-    #module-de-recherche button[type=submit]:hover
-    {
-        background-color: #aa141e;
-    }
-    #module-de-recherche .daterangepicker {
-        top: 50px!important;
-        left: 52px!important;
-        position: absolute!important;
-        background-color: #1a1103;
-        background-color: rgba(26,17,3,.9);
-        border-radius: 0;
-    }
-    .daterangepicker td.disabled, .daterangepicker option.disabled {
-        text-decoration: none;
-    }
-    .daterangepicker td.active, .daterangepicker td.active:hover {
-        background: #ca181a;
-    }
-    #module-de-recherche .daterangepicker .calendar.left .daterangepicker_input, #module-de-recherche .daterangepicker .calendar.right .daterangepicker_input{
-        display: none;
-    }
-</style>
 <div id="module-de-recherche">
     {{ form_start(form) }}
-
+    <div class="barre">
     {{ form_errors(form) }}
     
     <input type="hidden" name="" class="daterangeSelect">
 
-    {{ form_widget(form.dateDebut) }}
+        {{ form_widget(form.dateDebut) }}
 
-    {{ form_widget(form.dateFin) }}
+        {{ form_widget(form.dateFin) }}
 
-    {{ form_widget(form.ville) }}
+        {{ form_widget(form.ville) }}
 
-    {{ form_widget(form.submit) }}
+        {{ form_widget(form.typeVehicule) }}
 
+        {{ form_widget(form.submit) }}
+
+    </div>
     {{ form_rest(form) }}
   
+    <span id="plus-options">Afficher plus d'option <span class="glyphicon glyphicon-triangle-top"></span></span>
+    <div id="module-recherche-options" class="hide">
+        <div class="par-prix">
+            <span>Fourchette de prix</span>
+            <div class="select-price">
+                <span id="min-select">{{ minP }}€</span><span id="max-select">{{ maxP }}€</span>
+            </div>
+            <div id="slider-range"></div>
+        </div>
+        <div class="par-vehicule">
+            <span>Choissez votre véhicule</span>
+            <select name="recherche[idVehicule]">
+                <option value="0"></option>
+            {% for vehicule in vehicules %}
+                <option value="{{ vehicule.id }}">{{ vehicule.marque }} {{ vehicule.modele }}</option>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
     {{ form_end(form) }}
 </div>
 <script>
     $( function() {
 
         var now = new Date();
-        console.log(now);
-
         $('.daterangeSelect').daterangepicker({
             "autoApply": true,
             "cancelClass": "hide",
@@ -105,6 +64,25 @@
             $('#recherche_dateDebut').val(picker.startDate.format('DD/MM/YYYY'));
             $('#recherche_dateFin').val(picker.endDate.format('DD/MM/YYYY'));
             $('.bouton.actualiser').trigger('click');
+        });
+
+        $( "#slider-range" ).slider({
+            range: true,
+            min: {{ minP }},
+            max: {{ maxP }},
+            values: [ {{ minP }}, {{ maxP }} ],
+            slide: function( event, ui ) {
+                $( "#recherche_prixMinJ" ).val(ui.values[0]); 
+                $( "#recherche_prixMaxJ" ).val(ui.values[1]);
+                $( "#min-select" ).html(ui.values[0] + "€");
+                $( "#max-select" ).html(ui.values[1] + "€");
+            }
+        });
+
+        $('#plus-options').on('click', function(){
+            $('#module-recherche-options').toggleClass('hide');
+            $('#plus-options .glyphicon').toggleClass('glyphicon-triangle-bottom');
+            $('#plus-options .glyphicon').toggleClass('glyphicon-triangle-top');
         });
 
     } );

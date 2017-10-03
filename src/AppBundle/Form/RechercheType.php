@@ -12,6 +12,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,6 +33,7 @@ class RechercheType extends AbstractType
                     'class' => 'js-datepicker',
                     'placeholder' => 'Date de Début',
                     ],
+                'format' => 'dd/MM/yyyy',
             ))
             ->add('dateFin', DateType::class, array(
                 'widget' => 'single_text',
@@ -42,14 +44,33 @@ class RechercheType extends AbstractType
                     'class' => 'js-datepicker',
                     'placeholder' => 'Date de Fin',
                     ],
+                'format' => 'dd/MM/yyyy',
             ))
             ->add('ville', ChoiceType::class, array(
                 'choices'  => array(
-                    'Paris' => 'paris',
-                    'Lyon' => 'lyon',
+                    'Paris' => 'Paris',
+                    'Lyon' => 'Lyon',
                 ),
             ))
-            ->add('submit', SubmitType::class);
+            ->add('typeVehicule', ChoiceType::class, array(
+                'choices'  => array(
+                    'Voiture' => 'voiture',
+                    'Scooter' => 'scooter',
+                ),
+            ))
+            ->add('prixMinJ', HiddenType::class, array(
+                'attr' => [
+                    'value' => -1,
+                ],
+           ))
+            ->add('prixMaxJ', HiddenType::class, array(
+                'attr' => [
+                    'value' => -1,
+                ],
+            ))
+            ->add('submit', SubmitType::class, array(
+                'label' => 'Rechercher',
+            ));
     }
 
 }
