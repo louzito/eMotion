@@ -55,7 +55,7 @@
                         <button type="submit" class="btn btn-twitter">Finalisez votre réservation</button>
                     </form>
                 {% else %}
-                    <button type="submit" class="btn btn-twitter">Voir ma facture</button>
+                    <a href = '{{ path('genererPDF', {id : reservation.id}) }}'><button type="submit" class="btn btn-twitter">Voir ma facture</button></a>
                 {% endif %}
             </div>
         </div>
