@@ -33,6 +33,7 @@ class RechercheType extends AbstractType
                     'class' => 'js-datepicker',
                     'placeholder' => 'Date de Début',
                     ],
+                'format' => 'dd/MM/yyyy',
             ))
             ->add('dateFin', DateType::class, array(
                 'widget' => 'single_text',
@@ -43,6 +44,7 @@ class RechercheType extends AbstractType
                     'class' => 'js-datepicker',
                     'placeholder' => 'Date de Fin',
                     ],
+                'format' => 'dd/MM/yyyy',
             ))
             ->add('ville', ChoiceType::class, array(
                 'choices'  => array(
