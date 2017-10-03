@@ -1,0 +1,68 @@
+{% extends ':front:layout.html.twig' %}
+
+{%  block body %}
+
+    <div class="jumbotron text-center">
+        <p>{{ reservation.vehicule.infos|upper }} <p>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>Informations</h3></div>
+                <div class="panel-body">Marque : {{ reservation.vehicule.marque }} </div>
+                <div class="panel-body">Modèle : {{ reservation.vehicule.modele }} </div>
+                <div class="panel-body">Numéro de série : {{ reservation.vehicule.numSerie }} </div>
+                <div class="panel-body">Couleur : {{ reservation.vehicule.couleur }} </div>
+                <div class="panel-body">Immatriculation : {{ reservation.vehicule.plaqueImmatriculation }} </div>
+                <div class="panel-body">Nombre de km : {{ reservation.vehicule.nbKilometres }} </div>
+                <div class="panel-body">Date d'achat : {{ reservation.vehicule.dateAchat|date('d/m/Y') }} </div>
+                <div class="panel-body">Prix de base : {{ reservation.vehicule.prixAchat }} </div>
+                <div class="panel-body">Prix/J : {{ offre.prixJournalier }} €</div>
+                <img class="col-xs-12 img-thumbnail" src="{{ reservation.vehicule.image.webPath }}" alt="{{ reservation.vehicule.modele ~ " " ~ reservation.vehicule.marque }}">
+            </div>
+        </div>
+        <div class="col-lg-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>Réservation</h3></div>
+                <div class="panel-body">Date de début : {{ reservation.dateDebut|date('d/m/Y') }}</div>
+                <div class="panel-body">Date de Fin : {{ reservation.dateFin|date('d/m/Y') }}</div>
+                <div class="panel-body">Location de {{ days }} jours</div>
+                <div class="panel-body">Prix total : {{ reservation.prixTotal }} €</div>
+                <div class="panel-body">
+                    Statut :
+                    {% if reservation.etat == '0' %}
+                        En cours
+                    {% else %}
+                        Terminé
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                {% if reservation.etat == '0' %}
+                    <form class="col-lg-12" action="{{ path('front_reservation', {id : offre.id}) }}" method="POST">
+                        <script
+                                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="pk_test_Ri6gb4pQk6YXytYxQxyZEpTM"
+                                data-amount="{{ reservation.prixTotal * 100 }}"
+                                data-name="Emotion"
+                                data-description="{{ reservation.vehicule.infos }}"
+                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                data-locale="auto"
+                                data-zip-code="true"
+                                data-currency="eur">
+                        </script>
+
+
+                        <button type="submit" class="btn btn-twitter">Finalisez votre réservation</button>
+                    </form>
+                {% else %}
+                    <button type="submit" class="btn btn-twitter">Voir ma facture</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+    </script>
+
+{% endblock %}

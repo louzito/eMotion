@@ -61,6 +61,20 @@ class Reservation
      */
     private $etat;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateReservation", type="datetime")
+     */
+    private $dateReservation;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datePaiement", type="datetime")
+     */
+    private $datePaiement;
+
 
     /**
      * Get id
@@ -215,5 +229,53 @@ class Reservation
     public function getEtat()
     {
         return $this->etat;
+    }
+
+    /**
+     * Set dateReservation
+     *
+     * @param \DateTime $dateReservation
+     *
+     * @return Reservation
+     */
+    public function setDateReservation($dateReservation)
+    {
+        $this->dateReservation = $dateReservation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateReservation
+     *
+     * @return \DateTime
+     */
+    public function getDateReservation()
+    {
+        return $this->dateReservation;
+    }
+
+    /**
+     * Set datePaiement
+     *
+     * @param \DateTime $datePaiement
+     *
+     * @return Reservation
+     */
+    public function setDatePaiement($datePaiement)
+    {
+        $this->datePaiement = $datePaiement;
+
+        return $this;
+    }
+
+    /**
+     * Get datePaiement
+     *
+     * @return \DateTime
+     */
+    public function getDatePaiement()
+    {
+        return $this->datePaiement;
     }
 }
