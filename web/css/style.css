@@ -21,13 +21,25 @@ h2 {font-size: 1.7em;}
 .header-image{position: relative;margin-top: -20px;}
 .header-image img{width: 100%}
 #module-de-recherche > div {display: inline-block;}
-#module-de-recherche{padding : 15px 0;width: 800px;margin: 0 auto;text-align: center;background-color: #1a1103;background-color: rgba(26,17,3,.9);position: absolute;left: 50%;bottom: 0;margin-left: -400px;}
+#module-de-recherche {width: 800px; margin: -66px auto 0px auto;position: relative;bottom: 0;min-height: 95px;}
+#module-de-recherche .daterangepicker.openscenter:after,#module-de-recherche .daterangepicker.openscenter:before{ left: -45px; }
+#module-de-recherche form .barre{padding : 15px 0;text-align: center;background-color: #1a1103;background-color: rgba(26,17,3,.9);}
 #module-de-recherche label{color: #FFFFFF;padding: 0 5px 0 15px;}
 #module-de-recherche input{padding: 5px;}
 #module-de-recherche select{height: 34px;padding: 0 15px;background: #FFFFFF;}
 #module-de-recherche button[type=submit]{height: 36px;border: none;display: inline-block;padding: 0 25px;text-transform: uppercase;color: #FFFFFF;font-weight: bold;background: #ca181a;}
 #module-de-recherche button[type=submit]:hover{background-color: #aa141e;}
-#module-de-recherche .daterangepicker {top: 50px!important;left: 52px!important;position: absolute!important;background-color: #1a1103;background-color: rgba(26,17,3,.9);border-radius: 0;}
+#module-de-recherche .daterangepicker {top: 50px!important;left: 0px!important;position: absolute!important;background-color: #1a1103;background-color: rgba(26,17,3,.9);border-radius: 0;}
 #module-de-recherche .daterangepicker td.disabled,#module-de-recherche .daterangepicker option.disabled {text-decoration: none;}
 #module-de-recherche .daterangepicker td.active,#module-de-recherche .daterangepicker td.active:hover {background: #ca181a;}
+#module-de-recherche .daterangepicker td.active.off, #module-de-recherche .daterangepicker td.active.off:hover {background: none;}
 #module-de-recherche .daterangepicker .calendar.left .daterangepicker_input, #module-de-recherche .daterangepicker .calendar.right .daterangepicker_input{display: none;}
+#module-recherche-options{display: block!important;padding: 20px;position: relative;border: 1px solid lightgrey;}
+#module-recherche-options.hide{display: none!important;}
+#module-de-recherche #plus-options {position: absolute;top: 75px;right: 15px;font-size: 0.9em;cursor: pointer;z-index: 999;}
+#module-recherche-options #plus-options:hover{cursor: pointer;text-decoration: underline;}
+#module-recherche-options .par-prix{width: 240px;display: inline-block;}
+#module-recherche-options .par-vehicule {margin-left: 125px;display: inline-block;vertical-align: bottom;}
+.select-price{ padding-bottom: 5px;}
+.select-price #min-select{display: inline-block;width: 120px;padding-left: 5px;text-align: left;}
+.select-price #max-select{display: inline-block;width: 120px;padding-right: 5px;text-align: right;}

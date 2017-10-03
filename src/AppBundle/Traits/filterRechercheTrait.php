@@ -14,8 +14,9 @@ trait filterRechercheTrait
 {
     public function getFilter($request)
     {
-        $filter = array();
-        
+        $filter = array();       
+        $filter = $request->get('recherche');
+
         if ($request->get('recherche')['dateDebut']) {
             $date = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateDebut']);
             $date = $date->format(DATE_ATOM);
@@ -26,11 +27,16 @@ trait filterRechercheTrait
             $filter['dateFin'] = $date;
         }
 
-        if ($request->get('recherche')['ville']) {
-            $filter['ville'] = $request->get('recherche')['ville'];
+        $offres = $this->getResultFilter($filter);
+        $offresDispo = [];
+        foreach($offres as $offre)
+        {
+           if($this->isReservationDisponible($filter, $offre->getVehicule())){
+                $offresDispo[] = $offre;
+           }
         }
-        
-        return $this->getResultFilter($filter);
+
+        return $offresDispo;
     }
 
     public function getResultFilter($filter)
@@ -51,6 +57,47 @@ trait filterRechercheTrait
             $boolQuery->addMust(new Query\QueryString($filter['ville']));
         }
 
+        if (!empty($filter['typeVehicule'])) {
+            $boolQuery->addMust(new \Elastica\Query\Match('vehicule.type', $filter['typeVehicule']));
+        }
+        
+        if(isset($filter['prixMinJ']) && isset($filter['prixMaxJ']) && $filter['prixMinJ'] != "-1" && $filter['prixMaxJ'] != "-1"){
+            $boolQuery->addMust(new Query\Range('prixJournalier', array(
+                'gte' => $filter['prixMinJ'],
+                'lte' => $filter['prixMaxJ'],
+                )));
+        }
+
+        if(isset($filter['idVehicule']) && $filter['idVehicule'] != "0"){
+            $boolQuery->addMust(new \Elastica\Query\Match('vehicule.id', $filter['idVehicule']));
+        }
+
         return $finder->find($boolQuery);
+    }
+
+    public function isReservationDisponible($filter, $vehicule)
+    {
+        $finder = $this->container->get('fos_elastica.finder.app.reservation');
+
+        $boolQuery = new \Elastica\Query\BoolQuery();
+        if (!empty($filter['dateDebut']) && !empty($filter['dateFin']) && !empty($vehicule)){
+            $boolQuery->addMust(new \Elastica\Query\Match('vehicule.id', $vehicule->getId()));
+            $boolQuery->addShould(new Query\Range('dateDebut', array(
+                'gte' => $filter['dateDebut'],
+                'lte' => $filter['dateFin']
+                ))); // CAS B ET D
+            $boolQuery->addShould(new Query\Range('dateFin', array(
+                'gte' => $filter['dateDebut'],
+                'lte' => $filter['dateFin']
+                ))); // CAS C ET D
+            $boolQuery->addShould(new Query\Range('dateDebut', array(
+                'lte' => $filter['dateDebut']
+                ))); // CAS E ET C
+            $boolQuery->addShould(new Query\Range('dateFin', array(
+                'gte' => $filter['dateFin']
+                ))); // CAS E ET B
+            $boolQuery->setMinimumNumberShouldMatch(2);
+        }
+        return empty($finder->find($boolQuery));
     }
 }

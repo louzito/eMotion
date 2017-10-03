@@ -1,28 +1,48 @@
 <div id="module-de-recherche">
     {{ form_start(form) }}
-
+    <div class="barre">
     {{ form_errors(form) }}
     
     <input type="hidden" name="" class="daterangeSelect">
+        
+        {{ form_widget(form.dateDebut) }}
 
-    {{ form_widget(form.dateDebut) }}
+        {{ form_widget(form.dateFin) }}
 
-    {{ form_widget(form.dateFin) }}
+        {{ form_widget(form.ville) }}
 
-    {{ form_widget(form.ville) }}
+        {{ form_widget(form.typeVehicule) }}
 
-    {{ form_widget(form.submit) }}
+        {{ form_widget(form.submit) }}
 
+    </div>
     {{ form_rest(form) }}
   
+    <span id="plus-options">Afficher plus d'option <span class="glyphicon glyphicon-triangle-top"></span></span>
+    <div id="module-recherche-options" class="hide">
+        <div class="par-prix">
+            <span>Fourchette de prix</span>
+            <div class="select-price">
+                <span id="min-select">{{ minP }}€</span><span id="max-select">{{ maxP }}€</span>
+            </div>
+            <div id="slider-range"></div>
+        </div>
+        <div class="par-vehicule">
+            <span>Choissez votre véhicule</span>
+            <select name="recherche[idVehicule]">
+                <option value="0"></option>
+            {% for vehicule in vehicules %}
+                <option value="{{ vehicule.id }}">{{ vehicule.marque }} {{ vehicule.modele }}</option>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
     {{ form_end(form) }}
 </div>
 <script>
     $( function() {
 
         var now = new Date();
-        console.log(now);
-
         $('.daterangeSelect').daterangepicker({
             "autoApply": true,
             "cancelClass": "hide",
@@ -44,6 +64,25 @@
             $('#recherche_dateDebut').val(picker.startDate.format('DD/MM/YYYY'));
             $('#recherche_dateFin').val(picker.endDate.format('DD/MM/YYYY'));
             $('.bouton.actualiser').trigger('click');
+        });
+
+        $( "#slider-range" ).slider({
+            range: true,
+            min: {{ minP }},
+            max: {{ maxP }},
+            values: [ {{ minP }}, {{ maxP }} ],
+            slide: function( event, ui ) {
+                $( "#recherche_prixMinJ" ).val(ui.values[0]); 
+                $( "#recherche_prixMaxJ" ).val(ui.values[1]);
+                $( "#min-select" ).html(ui.values[0] + "€");
+                $( "#max-select" ).html(ui.values[1] + "€");
+            }
+        });
+
+        $('#plus-options').on('click', function(){
+            $('#module-recherche-options').toggleClass('hide');
+            $('#plus-options .glyphicon').toggleClass('glyphicon-triangle-bottom');
+            $('#plus-options .glyphicon').toggleClass('glyphicon-triangle-top');
         });
 
     } );

@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class OffreLocationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findMinEtMaxPrix()
+    {
+        $query = $this->createQueryBuilder('ol');
+        $query->select('MIN(ol.prixJournalier) AS minP');
+        $query->addSelect('MAX(ol.prixJournalier) AS maxP');
+
+        return $query->getQuery()->getSingleResult();
+    }
 }
