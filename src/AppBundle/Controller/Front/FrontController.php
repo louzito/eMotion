@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Front;
 
 use AppBundle\Form\RechercheType;
+use AppBundle\Service\CookiesService;
 use AppBundle\Service\OffreService;
 use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\AppBundle;
@@ -10,9 +11,11 @@ use AppBundle\Entity\Vehicule;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ReservationType;
 use AppBundle\Entity\Reservation;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class FrontController extends Controller
@@ -24,25 +27,17 @@ class FrontController extends Controller
      */
     public function indexAction(Request $request)
     {
-
-        $rechercheForm = $this->createForm(RechercheType::class, null, array(
-            'action' => $this->generateUrl('front_offres'),
-            'method' => 'POST',
-        ));
-
-        return $this->render('front/homepage.html.twig', array(
-            'rechercheForm' => $rechercheForm->createView(),
-        ));
-
+        return $this->render('front/homepage.html.twig');
     }
 
     /**
      * @Route("/nos-offres", name="front_offres")
      */
-    public function nosOffresAction(Request $request)
+    public function nosOffresAction(Request $request, CookiesService $cookiesService)
     {
         $offres = null;
-        
+        $params = $request->get('recherche');
+
         if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
             $session = new Session();
@@ -52,9 +47,11 @@ class FrontController extends Controller
             $session->set('dateFin', $dateFin);
         }
 
+        $response = $cookiesService->setCookiesRecherche($params);
+
         return $this->render('front/nos-offres.html.twig', [
             'offres' => $offres,
-        ]);
+        ], $response);
     }
 
     /**
@@ -107,7 +104,7 @@ class FrontController extends Controller
 
     }
 
-    public function moduleRechercheAction(){
+    public function moduleRechercheAction(Request $request, CookiesService $cookiesService){
         $em = $this->getDoctrine()->getManager();
         $minEtmaxPrix = $em->getRepository('AppBundle:OffreLocation')->findMinEtMaxPrix();
         $vehicules = $em->getRepository('AppBundle:Vehicule')->findAll();
@@ -116,6 +113,8 @@ class FrontController extends Controller
         'action' => $this->generateUrl('front_offres'),
         'method' => 'POST',
         ));
+
+        $rechercheForm = $cookiesService->setDataForm($request, $rechercheForm);
 
         return $this->render('front/module-de-recherche.html.twig', array(
             'form' => $rechercheForm->createView(),
