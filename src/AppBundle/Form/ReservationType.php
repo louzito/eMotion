@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ReservationType extends AbstractType
 {
@@ -14,7 +16,15 @@ class ReservationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('dateDebut')->add('dateFin')->add('prixTotal')->add('submit',SubmitType::class);
+        $builder
+            ->add('user', EntityType::class, array(
+                    'class' => 'AppBundle:User',
+                    'choice_label' => 'prenomNomNumPermis',
+            ))
+            ->add('dateDebut', TextType::class)
+            ->add('dateFin', TextType::class)
+            ->add('prixTotal')
+            ->add('submit',SubmitType::class);
     }
     
     /**

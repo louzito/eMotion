@@ -1,0 +1,17 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1>Manager - Gestion des réservations</h1>
+    <b>Id :</b> {{ reservation.id }}<br />
+    <b>Vehicule :</b> {{ reservation.vehicule }}<br />
+    <b>Client :</b> {{ reservation.user.prenom }} {{ reservation.user.nom }}<br />
+    <b>Date de début :</b> {{ reservation.dateDebut|date('d-m-Y') }}<br />
+    <b>Date de fin :</b> {{ reservation.dateFin|date('d-m-Y') }}<br />
+    <b>Prix total :</b> {{ reservation.prixTotal }}<br />
+    <b>Etat :</b> {{ reservation.etat }}<br />
+    <a href="{{ path('admin_show_locations')}}" title="Voir les locations">Voir les locations</a>
+</div>
+{% endblock %}
+{% block javascripts %}{% endblock %}
+

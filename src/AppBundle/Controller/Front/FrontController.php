@@ -50,7 +50,13 @@ class FrontController extends Controller
             $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateFin']);
             $session->set('dateDebut', $dateDebut);
             $session->set('dateFin', $dateFin);
+            $interval = $dateDebut->diff($dateFin)->d + 1;
+            foreach($offres as $offre)
+            {
+                $offre->kmInclus = $interval*$offre->getKmJournalier();
+            }
         }
+        
 
         return $this->render('front/nos-offres.html.twig', [
             'offres' => $offres,

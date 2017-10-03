@@ -63,7 +63,6 @@
         $('.daterangeSelect').on('apply.daterangepicker', function(event, picker) {
             $('#recherche_dateDebut').val(picker.startDate.format('DD/MM/YYYY'));
             $('#recherche_dateFin').val(picker.endDate.format('DD/MM/YYYY'));
-            $('.bouton.actualiser').trigger('click');
         });
 
         $( "#slider-range" ).slider({

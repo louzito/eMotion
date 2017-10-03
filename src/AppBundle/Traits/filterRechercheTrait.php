@@ -39,6 +39,34 @@ trait filterRechercheTrait
         return $offresDispo;
     }
 
+    public function getFilterAdmin($request)
+    {
+        $filter = array();
+        $filter = $request->request->get('recherche_admin');
+
+        if ($filter['dateDebut'] && $filter['dateFin']) {
+            $date = \DateTime::createFromFormat('d/m/Y', $filter['dateDebut']);
+            $date = $date->format(DATE_ATOM);
+            $filter['dateDebut'] = $date;
+
+            $date = \DateTime::createFromFormat('d/m/Y', $filter['dateFin']);
+            $date = $date->format(DATE_ATOM);
+            $filter['dateFin'] = $date;
+        }
+
+        $offres = $this->getResultFilter($filter);
+        $offresDispo = [];
+
+        foreach($offres as $offre)
+        {
+           if($this->isReservationDisponible($filter, $offre->getVehicule())){
+                $offresDispo[] = $offre;
+           }
+        }
+        return $offresDispo;
+    }
+
+
     public function getResultFilter($filter)
     {
         $finder = $this->container->get('fos_elastica.finder.app.offreLocation');
@@ -53,11 +81,11 @@ trait filterRechercheTrait
             $boolQuery->addMust(new Query\Range('dateFin', array('gte' => $filter['dateFin'])));
         }
 
-        if (!empty($filter['ville'])) {
+        if (isset($filter['ville']) && !empty($filter['ville'])) {
             $boolQuery->addMust(new Query\QueryString($filter['ville']));
         }
 
-        if (!empty($filter['typeVehicule'])) {
+        if (isset($filter['typeVehicule']) && !empty($filter['typeVehicule'])) {
             $boolQuery->addMust(new \Elastica\Query\Match('vehicule.type', $filter['typeVehicule']));
         }
         

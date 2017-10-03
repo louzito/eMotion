@@ -271,4 +271,9 @@ class User extends BaseUser
     {
         return $this->numPermis;
     }
+
+    public function getPrenomNomNumPermis()
+    {
+        return $this->prenom . ' ' . $this->nom . ' ' . $this->numPermis; 
+    }
 }
