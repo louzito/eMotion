@@ -65,9 +65,8 @@ class FrontController extends Controller
         if ($request->get('stripeToken') != null) {
             $etat = $this->getParameter('payee');
             $reservationPaid = $offreService->getIfPaid($etat);
-            $nomPdf = $pdfService->generate($reservationPaid->getId());
-            return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId(),
-                'nomPdf'=>$nomPdf)));
+
+            return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId())));
         }
 
         return $this->render('front/reservation-detail.html.twig',[
