@@ -328,6 +328,7 @@ class PdfService
         $nomfact = $nom."_".$prenom."_"."facture".$id.'.pdf';
 
         $pathfact = '../web/uploads/facture/';
+
         $pdf->Output('F',$pathfact.$nomfact);
 
 
