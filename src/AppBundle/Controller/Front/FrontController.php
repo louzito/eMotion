@@ -42,7 +42,7 @@ class FrontController extends Controller
 
         if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
-            $offreService->traitementDatePicker();
+            $offreService->envoieDateSession();
         }
 
         $response = $cookiesService->setCookiesRecherche($params);
@@ -65,9 +65,8 @@ class FrontController extends Controller
         if ($request->get('stripeToken') != null) {
             $etat = $this->getParameter('payee');
             $reservationPaid = $offreService->getIfPaid($etat);
-            $nomPdf = $pdfService->generate($reservationPaid->getId());
-            return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId(),
-                'nomPdf'=>$nomPdf)));
+            $pdfService->generate($reservationPaid->getId());
+            return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId())));
         }
 
         return $this->render('front/reservation-detail.html.twig',[
@@ -124,6 +123,41 @@ class FrontController extends Controller
 
     }
 
+    /**
+     * @Route("/reservation/check/ajax", name="check_reservation_ajax")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function reservationAjaxAction(Request $request, OffreService $offreService)
+    {
+
+        if ($request->isXmlHttpRequest()){
+
+            $filter = [];
+            $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->get('dateDebut'));
+            $dateDebut = $dateDebut->format(DATE_ATOM);
+            $filter['dateDebut'] = $dateDebut;
+
+            $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('dateFin'));
+            $dateFin = $dateFin->format(DATE_ATOM);
+            $filter['dateFin'] = $dateFin;
+
+
+            $idVehicule = $request->get('vehicule');
+            $vehicule = $this->getDoctrine()->getRepository('AppBundle:Vehicule')->findOneBy(array('id' => $idVehicule));
+
+            $bool = $this->isReservationDisponible($filter, $vehicule);
+            if ($bool){
+                return new Response('ok',200);
+            }else{
+                return new Response('ko',200);
+            }
+
+        }
+
+        return new Response('Une erreur est survenue',400);
+
+    }
+  
     /**
      * @Route("/fiche-vehicule/{id}", name="fiche_vehicule")
      */
