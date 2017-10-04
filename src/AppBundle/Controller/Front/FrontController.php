@@ -132,6 +132,19 @@ class FrontController extends Controller
         return $this->render('front/fiche-vehicule.html.twig');
     }
 
+    /**
+     * @Route("/liste-vehicule", name="liste_vehicule")
+     */
+    public function listeVehiculesAction()
+    {
+        $em = $this->getDoctrine()->getRepository('AppBundle:OffreLocation');
+        $offres = $em->findAll();
+
+        return $this->render('front/liste-vehicule.html.twig', array(
+            'offres' => $offres,
+        ));
+    }
+
     public function moduleRechercheAction(Request $request, CookiesService $cookiesService){
         $em = $this->getDoctrine()->getManager();
         $minEtmaxPrix = $em->getRepository('AppBundle:OffreLocation')->findMinEtMaxPrix();
