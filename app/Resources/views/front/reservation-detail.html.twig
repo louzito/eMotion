@@ -60,7 +60,7 @@
                     </div>
 
                 {% else %}
-                    <button type="submit" class="btn btn-twitter">Voir ma facture</button>
+                    <a href="{{ asset('uploads/facture/'~app.user.nom~'_'~app.user.prenom~'_facture'~reservation.id~'.pdf') }}" target = "_blank" ><button type="submit" class="btn btn-twitter">Voir ma facture</button></a>
                 {% endif %}
             </div>
         </div>

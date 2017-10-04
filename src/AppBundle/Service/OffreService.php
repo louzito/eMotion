@@ -135,6 +135,11 @@ class OffreService
         return $reservation;
     }
 
+    public function getReservationById($id){
+
+        $reservation = $this->repositoryReservation->findOneBy(array('id' => $id));
+        return $reservation;
+    }
     public function flush($object)
     {
         $this->em->persist($object);
@@ -160,5 +165,22 @@ class OffreService
 
         $this->session->set('reservation',$length);
     }
+
+    public function paymentReservation($id,$etat)
+    {
+        $reservation = $this->repositoryReservation->findOneBy(array('id' => $id));
+
+        $reservation->setEtat($etat);
+        $this->session->set('reservationPaye', $reservation);
+
+        return $reservation;
+
+    }
+
+    public function getvehiculebyid($idvehicule){
+
+
+    }
+
 
 }
