@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Front;
 
 use AppBundle\Form\RechercheType;
 use AppBundle\Service\OffreService;
+use AppBundle\Service\PdfService;
 use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Vehicule;
@@ -58,7 +59,7 @@ class FrontController extends Controller
      * @Route("/reservation/offre/{id}", name="front_reservation")
      * @Security("has_role('ROLE_USER')")
      */
-    public function reservationAction(Request $request,$id, OffreService $offreService)
+    public function reservationAction(Request $request,$id, OffreService $offreService, PdfService $pdfService)
     {
 
         $etat = $this->getParameter('nonpayee');
@@ -67,13 +68,16 @@ class FrontController extends Controller
         if ($request->get('stripeToken') != null) {
             $etat = $this->getParameter('payee');
             $reservationPaid = $offreService->getIfPaid($etat);
-            return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId())));
+            $nomPdf = $pdfService->generate($reservationPaid->getId());
+            return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId(),
+                'nomPdf'=>$nomPdf)));
         }
 
         return $this->render('front/reservation-detail.html.twig',[
             'reservation' => $reservation['reservation'],
             'days' => $reservation['days'],
-            'offre' => $reservation['offre']
+            'offre' => $reservation['offre'],
+
         ]);
 
     }

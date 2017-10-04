@@ -1,50 +1,61 @@
 <?php
-namespace AppBundle\Controller;
 
-use AppBundle\Entity\Vehicule;
-use AppBundle\Service\OffreService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use AppBundle\Service\OffreServiice;
+namespace AppBundle\Service;
+
 use AppBundle\Entity\Reservation;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-
-class PdfController extends Controller
+class PdfService
 {
-    /**
-     * @Route("/pdf/{id}", name="genererPDF")
-     *  @Security("has_role('ROLE_USER')")
-     */
-    public function pdfAction($id, OffreService $offreService)
+    private $em;
+    private $repository;
+    private $repositoryReservation;
+    private $token;
+    private $session;
+    private $twig;
+    private $request;
+    private $offreService;
+
+    public function __construct(EntityManagerInterface $em, TokenStorageInterface $token,\Twig_Environment $twig, RequestStack $request, OffreService $offreService)
     {
+        $this->em = $em;
+        $this->twig = $twig;
+        $this->request = $request;
+        $this->session = new Session();
+        $this->token = $token->getToken()->getUser();
+        $this->repository = $em->getRepository('AppBundle:Vehicule');
+        $this->repositoryReservation = $em->getRepository('AppBundle:Reservation');
+        $this->offreService = $offreService;
+    }
+
+    public function generate($id)
+    {
+
         /*$reservation = $offreService->getReservationById($id);
         dump($reservation->getVehicule()->getMarque());die;*/
 
-        $repo = $this->getDoctrine()->getRepository("AppBundle:Vehicule");
-
-        $repoResa = $this->getDoctrine()->getRepository("AppBundle:Reservation");
 
 
 
-        $reservation = $repoResa->find($id);
+        $reservation = $this->repositoryReservation->find($id);
 
-       // dump($offreService->infoReservation($id));die;
-
-        $vehicule = $repo->find($reservation->getVehicule()->getId());
+        // dump($offreService->infoReservation($id));die;
+        $vehicule = $this->repository->find($reservation->getVehicule()->getId());
         $marque = $vehicule->getMarque();
         $immat = $vehicule->getplaqueImmatriculation();
         $modele = $vehicule->getModele();
         $couleur = $vehicule->getCouleur();
         $datedebut = $reservation->getDateDebut()->format('d/m/Y');
         $datefin = $reservation->getDateFin()->format('d/m/Y');
-        $nom = $this->getUser()->getNom();
-        $prenom = $this->getUser()->getPrenom();
-        $prixTotal = $offreService->getReservationById($id)->getPrixTotal();
-       // dump($prixTotal);die;
-        $prix = $offreService->infoReservation($id)['offre']->getprixJournalier();
-        $nbjours = $offreService->infoReservation($id)["days"];
+        $nom = $this->token->getNom();
+        $prenom = $this->token->getPrenom();
+        $prixTotal = $this->offreService->getReservationById($id)->getPrixTotal();
+        // dump($prixTotal);die;
+        $prix = $this->offreService->infoReservation($id)['offre']->getprixJournalier();
+        $nbjours = $this->offreService->infoReservation($id)["days"];
 
 
 
@@ -64,7 +75,6 @@ class PdfController extends Controller
 //        $pdf->Multicell(190, 5, $couleur, 1, 'R', false);
 //        $pdf->Multicell(190, 5, $datedebut, 1, 'R', false);
 //        $pdf->Multicell(190, 5, $datefin, 1, 'R', false);
-
         $pdf = new \FPDF();
 
         // Création de la page
@@ -160,7 +170,7 @@ class PdfController extends Controller
 
         $z = $pdf->GetY();
 
-       $pdf->Cell(30,10,"","B","0","");
+        $pdf->Cell(30,10,"","B","0","");
 
 
         $pdf->SetXY($a + 30 , $z);
@@ -337,13 +347,19 @@ class PdfController extends Controller
 
         $pdf->MultiCell(0, 4, $siret, 'T', 'R');
 
-        $nomfact = '../web/uploads/facture/'.$nom."_".$prenom."_"."facture".$id.".pdf";
+        $nomfact = $nom."_".$prenom."_"."facture".$id.'.pdf';
+
+        $pathfact = '../web/uploads/facture/';
+        $pdf->Output('F',$pathfact.$nomfact);
 
 
-        $pdf->Output('F',$nomfact);
 
 
+        return $nomfact;
 
-        return new Response($pdf->Output(), 200, array('Content-Type' => 'application/pdf'));
+
     }
+
+
+
 }
