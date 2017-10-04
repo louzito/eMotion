@@ -37,9 +37,6 @@ class PdfService
         /*$reservation = $offreService->getReservationById($id);
         dump($reservation->getVehicule()->getMarque());die;*/
 
-
-
-
         $reservation = $this->repositoryReservation->find($id);
 
         // dump($offreService->infoReservation($id));die;
@@ -57,24 +54,6 @@ class PdfService
         $prix = $this->offreService->infoReservation($id)['offre']->getprixJournalier();
         $nbjours = $this->offreService->infoReservation($id)["days"];
 
-
-
-
-
-
-//        $pdf->AddPage();
-//
-//        $pdf->SetFont('Arial','B',16);
-//
-//        $pdf->SetTextColor(0, 0, 0);
-//        //Multicell ordre : Largeur,Hauteur,Message,Bordure(booleen) + savoir que mettre en bordure , alignement du texte,fond coloré ou non
-//
-//        $pdf->Multicell(190, 10, "facture", 1, 'C', false);
-//        $pdf->Multicell(100, 5, $marque, 1, 'R', false);
-//        $pdf->Multicell(190, 5, $modele, 1, 'R', false);
-//        $pdf->Multicell(190, 5, $couleur, 1, 'R', false);
-//        $pdf->Multicell(190, 5, $datedebut, 1, 'R', false);
-//        $pdf->Multicell(190, 5, $datefin, 1, 'R', false);
         $pdf = new \FPDF();
 
         // Création de la page
@@ -82,7 +61,6 @@ class PdfService
         $pdf->AddPage();
 
         //$pdf->Image('logo2.png');
-
 
         // On rajoute une police au document
         //$pdf->AddFont();
@@ -124,7 +102,7 @@ class PdfService
 
         $pdf->MultiCell(189 , 10,"Prenom : ".$prenom, 1);
 
-        $pdf->ln(15);
+        $pdf->ln(40);
 
         // Tableau récap + info
 
@@ -245,7 +223,7 @@ class PdfService
 
         // traitement msg retard
 
-        $pdf->ln(20);
+        $pdf->ln(40);
 
         $pdf->SetFont('Arial','B', 7);
 
@@ -335,7 +313,7 @@ class PdfService
 
         $pdf->Cell(30, 10, $prixTotal." euros ", '1', '0','R');
 
-        $pdf->ln(35);
+        $pdf->ln(45);
 
         //traitement siret
 
@@ -351,8 +329,6 @@ class PdfService
 
         $pathfact = '../web/uploads/facture/';
         $pdf->Output('F',$pathfact.$nomfact);
-
-
 
 
         return $nomfact;
