@@ -120,6 +120,14 @@ class FrontController extends Controller
 
     }
 
+    /**
+     * @Route("/fiche-vehicule/{id}", name="fiche_vehicule")
+     */
+    public function ficheVehiculeAction(Request $request, $id)
+    {
+        return $this->render('front/fiche-vehicule.html.twig');
+    }
+
     public function moduleRechercheAction(Request $request, CookiesService $cookiesService){
         $em = $this->getDoctrine()->getManager();
         $minEtmaxPrix = $em->getRepository('AppBundle:OffreLocation')->findMinEtMaxPrix();
@@ -140,4 +148,22 @@ class FrontController extends Controller
         ));
     }
 
+    public function modulePreferencesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getRepository('AppBundle:OffreLocation');
+        $offres = $em->findRecommandations($request->cookies);
+
+        return $this->render('front/template-preferences.html.twig', array(
+            'offres' => $offres,
+        ));
+    }
+
+    public function moduleDerniersVehiculesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getRepository('AppBundle:OffreLocation');
+
+        return $this->render('front/template-derniers-vehicules.html.twig', array(
+            'offres' => $em->findBy(array(), array('id' => 'DESC'), 3),
+        ));
+    }
 }
