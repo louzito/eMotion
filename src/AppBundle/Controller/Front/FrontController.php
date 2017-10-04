@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ReservationType;
 use AppBundle\Entity\Reservation;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\VarDumper\Tests\Fixture\DumbFoo;
 
@@ -46,7 +47,7 @@ class FrontController extends Controller
         
         if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
-            $offreService->traitementDatePicker();
+            $offreService->envoieDateSession();
         }
 
         return $this->render('front/nos-offres.html.twig', [
@@ -120,6 +121,41 @@ class FrontController extends Controller
         $offreService->getLengthReservation(false);
 
         return $this->redirectToRoute('front_reservation_list');
+
+    }
+
+    /**
+     * @Route("/reservation/check/ajax", name="check_reservation_ajax")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function reservationAjaxAction(Request $request, OffreService $offreService)
+    {
+
+        if ($request->isXmlHttpRequest()){
+
+            $filter = [];
+            $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->get('dateDebut'));
+            $dateDebut = $dateDebut->format(DATE_ATOM);
+            $filter['dateDebut'] = $dateDebut;
+
+            $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('dateFin'));
+            $dateFin = $dateFin->format(DATE_ATOM);
+            $filter['dateFin'] = $dateFin;
+
+
+            $idVehicule = $request->get('vehicule');
+            $vehicule = $this->getDoctrine()->getRepository('AppBundle:Vehicule')->findOneBy(array('id' => $idVehicule));
+
+            $bool = $this->isReservationDisponible($filter, $vehicule);
+            if ($bool){
+                return new Response('ok',200);
+            }else{
+                return new Response('ko',200);
+            }
+
+        }
+
+        return new Response('Une erreur est survenue',400);
 
     }
 

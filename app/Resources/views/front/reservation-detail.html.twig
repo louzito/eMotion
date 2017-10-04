@@ -50,16 +50,49 @@
                                 data-zip-code="true"
                                 data-currency="eur">
                         </script>
-
-
-                        <button type="submit" class="btn btn-twitter">Finalisez votre réservation</button>
+                        <button type="submit" class="btn btn-twitter" id="btn-check">Finalisez votre réservation</button>
                     </form>
+
+                    <div style="display: none" class="panel panel-default error-msg">
+                        <div class="panel-heading"><h3>Problème</h3></div>
+                        <div class="panel-body">Ce véhicule n'est plus disponible pour les dates souhaitées</div>
+                        <a class="panel-body" href="{{ path('front_homepage') }}">Retour</a>
+                    </div>
+
                 {% else %}
                     <button type="submit" class="btn btn-twitter">Voir ma facture</button>
                 {% endif %}
             </div>
         </div>
     </div>
+    <script>
+        $(function() {
+            $('#btn-check').on('click', function (e) {
+                e.preventDefault();
+                var param = {
+                    'dateDebut' : '{{ reservation.dateDebut|date('d/m/Y') }}',
+                    'dateFin' : '{{ reservation.dateFin|date('d/m/Y') }}',
+                    'vehicule' : '{{ reservation.vehicule.id }}'
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '{{ path('check_reservation_ajax') }}',
+                    data: param,
+
+                    success: function (retour) {
+                        if(retour === 'ok'){
+                            $('.stripe-button-el').trigger('click');
+                        }else {
+                            $('#btn-check').hide();
+                            $('.error-msg').show();
+
+                            e.preventDefault();
+                        }
+                    }
+                })
+            })
+        });
+    </script>
 
     <script>
         document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
