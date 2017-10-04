@@ -49,22 +49,12 @@ class OffreService
         return $retour;
     }
 
-    public function traitementDatePicker()
+    public function envoieDateSession()
     {
         $request = $this->request->getCurrentRequest();
 
-        $dateDebut = $request->request->get('recherche')['dateDebut'];
-        $dateFin = $request->request->get('recherche')['dateFin'];
-
-        list($day, $month, $year) = explode('/', $dateDebut);
-        $dateDebut = new \DateTime();
-        $dateDebut->setDate($year, $month, $day);
-        $dateDebut->setTime(0,0,0);
-
-        list($day, $month, $year) = explode('/', $dateFin);
-        $dateFin = new \DateTime();
-        $dateFin->setDate($year, $month, $day);
-        $dateFin->setTime(0,0,0);
+        $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateDebut']);
+        $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateFin']);
 
         $this->session->set('dateDebut', $dateDebut);
         $this->session->set('dateFin', $dateFin);
