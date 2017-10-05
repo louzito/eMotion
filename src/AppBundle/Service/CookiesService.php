@@ -9,6 +9,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Form\RechercheType;
+use Symfony\Component\DependencyInjection\Tests\Compiler\C;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\Date;
@@ -34,6 +35,18 @@ class CookiesService
 
         if ($params['typeVehicule']) {
             $rep->headers->setCookie(new Cookie('typeVehicule', $params['typeVehicule']));
+        }
+
+        if ($params['prixMinJ'] && $params['prixMinJ'] > 0) {
+            $rep->headers->setCookie(new Cookie('prixMinJ', $params['prixMinJ']));
+        }
+
+        if ($params['prixMaxJ'] && $params['prixMaxJ'] > 0) {
+            $rep->headers->setCookie(new Cookie('prixMaxJ', $params['prixMaxJ']));
+        }
+
+        if ($params['idVehicule']) {
+            $rep->headers->setCookie(new Cookie('idVehicule', $params['idVehicule']));
         }
 
         return $rep;

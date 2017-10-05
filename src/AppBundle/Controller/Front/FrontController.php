@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Front;
 use AppBundle\Form\RechercheType;
 use AppBundle\Service\CookiesService;
 use AppBundle\Service\OffreService;
+use AppBundle\Service\PdfService;
 use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Vehicule;
@@ -41,17 +42,12 @@ class FrontController extends Controller
 
         if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
-            $session = new Session();
-            $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateDebut']);
-            $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateFin']);
-            $session->set('dateDebut', $dateDebut);
-            $session->set('dateFin', $dateFin);
-            $interval = $dateDebut->diff($dateFin)->d + 1;
+            $offreService->envoieDateSession();
+            $interval = $offreService->getInterval();
             foreach($offres as $offre)
             {
                 $offre->kmInclus = $interval*$offre->getKmJournalier();
             }
-            // $offreService->traitementDatePicker();
         }
         
 
@@ -66,7 +62,7 @@ class FrontController extends Controller
      * @Route("/reservation/offre/{id}", name="front_reservation")
      * @Security("has_role('ROLE_USER')")
      */
-    public function reservationAction(Request $request,$id, OffreService $offreService)
+    public function reservationAction(Request $request,$id, OffreService $offreService, PdfService $pdfService)
     {
 
         $etat = $this->getParameter('nonpayee');
@@ -75,13 +71,15 @@ class FrontController extends Controller
         if ($request->get('stripeToken') != null) {
             $etat = $this->getParameter('payee');
             $reservationPaid = $offreService->getIfPaid($etat);
+            $pdfService->generate($reservationPaid->getId());
             return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId())));
         }
 
         return $this->render('front/reservation-detail.html.twig',[
             'reservation' => $reservation['reservation'],
             'days' => $reservation['days'],
-            'offre' => $reservation['offre']
+            'offre' => $reservation['offre'],
+
         ]);
 
     }
@@ -131,6 +129,49 @@ class FrontController extends Controller
 
     }
 
+    /**
+     * @Route("/reservation/check/ajax", name="check_reservation_ajax")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function reservationAjaxAction(Request $request, OffreService $offreService)
+    {
+
+        if ($request->isXmlHttpRequest()){
+
+            $filter = [];
+            $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->get('dateDebut'));
+            $dateDebut = $dateDebut->format(DATE_ATOM);
+            $filter['dateDebut'] = $dateDebut;
+
+            $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('dateFin'));
+            $dateFin = $dateFin->format(DATE_ATOM);
+            $filter['dateFin'] = $dateFin;
+
+
+            $idVehicule = $request->get('vehicule');
+            $vehicule = $this->getDoctrine()->getRepository('AppBundle:Vehicule')->findOneBy(array('id' => $idVehicule));
+
+            $bool = $this->isReservationDisponible($filter, $vehicule);
+            if ($bool){
+                return new Response('ok',200);
+            }else{
+                return new Response('ko',200);
+            }
+
+        }
+
+        return new Response('Une erreur est survenue',400);
+
+    }
+  
+    /**
+     * @Route("/fiche-vehicule/{id}", name="fiche_vehicule")
+     */
+    public function ficheVehiculeAction(Request $request, $id)
+    {
+        return $this->render('front/fiche-vehicule.html.twig');
+    }
+
     public function moduleRechercheAction(Request $request, CookiesService $cookiesService){
         $em = $this->getDoctrine()->getManager();
         $minEtmaxPrix = $em->getRepository('AppBundle:OffreLocation')->findMinEtMaxPrix();
@@ -151,4 +192,22 @@ class FrontController extends Controller
         ));
     }
 
+    public function modulePreferencesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getRepository('AppBundle:OffreLocation');
+        $offres = $em->findRecommandations($request->cookies);
+
+        return $this->render('front/template-preferences.html.twig', array(
+            'offres' => $offres,
+        ));
+    }
+
+    public function moduleDerniersVehiculesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getRepository('AppBundle:OffreLocation');
+
+        return $this->render('front/template-derniers-vehicules.html.twig', array(
+            'offres' => $em->findBy(array(), array('id' => 'DESC'), 3),
+        ));
+    }
 }

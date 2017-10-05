@@ -1,0 +1,21 @@
+<p id="texteRecommandation"><em>Nos derniers vehicules :</p>
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/template-preferences.css') }}"/>
+{% endblock %}
+
+<div id="blocPreference" class="row">
+    {% for offre in offres %}
+        <div class="col-md-4 blocMini">
+            <img class="imageMini" src="{{ offre.vehicule.image.webPath }}"/>
+            <span class="titreMini"><a href="{{ path('fiche_vehicule', {'id': offre.vehicule.id}) }}">{{ offre.vehicule.marque ~ ' ' ~ offre.vehicule.modele }}</a></span><br>
+            <span class="prixMini">A partir de <span id="prix">{{ offre.prixJournalier }} €</span> par jours</span><br>
+            <span class="voirMini">
+                <a href="{{ path('fiche_vehicule', {'id': offre.vehicule.id}) }}">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    En savoir plus
+                </a>
+            </span>
+        </div>
+    {% endfor %}
+</div>

@@ -49,25 +49,20 @@ class OffreService
         return $retour;
     }
 
-    public function traitementDatePicker()
+    public function envoieDateSession()
     {
         $request = $this->request->getCurrentRequest();
 
-        $dateDebut = $request->request->get('recherche')['dateDebut'];
-        $dateFin = $request->request->get('recherche')['dateFin'];
-
-        list($day, $month, $year) = explode('/', $dateDebut);
-        $dateDebut = new \DateTime();
-        $dateDebut->setDate($year, $month, $day);
-        $dateDebut->setTime(0,0,0);
-
-        list($day, $month, $year) = explode('/', $dateFin);
-        $dateFin = new \DateTime();
-        $dateFin->setDate($year, $month, $day);
-        $dateFin->setTime(0,0,0);
+        $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateDebut']);
+        $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateFin']);
 
         $this->session->set('dateDebut', $dateDebut);
         $this->session->set('dateFin', $dateFin);
+    }
+
+    public function getInterval()
+    {
+        return $this->session->get('dateDebut')->diff($this->session->get('dateFin'))->d + 1;
     }
 
     public function newReservation($offreSelected,$etat, $user =null)
@@ -154,6 +149,11 @@ class OffreService
         return $reservation;
     }
 
+    public function getReservationById($id){
+
+        $reservation = $this->repositoryReservation->findOneBy(array('id' => $id));
+        return $reservation;
+    }
     public function flush($object)
     {
         $this->em->persist($object);
@@ -179,5 +179,22 @@ class OffreService
 
         $this->session->set('reservation',$length);
     }
+
+    public function paymentReservation($id,$etat)
+    {
+        $reservation = $this->repositoryReservation->findOneBy(array('id' => $id));
+
+        $reservation->setEtat($etat);
+        $this->session->set('reservationPaye', $reservation);
+
+        return $reservation;
+
+    }
+
+    public function getvehiculebyid($idvehicule){
+
+
+    }
+
 
 }

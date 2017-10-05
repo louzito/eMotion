@@ -18,4 +18,54 @@ class OffreLocationRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getQuery()->getSingleResult();
     }
+
+    public function findRecommandations($params)
+    {
+        $recommandations = array();
+
+        if (!empty($params->get('idVehicule'))) {
+            //par vehicule
+            $query = $this->createQueryBuilder('o')
+                ->select('o')
+                ->where('o.vehicule = :idVehicule')
+                ->setParameter('idVehicule', $params->get('idVehicule'))
+                ->getQuery();
+
+            if (isset($query->getResult()[0])) {
+                $recommandations[] = $query->getResult()[0];
+                $sameId = $query->getResult()[0]->getId();
+            }
+        }
+
+        if ($params->get('prixMinJ') && $params->get('prixMinJ') > 0 && $params->get('prixMaxJ') > 0) {
+            //par fourchette de prix
+            $query = $this->createQueryBuilder('ol')
+                ->select('ol')
+                ->where('ol.prixJournalier >= :prixMin AND ol.prixJournalier <= :prixMax')
+                ->setParameter('prixMin', $params->get('prixMinJ'))
+                ->setParameter('prixMax', $params->get('prixMaxJ'))
+                ->getQuery();
+
+            for ($i = 0; $i < count($query->getResult()); $i++) {
+                if (isset($query->getResult()[$i])) {
+                    $recommandations[] = $query->getResult()[$i];
+                }
+            }
+        }
+
+        //enlève le potentiel doublon
+        if ($recommandations && isset($sameId)) {
+            foreach ($recommandations as $recommandation) {
+                if ($sameId == $recommandation->getId()) {
+                    unset($recommandation);
+                }
+            }
+        }
+
+        if (!$recommandations) {
+            $recommandations = $this->findBy(array(), array('id' => 'DESC'), 3);
+        }
+
+        return $recommandations;
+    }
 }
