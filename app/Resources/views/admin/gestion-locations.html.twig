@@ -1,0 +1,78 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1>Manager - Gestion des locations</h1>
+    <table class="table">
+        <tr class="entete">
+            <td>Id résa</td>
+            <td>Vehicule</td>
+            <td>Client</td>
+            <td>Date de début</td>
+            <td>Date de fin</td>
+            <td>Prix total</td>
+            <td>État</td>
+            <td>Actions</td>
+        </tr>
+        {% for resa in reservations %}
+        <tr>
+            <td>{{ resa.id }}</td>
+            <td>{{ resa.vehicule }}</td>
+            <td>{{ resa.user.prenom }} {{ resa.user.nom }}</td>
+            <td>{{ resa.dateDebut|date('d-m-Y') }}</td>
+            <td>{{ resa.dateFin|date('d-m-Y') }}</td>
+            <td>{{ resa.prixTotal }}</td>
+            <td>{{ resa.etat }}</td>
+            <td class="actions">
+                <a href="{{ path('admin_show_location', {'id': resa.id }) }}">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </a>
+                <a href="{{ path('admin_update_location', {'id': resa.id }) }}">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div id="type-ajout-location">
+        <a href="#" title="Ajouter location par date" id="type-ajout-par-date" class="selected"><span class="glyphicon glyphicon-triangle-bottom"></span> Ajouter location par date</a>   /   <a href="#"  id="type-ajout-par-vehicule" title="Ajouter location par véhicule"><span class="glyphicon glyphicon-triangle-bottom"></span> Ajouter location par véhicule</a>
+    </div>
+    <style>
+        #admin-form-location{
+            position: relative;
+        }
+        #type-ajout-location a{
+            color: gray;
+        }
+        #type-ajout-location a.selected{
+            color: #000000;
+        }
+    </style>
+    <div id="admin-form-location">
+        {{ form|raw }}
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}<script>
+    $( function() {
+        $('#type-ajout-par-date, #type-ajout-par-vehicule').on('click', function(e){
+            e.preventDefault();
+            if($(this).hasClass("selected") == false)
+            {
+                $('#type-ajout-location a.selected').removeClass("selected");
+                $(this).addClass("selected");
+                var params = { 'type' : $(this).attr('id') };
+                $.ajax({
+                        type: "POST",
+                        url: '{{ path('admin_locations_ajax_form') }}',
+                        data: params,
+                        success: function (retour) { 
+                            $('#admin-form-location').html(retour);
+                        }
+                    });
+            }
+        });
+    } );
+</script>
+{% endblock %}
+

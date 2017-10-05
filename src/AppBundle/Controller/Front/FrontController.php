@@ -43,7 +43,13 @@ class FrontController extends Controller
         if ($request->isMethod('POST')) {
             $offres = $this->getFilter($request);
             $offreService->envoieDateSession();
+            $interval = $offreService->getInterval();
+            foreach($offres as $offre)
+            {
+                $offre->kmInclus = $interval*$offre->getKmJournalier();
+            }
         }
+        
 
         $response = $cookiesService->setCookiesRecherche($params);
 

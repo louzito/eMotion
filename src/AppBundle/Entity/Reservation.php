@@ -77,6 +77,14 @@ class Reservation
 
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="kmInclus", type="integer")
+     */
+    private $kmInclus;
+
+
+    /**
      * Get id
      *
      * @return int
@@ -277,5 +285,30 @@ class Reservation
     public function getDatePaiement()
     {
         return $this->datePaiement;
+    }
+
+
+    /**
+     * Set kmInclus
+     *
+     * @param integer $kmInclus
+     *
+     * @return Reservation
+     */
+    public function setKmInclus($kmInclus)
+    {
+        $this->kmInclus = $kmInclus;
+
+        return $this;
+    }
+
+    /**
+     * Get kmInclus
+     *
+     * @return integer
+     */
+    public function getKmInclus()
+    {
+        return $this->kmInclus;
     }
 }

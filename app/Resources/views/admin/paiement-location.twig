@@ -1,0 +1,29 @@
+{% if message is not defined %}
+    <style>
+        #recap-reservation > span{
+            display: block;
+        }
+    </style>
+    <div id="recap-reservation">
+        <h2>Récapitulatif de la location</h2>
+        <span><b>Véhicule :</b> {{ reservation.vehicule }}</span>
+        <span><b>Client :</b> {{ reservation.user.prenom }} {{ reservation.user.nom }}</span>
+        <span><b>Kilomètre inclus :</b> {{ reservation.kmInclus }}</span>
+        <span><b>Prix total :</b> {{ reservation.prixTotal }}</span>
+        <span><b>Date de début :</b> {{ reservation.dateDebut|date("d/m/y") }}</span>
+        <span><b>Date de fin :</b> {{ reservation.dateFin|date("d/m/y") }}</span>
+    </div>
+    <script
+        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+        data-key="pk_test_Ri6gb4pQk6YXytYxQxyZEpTM"
+        data-amount="{{ reservation.prixTotal*100 }}"
+        data-name="Emotion"
+        data-description="{{ reservation.vehicule.modele ~ " " ~ reservation.vehicule.marque }}"
+        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+        data-locale="auto"
+        data-zip-code="true"
+        data-currency="eur">
+    </script>
+{% else %}
+    <p>{{ message }}</p>
+{% endif %}

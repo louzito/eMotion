@@ -48,6 +48,13 @@ class OffreLocation
     private $prixJournalier;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="kmJournalier", type="integer")
+     */
+    private $kmJournalier;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="ville", type="string")
@@ -182,5 +189,29 @@ class OffreLocation
     public function getVille()
     {
         return $this->ville;
+    }
+
+    /**
+     * Set kmJournalier
+     *
+     * @param integer $kmJournalier
+     *
+     * @return OffreLocation
+     */
+    public function setKmJournalier($kmJournalier)
+    {
+        $this->kmJournalier = $kmJournalier;
+
+        return $this;
+    }
+
+    /**
+     * Get kmJournalier
+     *
+     * @return integer
+     */
+    public function getKmJournalier()
+    {
+        return $this->kmJournalier;
     }
 }

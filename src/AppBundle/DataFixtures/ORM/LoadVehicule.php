@@ -137,6 +137,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             $location->setDateDebut(new \DateTime('2017-06-01'));
             $location->setDateFin(new \DateTime('2020-01-01'));
             $location->setPrixJournalier(rand(10, 50));
+            $location->setKmJournalier(250);
             $location->setVille('Paris');
             $manager->persist($$vehicule);
             $manager->persist($location);
