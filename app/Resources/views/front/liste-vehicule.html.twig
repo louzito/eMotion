@@ -15,7 +15,7 @@
                         <span class="prix">À partir de : <b>{{ offre.prixJournalier }}€</b> par jour*</span>
                     </div>
                     <div class="col-lg-4 vehicule-resa">
-                        <a href="{{ path('front_reservation', {id : offre.id}) }}" title="Réserver maintenant" class="resa-btn">Réserver maintenant</a>
+                        <a href="{{ path('fiche_vehicule', {id : offre.id}) }}" title="En savoir plus" class="resa-btn">En savoir plus</a>
                     </div>
                 </div>
             {% endfor %}

@@ -1,1 +1,25 @@
-<p>Fiche vehicule</p>
+{% extends ':front:layout.html.twig' %}
+
+{% block body %}
+    <div class="ficheBanniere row">
+        <div class="col-lg-4"><img src="{{ offre.vehicule.image.webPath }}" alt="{{ offre.vehicule.modele ~ " " ~ offre.vehicule.marque }}"></div>
+        <div class="col-lg-8 ficheModele"><span id="ficheModele">{{ offre.vehicule.marque }} {{ offre.vehicule.modele }}</span></div>
+    </div>
+
+    <div class="ficheInfos row">
+        <span>Couleur : </span>{{ offre.vehicule.couleur }} <br>
+        <span>Nombre de kilomètres : </span>{{ offre.vehicule.nbKilometres }} km<br>
+        <span>Véhicule acheté le </span>{{ offre.vehicule.dateAchat|date('d-m-Y') }} <br><br>
+
+        <p>Ce véhicule est disponible du {{ offre.dateDebut|date('d-m-Y') }}
+            au {{ offre.dateFin|date('d-m-Y') }}. <br>
+            Au dela de ces dates, aucune réservation ne sera possible.
+        </p>
+
+        <p>Disponible à {{ offre.ville }} uniquement, au prix de {{ offre.prixJournalier }} € par jour.</p><br>
+    </div>
+
+    <div class="reservation row">
+
+    </div>
+{% endblock %}

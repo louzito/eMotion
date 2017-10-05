@@ -46,7 +46,7 @@
             </div>
         </nav>
 
-        {% if (app.request.get('_route') != 'liste_vehicule') %}
+        {% if (app.request.get('_route') != 'liste_vehicule') and (app.request.get('_route') != 'fiche_vehicule') %}
             <div class="header-image">
                 <img src="{{ asset('images/ban1.jpg') }}" alt="Bienvenue sur eMotion">
                 {% block moduleDeRecherche %}

@@ -163,7 +163,12 @@ class FrontController extends Controller
      */
     public function ficheVehiculeAction(Request $request, $id)
     {
-        return $this->render('front/fiche-vehicule.html.twig');
+        $em = $this->getDoctrine()->getRepository('AppBundle:OffreLocation');
+        $offre = $em->find($id);
+
+        return $this->render('front/fiche-vehicule.html.twig', array(
+            'offre' => $offre,
+        ));
     }
 
     /**
