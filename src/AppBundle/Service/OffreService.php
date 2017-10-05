@@ -52,12 +52,26 @@ class OffreService
     public function envoieDateSession()
     {
         $request = $this->request->getCurrentRequest();
+        switch (isset($request)) {
+            case $request->get('recherche'):
+                $request = $request->get('recherche');
+                break;
+            case $request->get('recherche_admin'):
+                $request = $request->get('recherche_admin');
+                break;
+            case $request->get('recherche_admin_vehicule'):
+                $request = $request->get('recherche_admin_vehicule');
+        }
 
-        $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateDebut']);
-        $dateFin = \DateTime::createFromFormat('d/m/Y', $request->get('recherche')['dateFin']);
+        $dateDebut = \DateTime::createFromFormat('d/m/Y', $request['dateDebut']);
+        $dateFin = \DateTime::createFromFormat('d/m/Y', $request['dateFin']);
 
         $this->session->set('dateDebut', $dateDebut);
         $this->session->set('dateFin', $dateFin);
+        return [
+            'dateDebut' => $dateDebut,
+            'dateFin' => $dateFin,
+            ];
     }
 
     public function getInterval()

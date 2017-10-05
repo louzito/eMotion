@@ -71,6 +71,7 @@ class RechercheAdminType extends AbstractType
                     'value' => 0,
                 ],
             ))
+            ->add('idReservation', HiddenType::class)
             ->add('submit', SubmitType::class, array(
                 'label' => 'Rechercher',
             ));

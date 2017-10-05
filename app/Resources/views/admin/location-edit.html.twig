@@ -1,0 +1,51 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body %}
+    <h1>Modifier réservation</h1>
+
+    <div id="type-update-location">
+        <a href="#" title="Modifier location par date" id="type-update-par-date"><span class="glyphicon glyphicon-triangle-bottom"></span> Modifier location par date</a>   /   <a href="#"  id="type-update-par-vehicule" title="Modifier location par véhicule"><span class="glyphicon glyphicon-triangle-bottom"></span> Modifier location par véhicule</a>
+    </div>
+    <style>
+        #admin-update-form-location{
+            position: relative;
+        }
+        #type-update-location a{
+            color: gray;
+        }
+        #type-update-location a.selected{
+            color: #000000;
+        }
+    </style>
+    <div id="admin-update-form-location">
+    </div>
+    <div>
+        <a href="{{ path('admin_show_locations') }}">Voir toutes les locations</a>
+        {{ form_start(delete_form) }}
+            <input type="submit" value="Delete">
+        {{ form_end(delete_form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $( function() {
+        $('#type-update-par-date, #type-update-par-vehicule').on('click', function(e){
+            e.preventDefault();
+            if($(this).hasClass("selected") == false)
+            {
+                $('#type-update-location a.selected').removeClass("selected");
+                $(this).addClass("selected");
+                var params = { 'type' : $(this).attr('id') };
+                $.ajax({
+                        type: "POST",
+                        url: '{{ path('admin_update_location_ajax_form', {'id':reservation.id}) }}',
+                        data: params,
+                        success: function (retour) { 
+                            $('#admin-update-form-location').html(retour);
+                        }
+                    });
+            }
+        });
+    } );
+</script>
+{% endblock %}

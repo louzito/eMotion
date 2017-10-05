@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Form\RechercheAdminType;
 use AppBundle\Form\RechercheAdminVehiculeType;
+use AppBundle\Form\ReservationType;
 use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\Service\OffreService;
 use Symfony\Component\HttpFoundation\Session\Session;
-
 
 /**
  * @Route("/manager")
@@ -68,15 +68,9 @@ class AdminController extends Controller
     /**
      * @Route("/location/{id}/update", name="admin_update_location")
      */
-    public function updateMembreAction(Request $request, Reservation $reservation)
+    public function updateLocationAction(Request $request, Reservation $reservation)
     {
-        $em = $this->getDoctrine()->getManager();
-        $reservationRepo = $em->getRepository('AppBundle:Reservation');
-        $reservations = $reservationRepo->findAll();
-
-        $form = $this->createForm(ReservationType::class, $reservation);
         $deleteForm = $this->createDeleteForm($reservation);
-        
         if($request->isMethod('POST')) {
             $form->handleRequest($request);
             $em->persist($reservation);
@@ -84,25 +78,72 @@ class AdminController extends Controller
             return $this->redirectToRoute('admin_show_locations');
         }
 
-
-        return $this->render('admin/gestion-locations.html.twig', array(
-            'reservations' => $reservations,
-            'form' => $form->createView(),
+        return $this->render('admin/location-edit.html.twig', array(
             'delete_form' => $deleteForm->createView(),
+            'reservation' => $reservation,
         ));
+    }
+
+    /**
+     * @Route("locations/ajax/update-form/{id}", name="admin_update_location_ajax_form")
+     */
+    public function getUpdateFormLocationAction(Request $request, Reservation $reservation)
+    {
+        if($request->isMethod('POST') && $request->request->get('type') == 'type-update-par-vehicule')
+        {
+            $idOffre = ($request->request->get('idOffre')) ? $request->request->get('idOffre') : 0;
+            $reservations = [];
+            $listeDate = [];
+            $em = $this->getDoctrine()->getManager();
+            $offres = $em->getRepository('AppBundle:OffreLocation')->findAll();
+            $form = $this->createForm(RechercheAdminVehiculeType::class);
+            if($idOffre != 0)
+            {
+                $offre = $em->getRepository('AppBundle:OffreLocation')->find($idOffre);
+                $idVehicule = $offre->getVehicule()->getId();
+                $form->get('idVehicule')->setData($idVehicule);
+                $form->get('idOffreLocation')->setData($idOffre);
+                $reservations = $this->getReservationsParVehicule($idVehicule);
+                foreach($reservations as $r)
+                {
+                    $interval = $r->getDateDebut()->diff($r->getDateFin())->d + 1;
+                    $dateD = $r->getDateDebut();
+                    $listeDate[] = $r->getDateDebut()->format('d-m-Y');
+                    for($i = 1; $i < $interval; $i++)
+                    {
+                        $dateD->modify("+1 day");
+                        $listeDate[] = $dateD->format('d-m-Y');
+                    }
+                }
+            }
+
+            return $this->render('admin/form-location-vehicule.html.twig', [
+                    'offres' => $offres,
+                    'idOffre' => $idOffre,
+                    'form' => $form->createView(),
+                    'listeDateResa' => json_encode($listeDate),
+                ]);
+        }
+        else{
+            $form = $this->createForm(RechercheAdminType::class);
+            $form->get('user')->setData($reservation->getUser());
+            $form->get('idReservation')->setData($reservation->getId());
+            return $this->render('admin/form-location-update.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+        }
     }
 
     /**
      * @Route("/locations/ajax", name="admin_locations_ajax")
      */
-    public function getLocationsAjax(Request $request)
+    public function getLocationsAjax(Request $request, OffreService $offreService)
     {
         $offres = null;
         if ($request->isMethod('POST')) {
             $offres = $this->getFilterAdmin($request);
-            $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->request->get('recherche_admin')['dateDebut']);
-            $dateFin = \DateTime::createFromFormat('d/m/Y', $request->request->get('recherche_admin')['dateFin']);
-            $interval = $dateDebut->diff($dateFin)->d + 1;
+            $offreService->envoieDateSession();
+            $interval = $offreService->getInterval();
             foreach($offres as $offre)
             {
                 $offre->kmInclus = $interval*$offre->getKmJournalier();
@@ -120,22 +161,28 @@ class AdminController extends Controller
      */
     public function getLocationsAjaxPaiement(Request $request, OffreService $offreService)
     {
-        $resaForm = ($request->request->get('recherche_admin')) ? $request->request->get('recherche_admin') : null;
+        switch (isset($request)) {
+            case $request->request->get('recherche_admin'):
+                $resaForm = $request->request->get('recherche_admin');
+                break;
+            case $request->request->get('recherche_admin_vehicule'):
+                $resaForm = $request->request->get('recherche_admin_vehicule');
+                break;
+            default :
+                $resaForm = null;
+                break;
+        }
         if(!is_null($resaForm) && $request->isMethod('POST'))
         {
             $em = $this->getDoctrine()->getManager();
-            $vehicule = $em->getRepository('AppBundle:OffreLocation')->find($resaForm['idVehicule']);
+            $vehicule = $em->getRepository('AppBundle:Vehicule')->find($resaForm['idVehicule']);
             $user = $em->getRepository('AppBundle:User')->findOneBy(['id' => $resaForm['user']]);
-            $dateDebut = \DateTime::createFromFormat('d/m/Y', $resaForm['dateDebut']);
-            $dateFin = \DateTime::createFromFormat('d/m/Y', $resaForm['dateFin']);
-            $session = new Session();
-            $session->set('dateDebut', $dateDebut);
-            $session->set('dateFin', $dateFin);
+            $tabDate = $offreService->envoieDateSession();
             $etat = $this->getParameter('nonpayee');
             $reservation = $offreService->newReservation($resaForm['idOffreLocation'], $etat, $user);
             $filter = [
-                'dateDebut' => $dateDebut->format(DATE_ATOM),
-                'dateFin' => $dateFin->format(DATE_ATOM),
+                'dateDebut' => $tabDate['dateDebut']->format(DATE_ATOM),
+                'dateFin' => $tabDate['dateFin']->format(DATE_ATOM),
             ];
             if($this->isReservationDisponible($filter, $vehicule))
             {
@@ -144,7 +191,7 @@ class AdminController extends Controller
                 ]);
             }
             else{
-                $message = "L'offre n'est plus disponible";
+                $message = "Une réservation a déjà été faite entre ces deux dates";
                 return $this->render('admin/paiement-location.twig', [
                     'message' => $message,
                 ]);
@@ -167,14 +214,18 @@ class AdminController extends Controller
     {
         if($request->isMethod('POST') && $request->request->get('type') == 'type-ajout-par-vehicule')
         {
-            $idVehicule = ($request->request->get('idVehicule')) ? $request->request->get('idVehicule') : 0;
+            $idOffre = ($request->request->get('idOffre')) ? $request->request->get('idOffre') : 0;
             $reservations = [];
             $listeDate = [];
             $em = $this->getDoctrine()->getManager();
             $offres = $em->getRepository('AppBundle:OffreLocation')->findAll();
             $form = $this->createForm(RechercheAdminVehiculeType::class);
-            if($idVehicule != 0)
+            if($idOffre != 0)
             {
+                $offre = $em->getRepository('AppBundle:OffreLocation')->find($idOffre);
+                $idVehicule = $offre->getVehicule()->getId();
+                $form->get('idVehicule')->setData($idVehicule);
+                $form->get('idOffreLocation')->setData($idOffre);
                 $reservations = $this->getReservationsParVehicule($idVehicule);
                 foreach($reservations as $r)
                 {
@@ -191,9 +242,8 @@ class AdminController extends Controller
 
             return $this->render('admin/form-location-vehicule.html.twig', [
                     'offres' => $offres,
-                    'idVehicule' => $idVehicule,
+                    'idOffre' => $idOffre,
                     'form' => $form->createView(),
-                    'reservations' => $reservations,
                     'listeDateResa' => json_encode($listeDate),
                 ]);
         }
@@ -203,6 +253,42 @@ class AdminController extends Controller
                     'form' => $form->createView(),
                 ]);
         }
+    }
+    
+    /**
+     * Deletes a reservation entity.
+     *
+     * @Route("/location/{id}/delete", name="admin_location_delete")
+     * @Method("DELETE")
+     */
+    public function deleteAction(Request $request, Reservation $reservation)
+    {
+        $form = $this->createDeleteForm($reservation);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($reservation);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('admin_offrelocation_index');
+    }
+
+    /**
+     * Creates a form to delete a reservation entity.
+     *
+     * @param Reservation $reservation
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm(Reservation $reservation)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('admin_location_delete', array('id' => $reservation->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
     }
 
 }
