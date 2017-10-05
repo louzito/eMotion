@@ -70,14 +70,14 @@ class OffreService
         $this->session->set('dateFin', $dateFin);
     }
 
-    public function newReservation($offreSelected,$etat)
+    public function newReservation($offreSelected,$etat, $user =null)
     {
         $offre = $this->repository->findOneBy(array('id' => $offreSelected));
-
         $dateDebut = $this->session->get('dateDebut');
         $dateFin = $this->session->get('dateFin');
         $interval = $dateDebut->diff($dateFin);
         $prixTotal = $interval->days * $offre->getPrixJournalier();
+        $kmInclus = $interval->days * $offre->getKmJournalier();
 
         $now = new \DateTime('now');
         $reservation = new Reservation();
@@ -85,9 +85,17 @@ class OffreService
         $reservation->setDateFin($dateFin);
         $reservation->setVehicule($offre->getVehicule());
         $reservation->setPrixTotal($prixTotal);
+        $reservation->setKmInclus($kmInclus);
         $reservation->setEtat($etat);
         $reservation->setDateReservation($now);
-        $reservation->setUser($this->token);
+        if(is_null($user))
+        {
+            $reservation->setUser($this->token);
+        }
+        else{
+            $reservation->setUser($user);
+        }
+        
 
         $this->session->set('reservationEnCours',$reservation);
 
@@ -109,9 +117,10 @@ class OffreService
         $now = new \DateTime('now');
 
         $reservation->setEtat($etat);
-
         $reservation->setDatePaiement($now);
-
+        // bug a resoudre l'entity manager ne connait pas les vehicules et utilisateur et veut en creer des nouveaux
+        $reservation->setVehicule($this->em->getRepository('AppBundle:Vehicule')->find($reservation->getVehicule()->getId()));
+        $reservation->setUser($this->em->getRepository('AppBundle:User')->find($reservation->getUser()->getId()));
         $this->flush($reservation);
 
         $this->getLengthReservation();

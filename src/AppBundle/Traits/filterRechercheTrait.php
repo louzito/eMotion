@@ -128,4 +128,14 @@ trait filterRechercheTrait
         }
         return empty($finder->find($boolQuery));
     }
+
+    public function getReservationsParVehicule($idVehicule)
+    {
+        $finder = $this->container->get('fos_elastica.finder.app.reservation');
+
+        $boolQuery = new \Elastica\Query\BoolQuery();
+        $boolQuery->addMust(new \Elastica\Query\Match('vehicule.id', $idVehicule));
+
+        return $finder->find($boolQuery);
+    }
 }

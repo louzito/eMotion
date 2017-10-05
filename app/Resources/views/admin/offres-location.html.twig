@@ -1,3 +1,8 @@
+<style>
+    .stripe-button-el{
+        display: none;
+    }
+</style>
 {% if offres is not null %}
     {% for offre in offres %}
         <div class="row vehicule">
@@ -9,7 +14,9 @@
                 <span class="prix">  Prix total :<b>{{ offre.prixTotal }}€</b></span>
             </div>
             <div class="col-lg-2 vehicule-resa">
-                <input type="submit" data-offre-id="{{ offre.id }}" class="admin-btn-resa-offre" value="Réserver pour le client">
+                <div class="reservation-paiement">
+                    <input type="submit" data-offre-id="{{ offre.id }}"  data-vehicule-id="{{ offre.vehicule.id }}" class="admin-btn-resa-offre" value="Réserver pour le client">
+                </div>
             </div>
         </div>
     {% endfor %}
@@ -17,8 +24,18 @@
 <script>
     $( function() {
         $('.admin-btn-resa-offre').on('click', function(e){
+            e.preventDefault();
             $('#recherche_admin_idOffreLocation').val($(this).data('offre-id'));
-            $('#admin-location-form').submit();
+            $('#recherche_admin_idVehicule').val($(this).data('vehicule-id'));
+            var params = $('#admin-location-form').serialize();
+            $.ajax({
+                    type: "POST",
+                    url: '{{ path('admin_locations_ajax_paiement') }}',
+                    data: params,
+                    success: function (retour) { 
+                        $('#liste-offres').html(retour);
+                    }
+                });
         });
     } );
 </script>

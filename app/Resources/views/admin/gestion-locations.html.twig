@@ -34,71 +34,44 @@
         </tr>
         {% endfor %}
     </table>
-    <a href="#" title="Ajouter location par date">Ajouter location par date</a> / <a href="#" title="Ajouter location par véhicule">Ajouter location par véhicule</a>
+    <div id="type-ajout-location">
+        <a href="#" title="Ajouter location par date" id="type-ajout-par-date" class="selected"><span class="glyphicon glyphicon-triangle-bottom"></span> Ajouter location par date</a>   /   <a href="#"  id="type-ajout-par-vehicule" title="Ajouter location par véhicule"><span class="glyphicon glyphicon-triangle-bottom"></span> Ajouter location par véhicule</a>
+    </div>
     <style>
         #admin-form-location{
             position: relative;
         }
+        #type-ajout-location a{
+            color: gray;
+        }
+        #type-ajout-location a.selected{
+            color: #000000;
+        }
     </style>
     <div id="admin-form-location">
-        <div class="row">
-        {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
-         <input type="hidden" name="" class="daterangeSelect">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            {{ form_errors(form) }}
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            {{ form_row(form.user) }}
-            {{ form_row(form.dateDebut) }}
-            {{ form_row(form.dateFin) }}
-        </div>
-        {{ form_rest(form) }}
-        {{ form_end(form) }}
-        <div id="liste-offres">
-        </div>
+        {{ form|raw }}
     </div>
 </div>
 {% endblock %}
-{% block javascripts %}
-<script>
+{% block javascripts %}<script>
     $( function() {
-
-        var now = new Date();
-        $('.daterangeSelect').daterangepicker({
-            "autoApply": true,
-            "cancelClass": "hide",
-            "opens": "center",
-            "minDate": now,
-            "locale": {
-                "format": "YYYY-MM-DD"
-            },
-            "parentEl": ".form-horizontal"
-        });
-        $('.daterangepicker').addClass('hide');
-
-        $('#recherche_admin_dateDebut, #recherche_admin_dateFin').click(function() {
-            $('.daterangepicker').removeClass('hide');
-            $('.daterangeSelect').trigger('click');
-        });
-
-        $('.daterangeSelect').on('apply.daterangepicker', function(event, picker) {
-            $('#recherche_admin_dateDebut').val(picker.startDate.format('DD/MM/YYYY'));
-            $('#recherche_admin_dateFin').val(picker.endDate.format('DD/MM/YYYY'));
-        });
-        $('#recherche_admin_submit').on('click', function(e){
+        $('#type-ajout-par-date, #type-ajout-par-vehicule').on('click', function(e){
             e.preventDefault();
-            $('#recherche_admin_idVehicule').val(0);
-            var params = $('#admin-location-form').serialize();
-            $.ajax({
-                    type: "POST",
-                    url: '{{ path('admin_locations_ajax') }}',
-                    data: params,
-                    success: function (retour) { 
-                        $('#liste-offres').html(retour);
-                    }
-                });
+            if($(this).hasClass("selected") == false)
+            {
+                $('#type-ajout-location a.selected').removeClass("selected");
+                $(this).addClass("selected");
+                var params = { 'type' : $(this).attr('id') };
+                $.ajax({
+                        type: "POST",
+                        url: '{{ path('admin_locations_ajax_form') }}',
+                        data: params,
+                        success: function (retour) { 
+                            $('#admin-form-location').html(retour);
+                        }
+                    });
+            }
         });
-
     } );
 </script>
 {% endblock %}
