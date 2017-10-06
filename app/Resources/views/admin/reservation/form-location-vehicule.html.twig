@@ -1,31 +1,32 @@
 {% if offres is defined %}
     <div class="row">
-        <select id="selectIdVehicule" name="idVehicule">
+        <select id="selectIdOffre" name="selectIdOffre">
             <option id="0">Sélectionnez un véhicule</option>
             {% for o in offres %}
-            <option value="{{ o.vehicule.id }}" {% if idVehicule == o.vehicule.id %}selected{% endif %}>{{ o.vehicule.marque }} {{ o.vehicule.modele }}</option>
+            <option value="{{ o.id }}" {% if idOffre == o.id %}selected{% endif %}>{{ o.vehicule.marque }} {{ o.vehicule.modele }}</option>
             {% endfor %}
-            {% if idVehicule != 0 %}
-            {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
-            <input type="hidden" name="" class="daterangeSelect">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                {{ form_errors(form) }}
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                {{ form_row(form.user) }}
-                {{ form_row(form.dateDebut) }}
-                {{ form_row(form.dateFin) }}
-            </div>
-            {{ form_rest(form) }}
-            {{ form_end(form) }}
-            {% endif %}
         </select>
+        {% if idOffre != 0 %}
+        {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
+        <input type="hidden" name="" class="daterangeSelect">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            {{ form_errors(form) }}
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            {{ form_row(form.user) }}
+            {{ form_row(form.dateDebut) }}
+            {{ form_row(form.dateFin) }}
+        </div>
+        {{ form_rest(form) }}
+        <div id="liste-offres"></div>
+        {{ form_end(form) }}
+        {% endif %}
         <script>
             $( function() {
-                $('#selectIdVehicule').on('change', function (){
+                $('#selectIdOffre').on('change', function (){
                     var params = { 
                         'type' : 'type-ajout-par-vehicule',
-                        'idVehicule' : $(this).val(),
+                        'idOffre' : $(this).val(),
                         };
                     $.ajax({
                             type: "POST",
@@ -36,8 +37,6 @@
                             }
                         });
                 });
-                
-
                 var now = new Date();
                 var listeDateResa = {{ listeDateResa|raw }};
                 $('.daterangeSelect').daterangepicker({
@@ -71,6 +70,19 @@
                 $('.daterangeSelect').on('apply.daterangepicker', function(event, picker) {
                     $('#recherche_admin_vehicule_dateDebut').val(picker.startDate.format('DD/MM/YYYY'));
                     $('#recherche_admin_vehicule_dateFin').val(picker.endDate.format('DD/MM/YYYY'));
+                });
+
+                $('#recherche_admin_vehicule_submit').on('click', function(e){
+                    e.preventDefault();
+                    var params = $('#admin-location-form').serialize();
+                    $.ajax({
+                            type: "POST",
+                            url: '{{ path('admin_locations_ajax_paiement') }}',
+                            data: params,
+                            success: function (retour) { 
+                                $('#liste-offres').html(retour);
+                            }
+                        });
                 });
 
             } );

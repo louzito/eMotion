@@ -1,0 +1,58 @@
+<div class="row">
+    {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
+    <input type="hidden" name="" class="daterangeSelect">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        {{ form_errors(form) }}
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        {{ form_row(form.user) }}
+        {{ form_row(form.dateDebut) }}
+        {{ form_row(form.dateFin) }}
+    </div>
+    {{ form_rest(form) }}
+    <div id="liste-offres"></div>
+    {{ form_end(form) }}
+</div>
+{% block javascripts %}
+<script>
+    $( function() {
+
+        var now = new Date();
+        $('.daterangeSelect').daterangepicker({
+            "autoApply": true,
+            "cancelClass": "hide",
+            "opens": "center",
+            "minDate": now,
+            "locale": {
+                "format": "YYYY-MM-DD"
+            },
+            "parentEl": ".form-horizontal"
+        });
+        $('.daterangepicker').addClass('hide');
+
+        $('#recherche_admin_dateDebut, #recherche_admin_dateFin').click(function() {
+            $('.daterangepicker').removeClass('hide');
+            $('.daterangeSelect').trigger('click');
+        });
+
+        $('.daterangeSelect').on('apply.daterangepicker', function(event, picker) {
+            $('#recherche_admin_dateDebut').val(picker.startDate.format('DD/MM/YYYY'));
+            $('#recherche_admin_dateFin').val(picker.endDate.format('DD/MM/YYYY'));
+        });
+        $('#recherche_admin_submit').on('click', function(e){
+            e.preventDefault();
+            $('#recherche_admin_idVehicule').val(0);
+            var params = $('#admin-location-form').serialize();
+            $.ajax({
+                    type: "POST",
+                    url: '{{ path('admin_locations_update_ajax') }}',
+                    data: params,
+                    success: function (retour) { 
+                        $('#liste-offres').html(retour);
+                    }
+                });
+        });
+
+    } );
+</script>
+{% endblock %}

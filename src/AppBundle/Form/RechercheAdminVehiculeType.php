@@ -39,16 +39,9 @@ class RechercheAdminVehiculeType extends AbstractType
                     'placeholder' => 'Date de Fin',
                     ],
             ))
-            ->add('idVehicule', HiddenType::class, array(
-                'attr' => [
-                    'value' => 0,
-                ],
-            ))
-            ->add('idOffreLocation', HiddenType::class, array(
-                'attr' => [
-                    'value' => 0,
-                ],
-            ))
+            ->add('idVehicule', HiddenType::class)
+            ->add('idOffreLocation', HiddenType::class)
+            ->add('idReservation', HiddenType::class)
             ->add('submit', SubmitType::class, array(
                 'label' => 'Valider réservation',
             ));
