@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class OffreService
 {
@@ -17,16 +18,18 @@ class OffreService
     private $session;
     private $twig;
     private $request;
+    private $container;
 
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $token,\Twig_Environment $twig, RequestStack $request)
+    public function __construct(EntityManagerInterface $em, TokenStorageInterface $token,\Twig_Environment $twig, RequestStack $request,ContainerInterface $container)
     {
         $this->em = $em;
         $this->twig = $twig;
         $this->request = $request;
         $this->session = new Session();
-        $this->token = $token->getToken()->getUser();
+        $this->token = (!is_null($token->getToken())) ? $token->getToken()->getUser() : null;
         $this->repository = $em->getRepository('AppBundle:OffreLocation');
         $this->repositoryReservation = $em->getRepository('AppBundle:Reservation');
+        $this->container = $container;
     }
 
 
@@ -62,9 +65,10 @@ class OffreService
             case $request->get('recherche_admin_vehicule'):
                 $request = $request->get('recherche_admin_vehicule');
         }
-
         $dateDebut = \DateTime::createFromFormat('d/m/Y', $request['dateDebut']);
         $dateFin = \DateTime::createFromFormat('d/m/Y', $request['dateFin']);
+        $dateDebut = new \DateTime($dateDebut->format("Y-m-d")." 00:00:00");
+        $dateFin = new \DateTime($dateFin->format("Y-m-d")." 23:59:59");
 
         $this->session->set('dateDebut', $dateDebut);
         $this->session->set('dateFin', $dateFin);
@@ -221,5 +225,23 @@ class OffreService
 
     }
 
+    public function setEtatEnCoursReservation()
+    {
+        $reservations = $this->repositoryReservation->findReservationEnCours();
+        foreach($reservations as $resa)
+        {
+            $resa->setEtat($this->container->getParameter('enCours'));
+        }
+        $this->em->flush();
+    }
 
+    public function setEtatEnRetardReservation()
+    {
+        $reservations = $this->repositoryReservation->findReservationEnRetard();
+        foreach($reservations as $resa)
+        {
+            $resa->setEtat($this->container->getParameter('enretard'));
+        }
+        $this->em->flush();
+    }
 }

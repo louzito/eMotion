@@ -7,8 +7,11 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
-    nonpayee: 0
-    payee: 1
+    nonpayee: 'Non payée'
+    payee: 'Payée'
+    encours: 'En cours'
+    enretard: 'En retard'
+    terminee: 'Terminée'
 
 framework:
     #esi: ~

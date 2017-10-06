@@ -3,6 +3,12 @@
 {% block body %}
 <div class="container">
     <h1>Manager - Gestion des locations</h1>
+    <label for="trier-reservations">Trier les réservations:</label>
+    <select name="trier-reservation" id="trier-reservation">
+        <option value="toute">Afficher tout</option>
+        <option value="enretard" {% if typeTrie == 'enretard' %}selected{% endif %}>En retard</option>
+        <option value="encours" {% if typeTrie == 'encours' %}selected{% endif %}>En cours</option>
+    </select>
     <table class="table">
         <tr class="entete">
             <td>Id résa</td>
@@ -72,6 +78,9 @@
                         }
                     });
             }
+        });
+        $('#trier-reservation').on('change', function(e){
+            window.location.href = '{{ path('admin_show_locations') }}?type-trie='+$(this).val()+'';
         });
     } );
 </script>

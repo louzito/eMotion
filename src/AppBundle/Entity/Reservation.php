@@ -57,7 +57,7 @@ class Reservation
     /**
      * @var string
      *
-     * @ORM\Column(name="etat", type="string", length=1)
+     * @ORM\Column(name="etat", type="string", length=50)
      */
     private $etat;
 

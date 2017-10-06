@@ -31,20 +31,24 @@ class ReservationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $reservationRepo = $em->getRepository('AppBundle:Reservation');
-        $reservations = $reservationRepo->findAll();
+        $typeTrie = ($request->query->get('type-trie')) ? $request->query->get('type-trie') : null;
+        if(!is_null($typeTrie) && $typeTrie != "toute"){
+            $reservations = $reservationRepo->findBy(array('etat' => $this->getParameter($typeTrie)));
+        }else{
+            $reservations = $reservationRepo->findAll();
+        }
+        
         $form =  $this->forward('AppBundle:Admin/Reservation:getFormLocation')->getContent();
 
         if($request->isMethod('POST')) {
             if ($request->get('stripeToken') != null) {
-                                dump($offreService->getResa());
-                die;
-
                 $etat = $this->getParameter('payee');
                 $reservationPaid = $offreService->getIfPaid($etat);
                 return $this->redirectToRoute('admin_show_locations');
             }
         }
         return $this->render('admin/reservation/gestion-locations.html.twig', array(
+            'typeTrie' => $typeTrie,
             'reservations' => $reservations,
             'form' => $form,
         ));
