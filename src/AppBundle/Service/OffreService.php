@@ -61,6 +61,8 @@ class OffreService
                 break;
             case $request->get('recherche_admin_vehicule'):
                 $request = $request->get('recherche_admin_vehicule');
+            case $request->get('reservation_par_voiture'):
+                $request = $request->get('reservation_par_voiture');
         }
 
         $dateDebut = \DateTime::createFromFormat('d/m/Y', $request['dateDebut']);

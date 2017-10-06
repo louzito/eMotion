@@ -169,7 +169,7 @@ class FrontController extends Controller
     /**
      * @Route("/fiche-vehicule/{id}", name="fiche_vehicule")
      */
-    public function ficheVehiculeAction(Request $request, OffreLocation $offre)
+    public function ficheVehiculeAction(Request $request, OffreLocation $offre, OffreService $offreService)
     {
         $listeDate = [];
         $form = $this->createForm(ReservationParVoitureType::class);
@@ -187,6 +187,14 @@ class FrontController extends Controller
                     $listeDate[] = $dateD->format('d-m-Y');
                 }
             }
+        }
+
+        if ($request->isMethod('POST')) {
+            $offreService->envoieDateSession();
+
+            return $this->redirectToRoute('front_reservation', array(
+                'id' => $offre->getId()
+            ));
         }
 
         return $this->render('front/fiche-vehicule.html.twig', array(

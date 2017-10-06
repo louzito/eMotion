@@ -14,9 +14,9 @@
     margin-right: 50px;
     margin-bottom: 50px;
     padding: 0;
-    -webkit-box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);
-    -moz-box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);
-    box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);
+    /*-webkit-box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);*/
+    /*-moz-box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);*/
+    /*box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);*/
 }
 
 .blocMini img{

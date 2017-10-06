@@ -1,6 +1,10 @@
 {% extends ':front:layout.html.twig' %}
 
 {%  block body %}
+    <br>
+    <div>
+        <p id="labelListeVehicule">Nos véhicules :</p>
+    </div>
     <div class="resultat-listing">
         {% if offres is not null %}
             {% for offre in offres %}

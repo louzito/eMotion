@@ -49,6 +49,14 @@ h2 {font-size: 1.7em;}
     width: 300px;
 }
 
+#labelListeVehicule {
+    text-align: center;
+    font-size: 4em;
+    color: darkred;
+    font-style: italic;
+    text-decoration: underline darkred;
+}
+
 .ficheBanniere .ficheModele {
     font-size: 6em;
     text-align: center;
@@ -81,6 +89,7 @@ h2 {font-size: 1.7em;}
 
 #daterangepicker-list-vehicule {
     position:relative;
+    margin-bottom: 375px;
 }
 
 #daterangepicker-list-vehicule .calendar.right {
@@ -141,4 +150,12 @@ h2 {font-size: 1.7em;}
 
 .datePickerContainer {
     margin-top: 50px;
+}
+
+
+/* FOOTER */
+#footer {
+    height: 120px;
+    background-color: darkred;
+
 }
