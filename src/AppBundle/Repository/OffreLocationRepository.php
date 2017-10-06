@@ -44,6 +44,7 @@ class OffreLocationRepository extends \Doctrine\ORM\EntityRepository
                 ->where('ol.prixJournalier >= :prixMin AND ol.prixJournalier <= :prixMax')
                 ->setParameter('prixMin', $params->get('prixMinJ'))
                 ->setParameter('prixMax', $params->get('prixMaxJ'))
+                ->setMaxResults(2)
                 ->getQuery();
 
             for ($i = 0; $i < count($query->getResult()); $i++) {
@@ -55,15 +56,15 @@ class OffreLocationRepository extends \Doctrine\ORM\EntityRepository
 
         //enlève le potentiel doublon
         if ($recommandations && isset($sameId)) {
-            foreach ($recommandations as $recommandation) {
-                if ($sameId == $recommandation->getId()) {
-                    unset($recommandation);
+            for ($i=0;$i<count($recommandations);$i++) {
+                if ($sameId == $recommandations[$i]->getId()) {
+                    unset($recommandations[$i]);
                 }
             }
         }
 
         if (!$recommandations) {
-            $recommandations = $this->findBy(array(), array('id' => 'DESC'), 3);
+            $recommandations = $this->findBy(array(), array('id' => 'ASC'), 3);
         }
 
         return $recommandations;

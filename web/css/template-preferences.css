@@ -10,11 +10,13 @@
 .blocMini {
     width: 240px;
     height: 200px;
-    border-radius: 7px;
     border: 0.5px solid grey;
     margin-right: 50px;
     margin-bottom: 50px;
     padding: 0;
+    /*-webkit-box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);*/
+    /*-moz-box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);*/
+    /*box-shadow: 6px 6px 10px 0px rgba(82,6,6,1);*/
 }
 
 .blocMini img{

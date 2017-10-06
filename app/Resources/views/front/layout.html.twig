@@ -34,7 +34,7 @@
                     <a class="navbar-brand" href="{{ path('front_homepage') }}">Emotion</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ path('front_offres') }}">Nos offres</a></li>
+                    <li><a href="{{ path('liste_vehicule') }}">Nos véhicules</a></li>
                     {% if app.user %}
                     <li><a href="{{ path('front_reservation_list') }}">Mes réservations {#<span class="badge">{{ ReservationLength }}</span>#}</a></li>
                     <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
@@ -44,6 +44,7 @@
                 </ul>
             </div>
         </nav>
+
         <div class="header-image">
             <img src="{{ asset('images/ban1.jpg') }}" alt="Bienvenue sur eMotion">
             {% block moduleDeRecherche %}
@@ -55,6 +56,9 @@
         {% block body %}{% endblock %}
     </div>
 
+    <footer id="footer">
+        <p></p>
+    </footer>
 {% block javascripts %}{% endblock %}
 </body>
 </html>
