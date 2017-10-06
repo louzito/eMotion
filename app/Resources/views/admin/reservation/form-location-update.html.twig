@@ -45,7 +45,7 @@
             var params = $('#admin-location-form').serialize();
             $.ajax({
                     type: "POST",
-                    url: '{{ path('admin_locations_ajax') }}',
+                    url: '{{ path('admin_locations_update_ajax') }}',
                     data: params,
                     success: function (retour) { 
                         $('#liste-offres').html(retour);

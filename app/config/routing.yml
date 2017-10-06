@@ -11,6 +11,10 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
 
+app_reservation:
+    resource: "@AppBundle/Controller/Admin/ReservationController.php"
+    type:     annotation
+
 app_offre_location:
     resource: "@AppBundle/Controller/Admin/OffreLocationController.php"
     type:     annotation

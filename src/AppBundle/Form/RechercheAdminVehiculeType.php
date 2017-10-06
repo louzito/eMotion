@@ -41,6 +41,7 @@ class RechercheAdminVehiculeType extends AbstractType
             ))
             ->add('idVehicule', HiddenType::class)
             ->add('idOffreLocation', HiddenType::class)
+            ->add('idReservation', HiddenType::class)
             ->add('submit', SubmitType::class, array(
                 'label' => 'Valider réservation',
             ));

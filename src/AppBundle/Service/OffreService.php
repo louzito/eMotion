@@ -68,6 +68,7 @@ class OffreService
 
         $this->session->set('dateDebut', $dateDebut);
         $this->session->set('dateFin', $dateFin);
+
         return [
             'dateDebut' => $dateDebut,
             'dateFin' => $dateFin,
@@ -76,20 +77,25 @@ class OffreService
 
     public function getInterval()
     {
-        return $this->session->get('dateDebut')->diff($this->session->get('dateFin'))->d + 1;
+        return $this->session->get('dateDebut')->diff($this->session->get('dateFin'))->days+1;
     }
 
-    public function newReservation($offreSelected,$etat, $user =null)
+    public function newReservation($offreSelected,$etat, $user =null, $reservationId = 0)
     {
         $offre = $this->repository->findOneBy(array('id' => $offreSelected));
         $dateDebut = $this->session->get('dateDebut');
         $dateFin = $this->session->get('dateFin');
-        $interval = $dateDebut->diff($dateFin);
-        $prixTotal = $interval->days * $offre->getPrixJournalier();
-        $kmInclus = $interval->days * $offre->getKmJournalier();
+        $interval = $this->getInterval();
+        $prixTotal = $interval * $offre->getPrixJournalier();
+        $kmInclus = $interval * $offre->getKmJournalier();
 
         $now = new \DateTime('now');
-        $reservation = new Reservation();
+        if($reservationId != 0){
+            $reservation = $this->getReservationById($reservationId);
+        }
+        else{
+            $reservation = new Reservation();
+        }
         $reservation->setDateDebut($dateDebut);
         $reservation->setDateFin($dateFin);
         $reservation->setVehicule($offre->getVehicule());
@@ -108,15 +114,19 @@ class OffreService
 
         $this->session->set('reservationEnCours',$reservation);
 
-        //$this->flush($reservation);
         $this->session->getFlashBag()->add('success', 'Félicitation votre réservation à bien été enregistré');
 
         return array(
             'reservation' => $reservation,
-            'days' => $interval->days,
+            'days' => $interval,
             'offre' => $offre
         );
 
+    }
+
+    public function getResa()
+    {
+        return $this->session->get('reservationEnCours');
     }
 
     public function getIfPaid($etat){
@@ -127,10 +137,17 @@ class OffreService
 
         $reservation->setEtat($etat);
         $reservation->setDatePaiement($now);
-        // bug a resoudre l'entity manager ne connait pas les vehicules et utilisateur et veut en creer des nouveaux
+        // pb venant des sessions 
         $reservation->setVehicule($this->em->getRepository('AppBundle:Vehicule')->find($reservation->getVehicule()->getId()));
         $reservation->setUser($this->em->getRepository('AppBundle:User')->find($reservation->getUser()->getId()));
-        $this->flush($reservation);
+        
+        //Cas d'un update on persist pas la réservation on flush directe
+        if(!is_null($reservation->getId())){
+            $reservation = $this->em->merge($reservation); // il faut merge car l'entité vient de la session et l'em la gere pas
+            $this->em->flush();
+        }else{
+            $this->flush($reservation);
+        }
 
         $this->getLengthReservation();
 
@@ -164,7 +181,6 @@ class OffreService
     }
 
     public function getReservationById($id){
-
         $reservation = $this->repositoryReservation->findOneBy(array('id' => $id));
         return $reservation;
     }
@@ -202,11 +218,6 @@ class OffreService
         $this->session->set('reservationPaye', $reservation);
 
         return $reservation;
-
-    }
-
-    public function getvehiculebyid($idvehicule){
-
 
     }
 
