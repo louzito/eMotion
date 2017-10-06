@@ -52,8 +52,93 @@ h2 {font-size: 1.7em;}
 .ficheBanniere .ficheModele {
     font-size: 6em;
     text-align: center;
+    color: darkred;
+    font-style: italic;
 }
 
 .ficheInfos {
-    font-size: 1.1em;
+    font-size: 1.2em;
+    text-align: center;
+    position: relative;
+}
+
+.ficheInfosMini {
+    border: 1px solid grey;
+}
+
+.ficheDispo {
+    position: absolute!important;
+    right:0;
+    bottom: 0;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.prixFiche {
+    font-size: 1.4em;
+    color: darkred;
+}
+
+#daterangepicker-list-vehicule {
+    position:relative;
+}
+
+#daterangepicker-list-vehicule .calendar.right {
+    position: absolute;
+    right:0;
+}
+#daterangepicker-list-vehicule .daterangepicker.dropdown-menu.ltr.show-calendar.openscenter {
+    display: block!important;
+    top: 45px!important;
+    width: 70%!important;
+    left: 50%!important;
+    margin-left: -35%;
+}
+
+#daterangepicker-list-vehicule .daterangepicker.dropdown-menu.ltr.show-calendar.openscenter.calendar-table th td {
+    min-width: 200px;
+}
+
+#daterangepicker-list-vehicule .calendar.left {
+    max-width: none;
+    width: 48%;
+}
+
+#daterangepicker-list-vehicule .calendar.right {
+    max-width: none;
+    width: 48%;
+}
+
+.submit-liste-vehicule {
+    height: 36px;
+    display: block;
+    padding: 0 25px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background: white;
+    color: darkred;
+    margin:auto;
+    width: 30%;
+    border: 1px solid darkred;
+}
+
+.submit-liste-vehicule:hover {
+    background: darkred;
+    color: white;
+}
+
+.daterangepicker td.active, .daterangepicker td.active {
+    background-color: darkred;
+}
+
+.daterangepicker td.active, .daterangepicker td.active:hover {
+    background-color: darkred!important;
+}
+
+.daterangepicker .input-mini.active {
+    border: 1px solid darkred!important;
+}
+
+.datePickerContainer {
+    margin-top: 50px;
 }

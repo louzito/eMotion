@@ -2,24 +2,80 @@
 
 {% block body %}
     <div class="ficheBanniere row">
-        <div class="col-lg-4"><img src="{{ offre.vehicule.image.webPath }}" alt="{{ offre.vehicule.modele ~ " " ~ offre.vehicule.marque }}"></div>
-        <div class="col-lg-8 ficheModele"><span id="ficheModele">{{ offre.vehicule.marque }} {{ offre.vehicule.modele }}</span></div>
+        <div class="col-lg-12 ficheModele"><span id="ficheModele">{{ offre.vehicule.marque }} {{ offre.vehicule.modele }}</span></div>
     </div>
 
     <div class="ficheInfos row">
-        <span>Couleur : </span>{{ offre.vehicule.couleur }} <br>
-        <span>Nombre de kilomètres : </span>{{ offre.vehicule.nbKilometres }} km<br>
-        <span>Véhicule acheté le </span>{{ offre.vehicule.dateAchat|date('d-m-Y') }} <br><br>
+        <div class="col-lg-4 ficheInfosMini">
+            <img src="{{ offre.vehicule.image.webPath }}" alt="{{ offre.vehicule.modele ~ " " ~ offre.vehicule.marque }}">
+            <span><i>Couleur : </i></span>{{ offre.vehicule.couleur }} <br>
+            <span><i>Nombre de kilomètres : </i></span>{{ offre.vehicule.nbKilometres }} km<br>
+            <span><i>Véhicule acheté le </i></span>{{ offre.vehicule.dateAchat|date('d-m-Y') }} <br><br>
+        </div>
 
-        <p>Ce véhicule est disponible du {{ offre.dateDebut|date('d-m-Y') }}
-            au {{ offre.dateFin|date('d-m-Y') }}. <br>
-            Au dela de ces dates, aucune réservation ne sera possible.
-        </p>
+        <div class="col-lg-8 ficheDispo">
+            <p>Ce véhicule est disponible du {{ offre.dateDebut|date('d-m-Y') }}
+                au {{ offre.dateFin|date('d-m-Y') }}. <br>
+                Au dela de ces dates, aucune réservation ne sera possible.
+            </p>
 
-        <p>Disponible à {{ offre.ville }} uniquement, au prix de {{ offre.prixJournalier }} € par jour.</p><br>
+            <p>Disponible à {{ offre.ville }} uniquement, au prix de <span class="prixFiche"><strong>{{ offre.prixJournalier }} €</strong></span> par jour.</p><br>
+        </div>
     </div>
 
-    <div class="reservation row">
 
+
+    <div class="row datePickerContainer" >
+
+        <div id="daterangepicker-list-vehicule">
+            <form>
+                {{ form_start(form) }}
+                {{ form_end(form) }}
+                <input type="hidden" name="daterangepicker" class="daterangeSelect" id="inputHiddenDatePicker">
+            </form>
+        </div>
+
+        <script>
+            $(function () {
+                var now = new Date();
+                var listeDateResa = {{ listeDateResa|raw }};
+                $('.daterangeSelect').daterangepicker({
+                    "autoApply": true,
+                    "cancelClass": "hide",
+                    "linkedCalendars": true,
+                    "parentEl": '#daterangepicker-list-vehicule',
+                    "opens": "center",
+                    "minDate": now,
+                    "isInvalidDate": function(date){
+                        var dateFormater = date.format('DD-MM-YYYY');
+                        if(listeDateResa.indexOf(dateFormater) > -1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    },
+                    "locale": {
+                        "format": "YYYY-MM-DD"
+                    }
+                });
+                $('.daterangeSelect').trigger('click');
+                $('.daterangeSelect').on('hideCalendar.daterangepicker', function (e) {
+                    e.preventDefault();
+                    $('.daterangeSelect').show();
+                    return false;
+                });
+
+                $('.daterangeSelect').css('display', 'block !important');
+
+                $('.daterangeSelect').on('apply.daterangepicker', function(event, picker) {
+                    $('#reservation_par_voiture_dateDebut').val(picker.startDate.format('DD/MM/YYYY'));
+                    $('#reservation_par_voiture_dateFin').val(picker.endDate.format('DD/MM/YYYY'));
+                });
+
+            } );
+        </script>
     </div>
 {% endblock %}

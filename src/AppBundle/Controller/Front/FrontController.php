@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Front;
 
+use AppBundle\Entity\OffreLocation;
 use AppBundle\Form\RechercheType;
 use AppBundle\Service\CookiesService;
 use AppBundle\Service\OffreService;
@@ -19,6 +20,7 @@ use AppBundle\Entity\Reservation;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\VarDumper\Tests\Fixture\DumbFoo;
+use AppBundle\Form\ReservationParVoitureType;
 
 class FrontController extends Controller
 {
@@ -167,13 +169,30 @@ class FrontController extends Controller
     /**
      * @Route("/fiche-vehicule/{id}", name="fiche_vehicule")
      */
-    public function ficheVehiculeAction(Request $request, $id)
+    public function ficheVehiculeAction(Request $request, OffreLocation $offre)
     {
-        $em = $this->getDoctrine()->getRepository('AppBundle:OffreLocation');
-        $offre = $em->find($id);
+        $listeDate = [];
+        $form = $this->createForm(ReservationParVoitureType::class);
+
+        if ($offre) {
+            $reservations = $this->getReservationsParVehicule($offre->getVehicule()->getId());
+            foreach($reservations as $r)
+            {
+                $interval = $r->getDateDebut()->diff($r->getDateFin())->d + 1;
+                $dateD = $r->getDateDebut();
+                $listeDate[] = $r->getDateDebut()->format('d-m-Y');
+                for($i = 1; $i < $interval; $i++)
+                {
+                    $dateD->modify("+1 day");
+                    $listeDate[] = $dateD->format('d-m-Y');
+                }
+            }
+        }
 
         return $this->render('front/fiche-vehicule.html.twig', array(
             'offre' => $offre,
+            'listeDateResa' => json_encode($listeDate),
+            'form' => $form->createView(),
         ));
     }
 
