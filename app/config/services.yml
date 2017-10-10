@@ -59,3 +59,7 @@ services:
     offre_service:
             class: "%offre.service.class%"
             public: true
+
+    mailer_service:
+            class: AppBundle\Service\MailerService
+            public: true
