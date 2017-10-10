@@ -17,7 +17,7 @@ class MailerService
     public function sendEmailDeRetard()
     {
         $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('zito.lou@gmail.com')
+            ->setFrom('emotion.paris.lyon@gmail.com')
             ->setTo('zito.lou@gmail.com')
             ->setBody('Here is the message itself')
         ;
