@@ -1,0 +1,27 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1>Manager - Retour du véhicule</h1>
+    <h2>Détails de la réservation</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            Date de début: {{ reservation.dateDebut|date('d/m/y') }}<br />
+            Date de fin: {{ reservation.dateFin|date('d/m/y') }}<br />
+            Véhicule: {{ reservation.vehicule.marque }} {{ reservation.vehicule.modele }}<br />
+            Immatriculation Véhicule: {{ reservation.vehicule.plaqueImmatriculation }}<br />
+            Kilomètre initial: {{ reservation.vehicule.nbKilometres }}km<br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}
+

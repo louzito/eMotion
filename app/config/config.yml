@@ -12,6 +12,8 @@ parameters:
     encours: 'En cours'
     enretard: 'En retard'
     terminee: 'Terminée'
+    prixJourRetard: 110
+    prixKmEnPlus: 0.4
 
 framework:
     #esi: ~

@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Form\RechercheAdminType;
 use AppBundle\Form\RechercheAdminVehiculeType;
 use AppBundle\Form\ReservationType;
+use AppBundle\Form\RetourVehiculeType;
 use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\Service\OffreService;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -62,6 +63,51 @@ class ReservationController extends Controller
         return $this->render('admin/reservation/show-location.html.twig', [
             'reservation' => $reservation,
         ]);
+    }
+
+
+    /**
+     * @Route("/location/{id}/retour", name="admin_retour_location")
+     */
+    public function retourLocationAction(Request $request, OffreService $offreService, Reservation $reservation)
+    {
+        $form = $this->createForm(RetourVehiculeType::class);
+
+        if($request->isMethod('POST')) {
+            $em = $this->getDoctrine()->getManager();
+            $rInfos = $request->request->get('retour_vehicule');
+            $dateRetour = $rInfos['dateRetour']['year'] . '/' . $rInfos['dateRetour']['month'] . '/' . $rInfos['dateRetour']['day'];
+            $dateRetour = new \DateTime($dateRetour);
+            $reservation->setDateDeRetour($dateRetour);
+            $kmParcouru = $rInfos['kmCptVehicule'] - $reservation->getVehicule()->getNbKilometres();
+
+            if($kmParcouru > $reservation->getKmInclus() || $reservation->getDateFin() < $dateRetour){
+                $jourDeRetard = $reservation->getDateFin()->diff($dateRetour)->days+1;
+                $kmSupplementaire = $kmParcouru - $reservation->getKmInclus();
+                if($jourDeRetard > 0)
+                {
+                    $coutSupplementaire = $jourDeRetard * $this->container->getParameter('prixJourRetard');
+                }
+                else{
+                    $coutSupplementaire = $kmSupplementaire * $this->container->getParameter('prixKmEnPlus');
+                }
+                $reservation->setPrixTotal($reservation->getPrixTotal() + $coutSupplementaire);
+                dump($reservation);
+                die;
+            }else{
+                die;
+                $reservation->getVehicule()->setNbKilometres($rInfos['kmCptVehicule']);
+                $reservation->setKmParcouru($kmParcouru);
+                $reservation->setEtat($this->getParameter('terminee'));
+                $em->flush();
+                return $this->redirectToRoute('admin_show_locations');
+            }
+        }
+
+        return $this->render('admin/reservation/retour-vehicule.html.twig', array(
+            'form' => $form->createView(),
+            'reservation' =>$reservation,
+        ));
     }
 
     /**

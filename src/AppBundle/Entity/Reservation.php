@@ -83,6 +83,19 @@ class Reservation
      */
     private $kmInclus;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="kmParcouru", type="integer", nullable=true)
+     */
+    private $kmParcouru;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateDeRetour", type="datetime")
+     */
+    private $dateDeRetour;
 
     /**
      * Get id
@@ -310,5 +323,53 @@ class Reservation
     public function getKmInclus()
     {
         return $this->kmInclus;
+    }
+
+    /**
+     * Set kmParcouru
+     *
+     * @param integer $kmParcouru
+     *
+     * @return Reservation
+     */
+    public function setKmParcouru($kmParcouru)
+    {
+        $this->kmParcouru = $kmParcouru;
+
+        return $this;
+    }
+
+    /**
+     * Get kmParcouru
+     *
+     * @return integer
+     */
+    public function getKmParcouru()
+    {
+        return $this->kmParcouru;
+    }
+
+    /**
+     * Set dateDeRetour
+     *
+     * @param \DateTime $dateDeRetour
+     *
+     * @return Reservation
+     */
+    public function setDateDeRetour($dateDeRetour)
+    {
+        $this->dateDeRetour = $dateDeRetour;
+
+        return $this;
+    }
+
+    /**
+     * Get dateDeRetour
+     *
+     * @return \DateTime
+     */
+    public function getDateDeRetour()
+    {
+        return $this->dateDeRetour;
     }
 }

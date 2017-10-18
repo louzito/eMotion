@@ -36,6 +36,11 @@
                 <a href="{{ path('admin_update_location', {'id': resa.id }) }}">
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 </a>
+                {% if resa.kmParcouru is null %}
+                <a href="{{ path('admin_retour_location', {'id': resa.id }) }}">
+                    <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                </a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

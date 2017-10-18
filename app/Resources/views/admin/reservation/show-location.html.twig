@@ -10,6 +10,9 @@
     <b>Date de fin :</b> {{ reservation.dateFin|date('d-m-Y') }}<br />
     <b>Prix total :</b> {{ reservation.prixTotal }}<br />
     <b>Etat :</b> {{ reservation.etat }}<br />
+    {% if reservation.kmParcouru is not null %}
+    <b>Kilomètre parcouru</b> {{ reservation.kmParcouru }}<br />
+    {% endif %}
     <a href="{{ path('admin_show_locations')}}" title="Voir les locations">Voir les locations</a>
 </div>
 {% endblock %}

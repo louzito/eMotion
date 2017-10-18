@@ -57,7 +57,7 @@ class Reservation
     /**
      * @var string
      *
-     * @ORM\Column(name="etat", type="string", length=1)
+     * @ORM\Column(name="etat", type="string", length=50)
      */
     private $etat;
 
@@ -83,6 +83,19 @@ class Reservation
      */
     private $kmInclus;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="kmParcouru", type="integer", nullable=true)
+     */
+    private $kmParcouru;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateDeRetour", type="datetime")
+     */
+    private $dateDeRetour;
 
     /**
      * Get id
@@ -287,4 +300,52 @@ class Reservation
         return $this->datePaiement;
     }
 
+
+    /**
+     * Set kmInclus
+     *
+     * @param integer $kmInclus
+     *
+     * @return Reservation
+     */
+    public function setKmInclus($kmInclus)
+    {
+        $this->kmInclus = $kmInclus;
+
+        return $this;
+    }
+
+    /**
+     * Get kmInclus
+     *
+     * @return integer
+     */
+    public function getKmInclus()
+    {
+        return $this->kmInclus;
+    }
+
+    /**
+     * Set kmParcouru
+     *
+     * @param integer $kmParcouru
+     *
+     * @return Reservation
+     */
+    public function setKmParcouru($kmParcouru)
+    {
+        $this->kmParcouru = $kmParcouru;
+
+        return $this;
+    }
+
+    /**
+     * Get kmParcouru
+     *
+     * @return integer
+     */
+    public function getKmParcouru()
+    {
+        return $this->kmParcouru;
+    }
 }
