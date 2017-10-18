@@ -80,28 +80,32 @@ class ReservationController extends Controller
             $dateRetour = new \DateTime($dateRetour);
             $reservation->setDateDeRetour($dateRetour);
             $kmParcouru = $rInfos['kmCptVehicule'] - $reservation->getVehicule()->getNbKilometres();
-
             if($kmParcouru > $reservation->getKmInclus() || $reservation->getDateFin() < $dateRetour){
-                $jourDeRetard = $reservation->getDateFin()->diff($dateRetour)->days+1;
-                $kmSupplementaire = $kmParcouru - $reservation->getKmInclus();
-                if($jourDeRetard > 0)
+                $coutSupplementaire = 0;
+                if($reservation->getDateFin()->diff($dateRetour)->days > 0 || $reservation->getDateFin()->diff($dateRetour)->s > 0)
                 {
-                    $coutSupplementaire = $jourDeRetard * $this->container->getParameter('prixJourRetard');
+                    if($reservation->getDateFin()->diff($dateRetour)->days > 0)
+                    {
+                        $jourDeRetard = $reservation->getDateFin()->diff($dateRetour)->days;
+                    }
+                    else
+                    {
+                        $jourDeRetard = 1;
+                    }
+                    $coutSupplementaire += $jourDeRetard * $this->container->getParameter('prixJourRetard');
                 }
-                else{
-                    $coutSupplementaire = $kmSupplementaire * $this->container->getParameter('prixKmEnPlus');
+                $kmSupplementaire = $kmParcouru - $reservation->getKmInclus();
+                if($kmSupplementaire > 0)
+                {
+                    $coutSupplementaire += $kmSupplementaire * $this->container->getParameter('prixKmEnPlus');
                 }
-                $reservation->setPrixTotal($reservation->getPrixTotal() + $coutSupplementaire);
-                dump($reservation);
-                die;
-            }else{
-                die;
-                $reservation->getVehicule()->setNbKilometres($rInfos['kmCptVehicule']);
-                $reservation->setKmParcouru($kmParcouru);
-                $reservation->setEtat($this->getParameter('terminee'));
-                $em->flush();
-                return $this->redirectToRoute('admin_show_locations');
+                $reservation->setPrixTotal($reservation->getPrixInitial() + $coutSupplementaire);
             }
+            $reservation->getVehicule()->setNbKilometres($rInfos['kmCptVehicule']);
+            $reservation->setKmParcouru($kmParcouru);
+            $reservation->setEtat($this->getParameter('terminee'));
+            $em->flush();
+            return $this->redirectToRoute('admin_show_locations');
         }
 
         return $this->render('admin/reservation/retour-vehicule.html.twig', array(

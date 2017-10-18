@@ -8,10 +8,13 @@
     <b>Client :</b> {{ reservation.user.prenom }} {{ reservation.user.nom }}<br />
     <b>Date de début :</b> {{ reservation.dateDebut|date('d-m-Y') }}<br />
     <b>Date de fin :</b> {{ reservation.dateFin|date('d-m-Y') }}<br />
-    <b>Prix total :</b> {{ reservation.prixTotal }}<br />
+    <b>Prix initial :</b> {{ reservation.prixInitial }}<br />
+    <b>Kilomètre inclus :</b> {{ reservation.kmInclus }}<br />
     <b>Etat :</b> {{ reservation.etat }}<br />
-    {% if reservation.kmParcouru is not null %}
-    <b>Kilomètre parcouru</b> {{ reservation.kmParcouru }}<br />
+    {% if reservation.etat == 'Terminée' %}
+    <b>Kilomètre parcouru :</b> {{ reservation.kmParcouru }}<br />
+    <b>Date de retour :</b> {{ reservation.dateDeRetour|date('d-m-Y') }}<br />
+    <b>Prix total :</b> {{ reservation.prixTotal }}<br />
     {% endif %}
     <a href="{{ path('admin_show_locations')}}" title="Voir les locations">Voir les locations</a>
 </div>

@@ -76,7 +76,6 @@ class FrontController extends Controller
             $pdfService->generate($reservationPaid->getId());
             return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId())));
         }
-
         return $this->render('front/reservation-detail.html.twig',[
             'reservation' => $reservation['reservation'],
             'days' => $reservation['days'],

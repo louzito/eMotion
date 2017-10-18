@@ -55,6 +55,13 @@ class Reservation
     private $prixTotal;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="prixInitial", type="float")
+     */
+    private $prixInitial;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="etat", type="string", length=50)
@@ -347,5 +354,29 @@ class Reservation
     public function getKmParcouru()
     {
         return $this->kmParcouru;
+    }
+
+    /**
+     * Set dateDeRetour
+     *
+     * @param \DateTime $dateDeRetour
+     *
+     * @return Reservation
+     */
+    public function setDateDeRetour($dateDeRetour)
+    {
+        $this->dateDeRetour = $dateDeRetour;
+
+        return $this;
+    }
+
+    /**
+     * Get dateDeRetour
+     *
+     * @return \DateTime
+     */
+    public function getDateDeRetour()
+    {
+        return $this->dateDeRetour;
     }
 }

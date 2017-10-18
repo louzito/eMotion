@@ -92,7 +92,7 @@ class OffreService
         $dateDebut = $this->session->get('dateDebut');
         $dateFin = $this->session->get('dateFin');
         $interval = $this->getInterval();
-        $prixTotal = $interval * $offre->getPrixJournalier();
+        $prixInitial = $interval * $offre->getPrixJournalier();
         $kmInclus = $interval * $offre->getKmJournalier();
 
         $now = new \DateTime('now');
@@ -105,7 +105,9 @@ class OffreService
         $reservation->setDateDebut($dateDebut);
         $reservation->setDateFin($dateFin);
         $reservation->setVehicule($offre->getVehicule());
-        $reservation->setPrixTotal($prixTotal);
+        $reservation->setPrixInitial($prixInitial);
+        $reservation->setPrixTotal($prixInitial);
+        $reservation->setDateDeRetour($dateFin);
         $reservation->setKmInclus($kmInclus);
         $reservation->setEtat($etat);
         $reservation->setDateReservation($now);

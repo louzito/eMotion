@@ -55,6 +55,13 @@ class Reservation
     private $prixTotal;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="prixInitial", type="float")
+     */
+    private $prixInitial;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="etat", type="string", length=50)
@@ -371,5 +378,29 @@ class Reservation
     public function getDateDeRetour()
     {
         return $this->dateDeRetour;
+    }
+
+    /**
+     * Set prixInitial
+     *
+     * @param float $prixInitial
+     *
+     * @return Reservation
+     */
+    public function setPrixInitial($prixInitial)
+    {
+        $this->prixInitial = $prixInitial;
+
+        return $this;
+    }
+
+    /**
+     * Get prixInitial
+     *
+     * @return float
+     */
+    public function getPrixInitial()
+    {
+        return $this->prixInitial;
     }
 }
