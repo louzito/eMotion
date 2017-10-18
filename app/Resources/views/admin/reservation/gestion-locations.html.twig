@@ -9,6 +9,7 @@
         <option value="enretard" {% if typeTrie == 'enretard' %}selected{% endif %}>En retard</option>
         <option value="encours" {% if typeTrie == 'encours' %}selected{% endif %}>En cours</option>
     </select>
+    <div class="manager-admin-table">
     <table class="table">
         <tr class="entete">
             <td>Id résa</td>
@@ -45,6 +46,7 @@
         </tr>
         {% endfor %}
     </table>
+    </div>
     <div id="type-ajout-location">
         <a href="#" title="Ajouter location par date" id="type-ajout-par-date" class="selected"><span class="glyphicon glyphicon-triangle-bottom"></span> Ajouter location par date</a>   /   <a href="#"  id="type-ajout-par-vehicule" title="Ajouter location par véhicule"><span class="glyphicon glyphicon-triangle-bottom"></span> Ajouter location par véhicule</a>
     </div>

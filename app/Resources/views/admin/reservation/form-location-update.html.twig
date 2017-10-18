@@ -1,17 +1,15 @@
 <div class="row">
-    {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
-    <input type="hidden" name="" class="daterangeSelect">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
+        <input type="hidden" name="" class="daterangeSelect">
         {{ form_errors(form) }}
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         {{ form_row(form.user) }}
         {{ form_row(form.dateDebut) }}
         {{ form_row(form.dateFin) }}
+        {{ form_rest(form) }}
+        <div id="liste-offres"></div>
+        {{ form_end(form) }}
     </div>
-    {{ form_rest(form) }}
-    <div id="liste-offres"></div>
-    {{ form_end(form) }}
 </div>
 {% block javascripts %}
 <script>

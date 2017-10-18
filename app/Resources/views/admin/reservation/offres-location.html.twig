@@ -2,18 +2,20 @@
     .stripe-button-el{
         display: none;
     }
+    .reservation-paiement{
+        display: inline-block;
+    }
+
 </style>
 {% if offres is not null %}
     {% for offre in offres %}
         <div class="row vehicule">
-            <div class="col-lg-10">
+            <div class="col-lg-12">
                 <span class="nom">{{ offre.vehicule.modele ~ " " ~ offre.vehicule.marque }}</span>
                 <span>  <u>Inclus:</u> <b>{{ offre.kmInclus }} kilomètres</b></span>
                 <span class="couleur">  Couleur : {{ offre.vehicule.couleur }}</span>
                 <span class="prix">  Prix journalier :<b>{{ offre.prixJournalier }}€</b></span>
                 <span class="prix">  Prix total :<b>{{ offre.prixTotal }}€</b></span>
-            </div>
-            <div class="col-lg-2 vehicule-resa">
                 <div class="reservation-paiement">
                     <input type="submit" data-offre-id="{{ offre.id }}"  data-vehicule-id="{{ offre.vehicule.id }}" class="admin-btn-resa-offre" value="Réserver pour le client">
                 </div>

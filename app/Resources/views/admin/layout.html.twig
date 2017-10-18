@@ -33,9 +33,10 @@
                 <a class="navbar-brand" href="{{ path('home_admin') }}">Emotion</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="#">Gestion des utilisateurs</a></li>
-                <li><a href="{{ path('admin_offrelocation_index')}}">Gestion offres locations</a></li>
-                <li><a href="{{ path('admin_vehicule_index') }}">Gestions véhicules</a></li>
+                <li><a href="{{ path('admin_app_user_list') }}">Gestion des Utilisateurs</a></li>
+                <li><a href="{{ path('admin_show_locations')}}">Gestion des Locations</a></li>
+                <li><a href="{{ path('admin_offrelocation_index')}}">Gestion des Offres/Locations</a></li>
+                <li><a href="{{ path('admin_vehicule_index') }}">Gestions des Véhicules</a></li>
             </ul>
         </div>
     </nav>
@@ -44,9 +45,34 @@
     body{
         background-color: whitesmoke;
     }
+    .manager-admin-table {
+        max-height: 310px;
+        overflow-y: scroll;
+        margin: 0 0 10px 0;
+    }
+    #type-ajout-location{
+        text-align: center;
+        padding-bottom: 20px;
+    }
+    #admin-form-location form > div{
+        margin: 5px 10px;
+    }
+    #admin-form-location label{
+        margin-right: 10px;
+    }
+    #admin-form-location select, #admin-form-location input, #admin-form-location button{
+        padding: 6px;
+    }
+    footer {
+    padding-bottom: 85px;
+    }
+    #admin-form-location .admin-form-datepicker .daterangepicker{
+        top: -8px!important;
+    }
 </style>
 {% block body %}{% endblock %}
 {% block javascripts %}{% endblock %}
+    <footer></footer>
 </body>
 </html>
 
