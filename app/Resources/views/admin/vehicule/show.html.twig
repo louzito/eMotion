@@ -1,8 +1,6 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <h1>Vehicule</h1>
-
     <style>
         td{
             height: 70px;
@@ -11,62 +9,24 @@
             max-height: 100%;
         }
     </style>
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ vehicule.id }}</td>
-            </tr>
-            <tr>
-                <th>Marque</th>
-                <td>{{ vehicule.marque }}</td>
-            </tr>
-            <tr>
-                <th>Modele</th>
-                <td>{{ vehicule.modele }}</td>
-            </tr>
-            <tr>
-                <th>Numserie</th>
-                <td>{{ vehicule.numSerie }}</td>
-            </tr>
-            <tr>
-                <th>Couleur</th>
-                <td>{{ vehicule.couleur }}</td>
-            </tr>
-            <tr>
-                <th>Plaqueimmatriculation</th>
-                <td>{{ vehicule.plaqueImmatriculation }}</td>
-            </tr>
-            <tr>
-                <th>Nbkilometres</th>
-                <td>{{ vehicule.nbKilometres }}</td>
-            </tr>
-            <tr>
-                <th>Dateachat</th>
-                <td>{% if vehicule.dateAchat %}{{ vehicule.dateAchat|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td><img src="{{ vehicule.image.webPath }}" alt="{{ vehicule.image.alt }}"></td>
-            </tr>
-            <tr>
-                <th>Prixachat</th>
-                <td>{{ vehicule.prixAchat }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_vehicule_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('admin_vehicule_edit', { 'id': vehicule.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+<div class="container">
+    <h1>Manager - Information de l'offre location</h1>
+    <div style="height: 150px;">
+        <img src="{{ vehicule.image.webPath }}" alt="{{ vehicule.image.alt }}" height="100%">
+    </div>
+    <b>Id :</b> {{ vehicule.id }}<br />
+    <b>Marque :</b> {{ vehicule.marque }}<br />
+    <b>Modèle :</b> {{ vehicule.modele }}<br />
+    <b>Numéro de série :</b> {{ vehicule.numSerie }}<br />
+    <b>Couleur :</b> {{ vehicule.couleur }}<br />
+    <b>Plaque d'immatriculation :</b> {{ vehicule.plaqueImmatriculation }}<br />
+    <b>Nombre de kilomètres :</b> {{ vehicule.nbKilometres }}<br />
+    <b>Date de d'achat :</b> {{ vehicule.dateAchat|date('d-m-Y') }}<br />
+    <b>Prix d'achat :</b> {{ vehicule.prixAchat }}<br />
+    <div class="row manager-btn-bottom">
+        <div class="col-xs-12">
+            <a class="btn-show-list-manager" href="{{ path('admin_vehicule_index') }}" title="Voir toutes les offres">Voir toutes les offres</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
