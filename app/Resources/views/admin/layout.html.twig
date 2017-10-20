@@ -30,13 +30,13 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{{ path('home_admin') }}">Emotion</a>
+                <a class="navbar-brand" href="{{ path('home_admin') }}">Emotion Manager</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{{ path('admin_app_user_list') }}">Gestion des Utilisateurs</a></li>
                 <li><a href="{{ path('admin_show_locations')}}">Gestion des Locations</a></li>
                 <li><a href="{{ path('admin_offrelocation_index')}}">Gestion des Offres/Locations</a></li>
                 <li><a href="{{ path('admin_vehicule_index') }}">Gestions des Véhicules</a></li>
+                <li><a href="{{ path('admin_app_user_list') }}">Gestion des Utilisateurs</a></li>
             </ul>
         </div>
     </nav>
@@ -54,10 +54,10 @@
         text-align: center;
         padding-bottom: 20px;
     }
-    #admin-form-location form > div > div, #admin-update-form-location form > div > div{
+    #admin-form-location form > div > div, #admin-update-form-location form > div > div, #admin-manager-entity > div{
         margin: 5px 10px;
     }
-    #admin-form-location label,#admin-update-form-location label{
+    #admin-form-location label,#admin-update-form-location label, #admin-manager-entity label{
         margin-right: 10px;
     }
     #admin-form-location select, #admin-form-location input, #admin-form-location button, #admin-update-form-location select, #admin-update-form-location input, #admin-update-form-location button {
@@ -82,7 +82,7 @@
     .manager-btn-bottom > div{
         text-align: center;
     }
-    .btn-show-list-manager{
+    #admin-manager-entity .btn-show-list-manager, #admin-manager-entity .btn-add-manager, #admin-manager-entity  .btn-edit-manager, .btn-show-list-manager, .btn-add-manager, #admin-manager-entity .btn-edit-manager{
         display: block;
         text-align: center;
         padding: 0 50px;
@@ -94,6 +94,9 @@
         text-transform: uppercase;
         font-weight: bold;
         display: inline-block;
+    }
+    .btn-edit-manager{
+        margin-top: 20px;
     }
     .btn-del-manager{
         display: block;
@@ -108,8 +111,11 @@
         font-weight: bold;
         display: inline-block;
     }
-    .btn-show-list-manager:hover{
+    .btn-show-list-manager:hover, .btn-add-manager:hover{
         color: #FFF;
+    }
+    #admin-manager-entity select, #admin-manager-entity input, #admin-manager-entity button{
+        padding: 6px;
     }
 </style>
 {% block body %}{% endblock %}

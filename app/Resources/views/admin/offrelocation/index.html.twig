@@ -1,11 +1,11 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <h1>Offrelocations list</h1>
-
-    <table>
-        <thead>
-            <tr>
+<div class="container">
+    <h1>Manager - Gestion des offres de locations</h1>
+    <div class="manager-admin-table">
+        <table class="table">
+            <tr class="entete">
                 <th>Id</th>
                 <th>Véhicule</th>
                 <th>Datedebut</th>
@@ -13,33 +13,29 @@
                 <th>Prixjournalier</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for offreLocation in offreLocations %}
+            {% for offreLocation in offreLocations %}
             <tr>
                 <td><a href="{{ path('admin_offrelocation_show', { 'id': offreLocation.id }) }}">{{ offreLocation.id }}</a></td>
                 <td>{{ offreLocation.vehicule }}</td>
-                <td>{% if offreLocation.dateDebut %}{{ offreLocation.dateDebut|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if offreLocation.dateFin %}{{ offreLocation.dateFin|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if offreLocation.dateDebut %}{{ offreLocation.dateDebut|date('d-m-Y') }}{% endif %}</td>
+                <td>{% if offreLocation.dateFin %}{{ offreLocation.dateFin|date('d-m-Y') }}{% endif %}</td>
                 <td>{{ offreLocation.prixJournalier }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_offrelocation_show', { 'id': offreLocation.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_offrelocation_edit', { 'id': offreLocation.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                <td class="actions">
+                    <a href="{{ path('admin_offrelocation_show', { 'id': offreLocation.id }) }}">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </a>
+                    <a href="{{ path('admin_offrelocation_edit', { 'id': offreLocation.id }) }}">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
                 </td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_offrelocation_new') }}">Create a new offreLocation</a>
-        </li>
-    </ul>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row manager-btn-bottom">
+        <div class="col-xs-12">
+            <a class="btn-add-manager" href="{{ path('admin_offrelocation_new') }}">Ajouter une offre de location</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

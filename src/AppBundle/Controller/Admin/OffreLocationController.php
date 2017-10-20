@@ -66,11 +66,8 @@ class OffreLocationController extends Controller
      */
     public function showAction(OffreLocation $offreLocation)
     {
-        $deleteForm = $this->createDeleteForm($offreLocation);
-
         return $this->render('admin/offrelocation/show.html.twig', array(
             'offreLocation' => $offreLocation,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -89,7 +86,7 @@ class OffreLocationController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_offrelocation_edit', array('id' => $offreLocation->getId()));
+            return $this->redirectToRoute('admin_offrelocation_index');
         }
 
         return $this->render('admin/offrelocation/edit.html.twig', array(

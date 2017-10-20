@@ -1,21 +1,28 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <h1>Vehicule edit</h1>
-
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_vehicule_index') }}">Back to the list</a>
-        </li>
-        <li>
+<div class="container">
+    <h1>Manager - Modifier le véhicule</h1>
+    <div class="row">
+        <div class="col-xs-12 manager-entity">
+            {{ form_start(edit_form, {'attr': {'id': 'admin-manager-entity'}}) }}
+                <input type="hidden" name="" class="daterangeSelect">
+                {{ form_errors(edit_form) }}
+                {{ form_rest(edit_form) }}
+                <input class="btn-edit-manager" type="submit" value="Modifier" />
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
+    <div class="row manager-btn-bottom">
+        <div class="col-xs-6">
+            <a class="btn-show-list-manager" href="{{ path('admin_vehicule_index') }}">Voir toutes les offres</a>
+        </div>
+        <div class="col-xs-6">
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input class="btn-del-manager" type="submit" value="Supprimer">
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}
+

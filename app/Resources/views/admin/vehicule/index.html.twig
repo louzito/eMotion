@@ -1,19 +1,19 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <h1>Vehicules list</h1>
-
+<div class="container">
+    <h1>Manager - Gestion des véhicules</h1>
     <style>
         th, td{
-            height: 70px;
+            height: 70px!important;
         }
         th img, td img{
             max-height: 100%;
         }
     </style>
-    <table>
-        <thead>
-            <tr>
+    <div class="manager-admin-table">
+        <table class="table">
+            <tr class="entete">
                 <th>Id</th>
                 <th>Marque</th>
                 <th>Modele</th>
@@ -26,9 +26,7 @@
                 <th>Image</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for vehicule in vehicules %}
+            {% for vehicule in vehicules %}
             <tr>
                 <td><a href="{{ path('admin_vehicule_show', { 'id': vehicule.id }) }}">{{ vehicule.id }}</a></td>
                 <td>{{ vehicule.marque }}</td>
@@ -40,24 +38,22 @@
                 <td>{% if vehicule.dateAchat %}{{ vehicule.dateAchat|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ vehicule.prixAchat }}</td>
                 <td><img src="{{ vehicule.image.webPath }}" alt="{{ vehicule.image.alt }}"></td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_vehicule_show', { 'id': vehicule.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_vehicule_edit', { 'id': vehicule.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                <td class="actions">
+                    <a href="{{ path('admin_vehicule_show', { 'id': vehicule.id }) }}">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </a>
+                    <a href="{{ path('admin_vehicule_edit', { 'id': vehicule.id }) }}">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
                 </td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_vehicule_new') }}">Create a new vehicule</a>
-        </li>
-    </ul>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row manager-btn-bottom">
+        <div class="col-xs-12">
+            <a class="btn-add-manager" href="{{ path('admin_vehicule_new') }}">Ajouter un véhicule</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

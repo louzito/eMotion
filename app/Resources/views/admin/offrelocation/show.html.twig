@@ -1,44 +1,17 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <h1>Offrelocation</h1>
-
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ offreLocation.id }}</td>
-            </tr>
-            <tr>
-                <th>Véhicule</th>
-                <td>{{ offreLocation.vehicule }}</td>
-            </tr>
-            <tr>
-                <th>Datedebut</th>
-                <td>{% if offreLocation.dateDebut %}{{ offreLocation.dateDebut|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Datefin</th>
-                <td>{% if offreLocation.dateFin %}{{ offreLocation.dateFin|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Prixjournalier</th>
-                <td>{{ offreLocation.prixJournalier }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_offrelocation_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('admin_offrelocation_edit', { 'id': offreLocation.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+<div class="container">
+    <h1>Manager - Information de l'offre location</h1>
+    <b>Id :</b> {{ offreLocation.id }}<br />
+    <b>Vehicule :</b> {{ offreLocation.vehicule }}<br />
+    <b>Date de début :</b> {{ offreLocation.dateDebut|date('d-m-Y') }}<br />
+    <b>Date de fin :</b> {{ offreLocation.dateFin|date('d-m-Y') }}<br />
+    <b>Prix journalier :</b> {{ offreLocation.prixJournalier }}<br />
+    <div class="row manager-btn-bottom">
+        <div class="col-xs-12">
+            <a class="btn-show-list-manager" href="{{ path('admin_offrelocation_index') }}" title="Voir toutes les offres">Voir toutes les offres</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

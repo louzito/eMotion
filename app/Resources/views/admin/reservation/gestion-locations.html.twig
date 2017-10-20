@@ -25,7 +25,7 @@
         </tr>
         {% for resa in reservations %}
         <tr>
-            <td>{{ resa.id }}</td>
+            <td><a href="{{ path('admin_show_location', {'id': resa.id }) }}">{{ resa.id }}</a></td>
             <td>{{ resa.vehicule }}</td>
             <td>{{ resa.user.prenom }} {{ resa.user.nom }}</td>
             <td>{{ resa.dateDebut|date('d-m-Y') }}</td>

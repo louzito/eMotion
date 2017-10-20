@@ -21,7 +21,10 @@ class VehiculeType extends AbstractType
             ->add('couleur')
             ->add('plaqueImmatriculation')
             ->add('nbKilometres')
-            ->add('dateAchat')
+            ->add('dateAchat', 'date' ,array(
+                'label' => 'Date d\'achat (dd/mm/yyyy)',
+                'widget'=> 'single_text',
+                'format'=>'dd/MM/yyyy'))
             ->add('prixAchat')
             ->add('image', ImageType::class, [
                     'required' => false,

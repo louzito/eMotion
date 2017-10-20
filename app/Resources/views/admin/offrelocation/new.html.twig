@@ -1,16 +1,21 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <h1>Offrelocation creation</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_offrelocation_index') }}">Back to the list</a>
-        </li>
-    </ul>
+<div class="container">
+    <h1>Manager - Ajouter une offre de location</h1>
+    <div class="row">
+        <div class="col-xs-12 manager-entity">
+            {{ form_start(form, {'attr': {'id': 'admin-manager-entity'}}) }}
+                {{ form_errors(form) }}
+                {{ form_rest(form) }}
+                <input class="btn-add-manager" type="submit" value="Ajouter" />
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="row manager-btn-bottom">
+        <div class="col-xs-12">
+            <a class="btn-show-list-manager" href="{{ path('admin_offrelocation_index') }}">Voir toutes les offres</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
