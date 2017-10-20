@@ -16,7 +16,11 @@
     <b>Date de retour :</b> {{ reservation.dateDeRetour|date('d-m-Y') }}<br />
     <b>Prix total :</b> {{ reservation.prixTotal }}<br />
     {% endif %}
-    <a href="{{ path('admin_show_locations')}}" title="Voir les locations">Voir les locations</a>
+    <div class="row manager-btn-bottom">
+        <div class="col-xs-12">
+            <a class="btn-show-list-manager" href="{{ path('admin_show_locations')}}" title="Voir toutes les offres">Voir toutes les offres</a>
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block javascripts %}{% endblock %}
