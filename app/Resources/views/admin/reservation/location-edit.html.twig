@@ -1,30 +1,41 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <h1>Modifier réservation</h1>
-
+<div class="container">
+    <h1>Manager - Modifier la location</h1>
+    <b>Id :</b> {{ reservation.id }}<br />
+    <b>Vehicule :</b> {{ reservation.vehicule }}<br />
+    <b>Client :</b> {{ reservation.user.prenom }} {{ reservation.user.nom }}<br />
+    <b>Date de début :</b> {{ reservation.dateDebut|date('d-m-Y') }}<br />
+    <b>Date de fin :</b> {{ reservation.dateFin|date('d-m-Y') }}<br />
+    <b>Prix initial :</b> {{ reservation.prixInitial }}<br />
+    <b>Kilomètre inclus :</b> {{ reservation.kmInclus }}<br />
+    <b>Etat :</b> {{ reservation.etat }}<br />
+    {% if reservation.etat == 'Terminée' %}
+    <b>Kilomètre parcouru :</b> {{ reservation.kmParcouru }}<br />
+    <b>Date de retour :</b> {{ reservation.dateDeRetour|date('d-m-Y') }}<br />
+    <b>Prix total :</b> {{ reservation.prixTotal }}<br />
+    {% endif %}
     <div id="type-update-location">
         <a href="#" title="Modifier location par date" id="type-update-par-date"><span class="glyphicon glyphicon-triangle-bottom"></span> Modifier location par date</a>   /   <a href="#"  id="type-update-par-vehicule" title="Modifier location par véhicule"><span class="glyphicon glyphicon-triangle-bottom"></span> Modifier location par véhicule</a>
     </div>
-    <style>
-        #admin-update-form-location{
-            position: relative;
-        }
-        #type-update-location a{
-            color: gray;
-        }
-        #type-update-location a.selected{
-            color: #000000;
-        }
-    </style>
     <div id="admin-update-form-location">
     </div>
     <div>
-        <a href="{{ path('admin_show_locations') }}">Voir toutes les locations</a>
-        {{ form_start(delete_form) }}
-            <input type="submit" value="Delete">
-        {{ form_end(delete_form) }}
+    <div class="row manager-btn-bottom">
+        <div class="col-xs-6">
+            <a class="btn-show-list-manager" href="{{ path('admin_show_locations') }}">Voir toutes les locations</a>
+        </div>
+        <div class="col-xs-6">
+            {{ form_start(delete_form) }}
+                <input class="btn-del-manager" type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </div>
     </div>
+        
+        
+    </div>
+</div>
 {% endblock %}
 {% block javascripts %}
 <script>

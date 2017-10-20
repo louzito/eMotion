@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
             <input type="hidden" name="" class="daterangeSelect">
             {{ form_errors(form) }}
             {{ form_row(form.user) }}
@@ -12,9 +12,7 @@
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 admin-form-datepicker">
             <div id="liste-offres"></div>
         </div>
-        <div class="col-lg-12 col-md12 col-sm-12 col-xs-12">
-            {{ form_end(form) }}
-        </div>
+        {{ form_end(form) }}
     </div>
 </div>
 {% block javascripts %}

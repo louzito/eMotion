@@ -6,8 +6,10 @@
     <label for="trier-reservations">Trier les réservations:</label>
     <select name="trier-reservation" id="trier-reservation">
         <option value="toute">Afficher tout</option>
-        <option value="enretard" {% if typeTrie == 'enretard' %}selected{% endif %}>En retard</option>
+        <option value="payee" {% if typeTrie == 'payee' %}selected{% endif %}>Payée</option>
         <option value="encours" {% if typeTrie == 'encours' %}selected{% endif %}>En cours</option>
+        <option value="enretard" {% if typeTrie == 'enretard' %}selected{% endif %}>En retard</option>
+        <option value="terminee" {% if typeTrie == 'terminee' %}selected{% endif %}>Terminée</option>
     </select>
     <div class="manager-admin-table">
     <table class="table">

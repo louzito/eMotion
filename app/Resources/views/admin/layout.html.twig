@@ -50,24 +50,66 @@
         overflow-y: scroll;
         margin: 0 0 10px 0;
     }
-    #type-ajout-location{
+    #type-ajout-location, #type-update-location{
         text-align: center;
         padding-bottom: 20px;
     }
-    #admin-form-location form > div{
+    #admin-form-location form > div > div, #admin-update-form-location form > div > div{
         margin: 5px 10px;
     }
-    #admin-form-location label{
+    #admin-form-location label,#admin-update-form-location label{
         margin-right: 10px;
     }
-    #admin-form-location select, #admin-form-location input, #admin-form-location button{
+    #admin-form-location select, #admin-form-location input, #admin-form-location button, #admin-update-form-location select, #admin-update-form-location input, #admin-update-form-location button {
         padding: 6px;
     }
     footer {
     padding-bottom: 85px;
     }
-    #admin-form-location .admin-form-datepicker .daterangepicker{
+    #admin-form-location .admin-form-datepicker .daterangepicker, #admin-update-form-location  .admin-form-datepicker .daterangepicker{
         top: -8px!important;
+    }
+    #admin-update-form-location{
+        position: relative;
+    }
+    #type-update-location a{
+        color: gray;
+    }
+    #type-update-location a.selected{
+        color: #000000;
+    }
+    .manager-btn-bottom{ padding-top: 100px;}
+    .manager-btn-bottom > div{
+        text-align: center;
+    }
+    .btn-show-list-manager{
+        display: block;
+        text-align: center;
+        padding: 0 50px;
+        height: 45px;
+        line-height: 45px;
+        border: none;
+        color: #FFF;
+        background: rgb(35, 82, 124);
+        text-transform: uppercase;
+        font-weight: bold;
+        display: inline-block;
+    }
+    .btn-del-manager{
+        display: block;
+        text-align: center;
+        padding: 0 50px;
+        height: 45px;
+        line-height: 45px;
+        border: none;
+        color: #FFF;
+        background: #aa141e;
+        text-transform: uppercase;
+        font-weight: bold;
+        display: inline-block;
+    }
+    .btn-show-list-manager:hover{
+        color: #FFF;
     }
 </style>
 {% block body %}{% endblock %}

@@ -8,16 +8,22 @@
                 {% endfor %}
             </select>
             {% if idOffre != 0 %}
+            <div class="row">
             {{ form_start(form, {'attr': {'id': 'admin-location-form'}}) }}
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
             <input type="hidden" name="" class="daterangeSelect">
             {{ form_errors(form) }}
             {{ form_row(form.user) }}
             {{ form_row(form.dateDebut) }}
             {{ form_row(form.dateFin) }}
             {{ form_rest(form) }}
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 admin-form-datepicker">
             <div id="liste-offres"></div>
+            </div>
             {{ form_end(form) }}
             {% endif %}
+            </div>
             <script>
                 $( function() {
                     $('#selectIdOffre').on('change', function (){
@@ -55,7 +61,7 @@
                         "locale": {
                             "format": "YYYY-MM-DD"
                         },
-                        "parentEl": ".form-horizontal"
+                        "parentEl": ".admin-form-datepicker"
                     });
                     $('.daterangepicker').addClass('hide');
 
