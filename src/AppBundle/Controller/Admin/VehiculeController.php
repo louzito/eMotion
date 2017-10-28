@@ -20,14 +20,19 @@ class VehiculeController extends Controller
      * @Route("/", name="admin_vehicule_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $vehicules = $em->getRepository('AppBundle:Vehicule')->findAll();
+        $typeTrie = ($request->query->get('type-trie')) ? $request->query->get('type-trie') : null;
+        if(!is_null($typeTrie) && ($typeTrie == "voiture" || $typeTrie == "scooter")){
+            $vehicules = $em->getRepository('AppBundle:Vehicule')->findBy(array('type' => $typeTrie));
+        }else{
+            $vehicules = $em->getRepository('AppBundle:Vehicule')->findAll();
+        }
 
         return $this->render('admin/vehicule/index.html.twig', array(
             'vehicules' => $vehicules,
+            'typeTrie' => $typeTrie,
         ));
     }
 

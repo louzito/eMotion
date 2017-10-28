@@ -11,6 +11,12 @@
             max-height: 100%;
         }
     </style>
+    <label for="trier-vehicules">Trier les véhicule:</label>
+    <select name="trier-vehicules" id="trier-vehicules">
+        <option value="tout">Afficher tout</option>
+        <option value="voiture" {% if typeTrie == 'voiture' %}selected{% endif %}>Voiture</option>
+        <option value="scooter" {% if typeTrie == 'scooter' %}selected{% endif %}>Scooter</option>
+    </select>
     <div class="manager-admin-table">
         <table class="table">
             <tr class="entete">
@@ -56,4 +62,13 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $( function() {
+        $('#trier-vehicules').on('change', function(e){
+            window.location.href = '{{ path('admin_vehicule_index') }}?type-trie='+$(this).val()+'';
+        });
+    } );
+</script>
 {% endblock %}

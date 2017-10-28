@@ -72,7 +72,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setNbKilometres(25110)
             ->setNumSerie("AZS1542D")
             ->setPrixAchat(17000)
-            ->setType('Voiture')
+            ->setType('voiture')
             ->setPlaqueImmatriculation("AF-564-KP");
         $vehicule2
             ->setImage($image2)
@@ -82,7 +82,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setMarque("BMW")
             ->setNbKilometres(8000)
             ->setNumSerie("BCDFE745")
-            ->setType('Voiture')
+            ->setType('voiture')
             ->setPrixAchat(130000)
             ->setPlaqueImmatriculation("MV-647-WP");
         $vehicule3
@@ -91,7 +91,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setCouleur("Grise")
             ->setDateAchat(new \DateTime("2017-01-02"))
             ->setMarque("Chevrolet")
-            ->setType('Voiture')
+            ->setType('voiture')
             ->setNbKilometres(3600)
             ->setNumSerie("GRDE7469")
             ->setPrixAchat(600)
@@ -103,7 +103,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setDateAchat(new \DateTime("2017-06-25"))
             ->setMarque("Peugeot")
             ->setNbKilometres(1250)
-            ->setType('Voiture')
+            ->setType('voiture')
             ->setNumSerie("RQ7DE8ZE")
             ->setPrixAchat(14000)
             ->setPlaqueImmatriculation("PK-555-RD");
@@ -114,7 +114,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setDateAchat(new \DateTime("2015-12-30"))
             ->setMarque("Tesla")
             ->setNbKilometres(30000)
-            ->setType('Voiture')
+            ->setType('voiture')
             ->setNumSerie("QEZ84RD6")
             ->setPrixAchat(76000)
             ->setPlaqueImmatriculation("PQ-251-GF");
@@ -127,7 +127,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setNbKilometres(0)
             ->setNumSerie("WZY45FT6")
             ->setPrixAchat(60500)
-            ->setType('Scooter')
+            ->setType('scooter')
             ->setPlaqueImmatriculation("XE-666-WS");
 
         for ($i=1;$i<=6;$i++) {

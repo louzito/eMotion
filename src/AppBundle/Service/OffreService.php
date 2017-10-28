@@ -19,8 +19,9 @@ class OffreService
     private $twig;
     private $request;
     private $container;
+    private $mailer;
 
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $token,\Twig_Environment $twig, RequestStack $request,ContainerInterface $container)
+    public function __construct(EntityManagerInterface $em, TokenStorageInterface $token,\Twig_Environment $twig, RequestStack $request,ContainerInterface $container, MailerService $mailer)
     {
         $this->em = $em;
         $this->twig = $twig;
@@ -30,6 +31,7 @@ class OffreService
         $this->repository = $em->getRepository('AppBundle:OffreLocation');
         $this->repositoryReservation = $em->getRepository('AppBundle:Reservation');
         $this->container = $container;
+        $this->mailer = $mailer;
     }
 
 
@@ -158,11 +160,14 @@ class OffreService
         }else{
             $this->flush($reservation);
         }
-
         $this->getLengthReservation();
 
         return $reservation;
 
+    }
+
+    public function sendConfirm($reservation){
+        $this->mailer->sendConfirmationLocation($reservation);
     }
 
     public function infoReservation($id){
@@ -247,6 +252,7 @@ class OffreService
         foreach($reservations as $resa)
         {
             $resa->setEtat($this->container->getParameter('enretard'));
+            $this->mailer->sendEmailDeRetard($resa);
         }
         $this->em->flush();
     }

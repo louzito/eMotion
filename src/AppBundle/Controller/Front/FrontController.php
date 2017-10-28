@@ -74,6 +74,7 @@ class FrontController extends Controller
             $etat = $this->getParameter('payee');
             $reservationPaid = $offreService->getIfPaid($etat);
             $pdfService->generate($reservationPaid->getId());
+            $offreService->sendConfirm($reservationPaid);
             return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId())));
         }
         return $this->render('front/reservation-detail.html.twig',[

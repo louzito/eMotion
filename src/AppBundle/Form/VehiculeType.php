@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Form\ImageType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class VehiculeType extends AbstractType
 {
@@ -25,6 +26,12 @@ class VehiculeType extends AbstractType
                 'label' => 'Date d\'achat (dd/mm/yyyy)',
                 'widget'=> 'single_text',
                 'format'=>'dd/MM/yyyy'))
+            ->add('type', ChoiceType::class, array(
+                'choices'  => array(
+                    'Voiture' => 'Voiture',
+                    'Scooter' => 'Scooter',
+                ),
+            ))
             ->add('prixAchat')
             ->add('image', ImageType::class, [
                     'required' => false,

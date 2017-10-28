@@ -11,6 +11,7 @@
     <b>Prix initial :</b> {{ reservation.prixInitial }}<br />
     <b>Kilomètre inclus :</b> {{ reservation.kmInclus }}<br />
     <b>Etat :</b> {{ reservation.etat }}<br />
+    <a href="{{ asset('uploads/facture/'~reservation.user.nom~'_'~reservation.user.prenom~'_facture'~reservation.id~'.pdf') }}" target = "_blank" ><button type="submit" class="btn btn-twitter">Voir la facture</button></a><br />
     {% if reservation.etat == 'Terminée' %}
     <b>Kilomètre parcouru :</b> {{ reservation.kmParcouru }}<br />
     <b>Date de retour :</b> {{ reservation.dateDeRetour|date('d-m-Y') }}<br />

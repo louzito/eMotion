@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PdfService
 {
@@ -18,8 +19,9 @@ class PdfService
     private $twig;
     private $request;
     private $offreService;
+    private $container;
 
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $token,\Twig_Environment $twig, RequestStack $request, OffreService $offreService)
+    public function __construct(EntityManagerInterface $em, TokenStorageInterface $token,\Twig_Environment $twig, RequestStack $request, ContainerInterface $container, OffreService $offreService)
     {
         $this->em = $em;
         $this->twig = $twig;
@@ -29,6 +31,7 @@ class PdfService
         $this->repository = $em->getRepository('AppBundle:Vehicule');
         $this->repositoryReservation = $em->getRepository('AppBundle:Reservation');
         $this->offreService = $offreService;
+        $this->container = $container;
     }
 
     public function generate($id)
@@ -50,8 +53,9 @@ class PdfService
         $nom = $this->token->getNom();
         $prenom = $this->token->getPrenom();
         $prixTotal = $this->offreService->getReservationById($id)->getPrixTotal();
-        // dump($prixTotal);die;
         $prix = $this->offreService->infoReservation($id)['offre']->getprixJournalier();
+        $prixHT = $prix *0.8333;
+        $prixTotalHT = $prixTotal * 0.8333;
         $nbjours = $this->offreService->infoReservation($id)["days"];
 
         $pdf = new \FPDF();
@@ -177,7 +181,7 @@ class PdfService
 
         $pdf->SetXY($a +80 , $z);
 
-        $pdf->Cell(15, 10,$prix.' euros','B',"","C", '0','');
+        $pdf->Cell(15, 10,$prixHT,'B',"","C", '0','');
 
         // traitement pour montant
 
@@ -219,7 +223,7 @@ class PdfService
         $pdf->SetXY($x,$y);
         $pdf->setFillColor(200);
 
-        $pdf->Cell(20,10, $prixTotal." euros","BR","","C","0");
+        $pdf->Cell(20,10, $prixTotalHT." euros","BR","","C","0");
 
         // traitement msg retard
 
@@ -231,7 +235,7 @@ class PdfService
 
         $pdf->SetDrawColor(130);
 
-        $msgInfo = utf8_decode('Si le vehicule n\'est pas rendu à temps, il vous sera prelevez 150 euros supplementaire par jours de retard .');
+        $msgInfo = utf8_decode('Si le vehicule n\'est pas rendu à temps, il vous sera prelevez ' . $this->container->getParameter('prixJourRetard') . ' euros supplementaire par jours de retard .');
 
         $pdf->MultiCell(0, 10, $msgInfo, 'T', 'C');
 
@@ -259,11 +263,11 @@ class PdfService
 
         $y = $pdf->GetY();
 
-        $TVA = 19.6;
+        $TVA = 20;
 
         $TotalTVA = $prixTotal*($TVA/100);
 
-        $prixTTC = $prixTotal+($TotalTVA);
+        $prixTTC = $prixTotal;
 
 
 

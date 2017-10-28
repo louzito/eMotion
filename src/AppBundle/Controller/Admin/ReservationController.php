@@ -17,6 +17,7 @@ use AppBundle\Form\RetourVehiculeType;
 use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\Service\OffreService;
 use Symfony\Component\HttpFoundation\Session\Session;
+use AppBundle\Service\PdfService;
 
 /**
  * @Route("/manager")
@@ -28,7 +29,7 @@ class ReservationController extends Controller
     /**
      * @Route("/locations", name="admin_show_locations")
      */
-    public function gestionLocationsAction(Request $request, OffreService $offreService)
+    public function gestionLocationsAction(Request $request, OffreService $offreService, PdfService $pdfService)
     {
         $em = $this->getDoctrine()->getManager();
         $reservationRepo = $em->getRepository('AppBundle:Reservation');
@@ -45,6 +46,8 @@ class ReservationController extends Controller
             if ($request->get('stripeToken') != null) {
                 $etat = $this->getParameter('payee');
                 $reservationPaid = $offreService->getIfPaid($etat);
+                $pdfService->generate($reservationPaid->getId());
+                $offreService->sendConfirm($reservationPaid);
                 return $this->redirectToRoute('admin_show_locations');
             }
         }

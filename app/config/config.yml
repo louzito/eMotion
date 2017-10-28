@@ -14,6 +14,7 @@ parameters:
     terminee: 'Terminée'
     prixJourRetard: 110
     prixKmEnPlus: 0.4
+    site: 'emotion.dev'
 
 framework:
     #esi: ~
@@ -45,6 +46,9 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        prixJourRetard: '%prixJourRetard%'
+        site: '%site%'
 
 # Doctrine Configuration
 doctrine:
