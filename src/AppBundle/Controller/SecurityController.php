@@ -13,8 +13,10 @@ namespace AppBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
@@ -22,6 +24,10 @@ use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class SecurityController extends BaseController
 {
+
+
+
+
     /**
      * @param Request $request
      *
@@ -29,7 +35,6 @@ class SecurityController extends BaseController
      */
     public function loginAction(Request $request)
     {
-
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
 
@@ -79,6 +84,12 @@ class SecurityController extends BaseController
 
     public function checkAction(Request $request)
     {
+
+        // On récupère l'url de la page d'avant et redirect dessus.
+        $session = new Session();
+        $params = $session->get('paramsRedirect');
+        $url = $params['path'];
+
         $username = $request->request->get('_username');
         $password = $request->request->get('_password');
         $token = $request->request->get('_csrf_token');
@@ -88,7 +99,14 @@ class SecurityController extends BaseController
         if (!empty($username) && !empty($password) && !empty($token)){
             $loginManager->logInUser($token,$encryptUser);
         }
-        return $this->redirectToRoute('front_homepage');
+
+        if (!is_null($params['id'])){
+            return $this->redirectToRoute($url, array('id' => $params['id']));
+        }
+        else{
+            return $this->redirectToRoute($url);
+        }
+//        return new RedirectResponse($url);
     }
 
 
