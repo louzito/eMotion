@@ -1,0 +1,50 @@
+{% if reservation.etat == 'Non payée' %}
+<form class="col-lg-12" action="{{ path('front_reservation', {id : offreId }) }}" method="POST">
+    <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_Ri6gb4pQk6YXytYxQxyZEpTM"
+            data-amount="{{ reservation.prixTotal * 100 }}"
+            data-name="Emotion"
+            data-description="{{ reservation.vehicule.infos }}"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto"
+            data-zip-code="true"
+            data-currency="eur">
+    </script>
+    <button type="submit" class="btn btn-twitter" id="btn-check">Finalisez votre réservation</button>
+</form>
+
+<div style="display: none" class="panel panel-default error-msg">
+    <div class="panel-heading"><h3>Problème</h3></div>
+    <div class="panel-body">Une réservation existe déja entre vos deux dates de reservations.</div>
+    <a class="panel-body" href="{{ path('front_homepage') }}">Retour</a>
+</div>
+{% else %}
+    <a href="{{ asset('uploads/facture/'~app.user.nom~'_'~app.user.prenom~'_facture'~reservation.id~'.pdf') }}" target = "_blank" ><button type="submit" class="btn btn-twitter">Voir ma facture</button></a>
+{% endif %}
+<script>
+        $(function() {
+            $('#btn-check').on('click', function (e) {
+                e.preventDefault();
+                var param = {
+                    'dateDebut' : '{{ reservation.dateDebut|date('d/m/Y') }}',
+                    'dateFin' : '{{ reservation.dateFin|date('d/m/Y') }}',
+                    'vehicule' : '{{ reservation.vehicule.id }}'
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '{{ path('check_reservation_ajax') }}',
+                    data: param,
+
+                    success: function (retour) {
+                        if(retour === 'ok'){
+                            $('.stripe-button-el').trigger('click');
+                        }else {
+                            $('#btn-check').hide();
+                            $('.error-msg').show();
+                            e.preventDefault();
+                        }
+                    }
+                })
+            });
+</script>

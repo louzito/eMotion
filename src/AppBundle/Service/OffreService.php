@@ -141,6 +141,11 @@ class OffreService
         return $this->session->get('reservationEnCours');
     }
 
+    public function setResa($reservation)
+    {
+        $this->session->set('reservationEnCours',$reservation);
+    }
+
     public function getIfPaid($etat){
 
         $reservation = $this->session->get('reservationEnCours');
@@ -152,7 +157,12 @@ class OffreService
         // pb venant des sessions 
         $reservation->setVehicule($this->em->getRepository('AppBundle:Vehicule')->find($reservation->getVehicule()->getId()));
         $reservation->setUser($this->em->getRepository('AppBundle:User')->find($reservation->getUser()->getId()));
-        $reservation->getUser()->setPointsFidelites($reservation->getPrixInitial());
+        // si l'utilisateur a utilisé ces points
+        if($reservation->getPrixInitial() > $reservation->getPrixTotal()) {
+             $reservation->getUser()->setPointsFidelites(0);
+             $reservation->setPrixInitial($reservation->getPrixTotal());
+        }
+        $reservation->getUser()->setPointsFidelites($reservation->getUser()->getPointsFidelites() + $reservation->getPrixInitial());
 
         //Cas d'un update on persist pas la réservation on flush directe
         if(!is_null($reservation->getId())){

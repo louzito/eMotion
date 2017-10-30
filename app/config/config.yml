@@ -15,6 +15,7 @@ parameters:
     prixJourRetard: 110
     prixKmEnPlus: 0.4
     site: 'emotion.dev'
+    pointFideliteEnEuros: 0.05
 
 framework:
     #esi: ~
@@ -49,6 +50,7 @@ twig:
     globals:
         prixJourRetard: '%prixJourRetard%'
         site: '%site%'
+        pointFideliteEnEuros: '%pointFideliteEnEuros%'
 
 # Doctrine Configuration
 doctrine:

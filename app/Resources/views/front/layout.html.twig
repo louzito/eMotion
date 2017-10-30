@@ -37,7 +37,7 @@
                     <li><a href="{{ path('liste_vehicule') }}">Nos véhicules</a></li>
                     {% if app.user %}
                     <li><a href="{{ path('front_reservation_list') }}">Mes réservations {#<span class="badge">{{ ReservationLength }}</span>#}</a></li>
-                    <li><a href="{{ path('fos_user_profile_show') }}">Mon profile</a></li>
+                    <li><a href="{{ path('fos_user_profile_show') }}">Mon profil</a></li>
                     <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
                     {% else %}
                         <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
