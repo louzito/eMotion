@@ -52,11 +52,12 @@ class PdfService
         $datefin = $reservation->getDateFin()->format('d/m/Y');
         $nom = $this->token->getNom();
         $prenom = $this->token->getPrenom();
+        $nbjours = $this->offreService->infoReservation($id)["days"];
         $prixTotal = $this->offreService->getReservationById($id)->getPrixTotal();
-        $prix = $this->offreService->infoReservation($id)['offre']->getprixJournalier();
+        $prix = $prixTotal / $nbjours;
         $prixHT = $prix *0.8333;
         $prixTotalHT = $prixTotal * 0.8333;
-        $nbjours = $this->offreService->infoReservation($id)["days"];
+        
 
         $pdf = new \FPDF();
 

@@ -14,7 +14,6 @@
                 <div class="panel-body">Immatriculation : {{ reservation.vehicule.plaqueImmatriculation }} </div>
                 <div class="panel-body">Nombre de km : {{ reservation.vehicule.nbKilometres }} </div>
                 <div class="panel-body">Date d'achat : {{ reservation.vehicule.dateAchat|date('d/m/Y') }} </div>
-                <div class="panel-body">Prix de base : {{ reservation.vehicule.prixAchat }} </div>
                 <div class="panel-body">Prix/J : {{ offre.prixJournalier }} €</div>
                 <img class="col-xs-12 img-thumbnail" src="{{ reservation.vehicule.image.webPath }}" alt="{{ reservation.vehicule.modele ~ " " ~ reservation.vehicule.marque }}">
             </div>
@@ -119,9 +118,4 @@
 
         });
     </script>
-
-    <script>
-        document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
-    </script>
-
 {% endblock %}

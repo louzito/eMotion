@@ -87,7 +87,7 @@ class FrontController extends Controller
      */
     public function reservationAction(Request $request,$id, OffreService $offreService, PdfService $pdfService)
     {
-        if ($request->get('stripeToken') != null) {
+        if ($request->get('stripeToken') != null || ($offreService->getResa() !== null && $offreService->getResa()->getPrixTotal() == 0 && $offreService->getResa()->getPrixInitial() > 0)) {
             $reservation = $offreService->getResa();
             $etat = $this->getParameter('payee');
             $reservationPaid = $offreService->getIfPaid($etat);
@@ -115,6 +115,11 @@ class FrontController extends Controller
     {
 
         $reservation = $offreService->infoReservation($id);
+
+        // si l'utilisateur essaye d'accéder à une réservation qui n'est pas a lui on le redirige
+        if($this->getUser() != $reservation['reservation']->getUser()){
+            return $this->redirectToRoute('front_reservation_list');
+        }
 
         return $this->render('front/reservation-detail.html.twig',[
             'reservation' => $reservation['reservation'],
@@ -197,8 +202,11 @@ class FrontController extends Controller
 
         if($request->request->get('checkboxPoints') == 'true') {
             $newPrix = $reservation->getPrixTotal() - ($this->getParameter('pointFideliteEnEuros') * $this->getUser()->getPointsFidelites());
-            $newPrix = 0;
-            $reservation->setPrixTotal($newPrix);
+            if($newPrix <= 0){
+                $reservation->setPrixTotal(0);
+            } else {
+                $reservation->setPrixTotal($newPrix);
+            }
         } else {
             $reservation->setPrixTotal($reservation->getPrixInitial());
         }

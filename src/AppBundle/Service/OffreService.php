@@ -159,8 +159,9 @@ class OffreService
         $reservation->setUser($this->em->getRepository('AppBundle:User')->find($reservation->getUser()->getId()));
         // si l'utilisateur a utilisé ces points
         if($reservation->getPrixInitial() > $reservation->getPrixTotal()) {
-             $reservation->getUser()->setPointsFidelites(0);
-             $reservation->setPrixInitial($reservation->getPrixTotal());
+            $pointUtiliser = ($reservation->getPrixInitial() - $reservation->getPrixTotal()) / 0.05;
+            $reservation->getUser()->setPointsFidelites($reservation->getUser()->getPointsFidelites() - $pointUtiliser);
+            $reservation->setPrixInitial($reservation->getPrixTotal());
         }
         $reservation->getUser()->setPointsFidelites($reservation->getUser()->getPointsFidelites() + $reservation->getPrixInitial());
 
@@ -198,7 +199,7 @@ class OffreService
 
         return array(
             'reservation' => $reservation,
-            'days' => $interval->days,
+            'days' => $interval->days+1,
             'offre' => $offre
         );
     }
