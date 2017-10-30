@@ -152,7 +152,8 @@ class OffreService
         // pb venant des sessions 
         $reservation->setVehicule($this->em->getRepository('AppBundle:Vehicule')->find($reservation->getVehicule()->getId()));
         $reservation->setUser($this->em->getRepository('AppBundle:User')->find($reservation->getUser()->getId()));
-        
+        $reservation->getUser()->setPointsFidelites($reservation->getPrixInitial());
+
         //Cas d'un update on persist pas la réservation on flush directe
         if(!is_null($reservation->getId())){
             $reservation = $this->em->merge($reservation); // il faut merge car l'entité vient de la session et l'em la gere pas

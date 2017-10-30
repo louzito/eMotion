@@ -75,6 +75,13 @@ class User extends BaseUser
      */
     private $numPermis;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="points_fidelites", type="integer")
+     */
+    private $pointsFidelites;
+
     public function __construct()
     {
         parent::__construct();
@@ -275,5 +282,29 @@ class User extends BaseUser
     public function getPrenomNomNumPermis()
     {
         return $this->prenom . ' ' . $this->nom . ' ' . $this->numPermis; 
+    }
+
+    /**
+     * Set pointsFidelites
+     *
+     * @param integer $pointsFidelites
+     *
+     * @return User
+     */
+    public function setPointsFidelites($pointsFidelites)
+    {
+        $this->pointsFidelites = $pointsFidelites;
+
+        return $this;
+    }
+
+    /**
+     * Get pointsFidelites
+     *
+     * @return integer
+     */
+    public function getPointsFidelites()
+    {
+        return $this->pointsFidelites;
     }
 }
