@@ -89,7 +89,7 @@ class ReservationController extends Controller
                 {
                     if($reservation->getDateFin()->diff($dateRetour)->days > 0)
                     {
-                        $jourDeRetard = $reservation->getDateFin()->diff($dateRetour)->days;
+                        $jourDeRetard = $reservation->getDateFin()->diff($dateRetour)->days+1;
                     }
                     else
                     {

@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>{% block title %}Bienvenue sur E-Motion{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/alertifyjs/css/alertify.css') }}" />
         <!-- JQuery -->
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
         <!-- Latest compiled and minified CSS -->
@@ -60,7 +61,9 @@
     <footer id="footer">
         <p></p>
     </footer>
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/alertifyjs/alertify.js') }}"></script>
+{% endblock %}
 </body>
 </html>
 

@@ -97,6 +97,7 @@ class OffreService
         $dateFin = $this->session->get('dateFin');
         $interval = $this->getInterval();
         $prixInitial = $interval * $offre->getPrixJournalier();
+
         $kmInclus = $interval * $offre->getKmJournalier();
 
         $now = new \DateTime('now');
@@ -188,7 +189,7 @@ class OffreService
 
         return array(
             'reservation' => $reservation,
-            'days' => $interval->days,
+            'days' => $interval->days+1,
             'offre' => $offre
         );
     }

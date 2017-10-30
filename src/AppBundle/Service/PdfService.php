@@ -54,8 +54,15 @@ class PdfService
         $prenom = $this->token->getPrenom();
         $prixTotal = $this->offreService->getReservationById($id)->getPrixTotal();
         $prix = $this->offreService->infoReservation($id)['offre']->getprixJournalier();
-        $prixHT = $prix *0.8333;
-        $prixTotalHT = $prixTotal * 0.8333;
+        $TVA = 20;
+        $TotalTVA = $prixTotal * 0.20;
+        $prixTTC = $prixTotal;
+        $prixHT = $prixTTC - $TotalTVA;
+//        $prixTotalHT = $prixTotal * 0.8333;
+
+        $prixInitial = $reservation->getPrixInitial();
+        $retard = $prixTotal - $prixInitial;
+
         $nbjours = $this->offreService->infoReservation($id)["days"];
 
         $pdf = new \FPDF();
@@ -167,7 +174,7 @@ class PdfService
 
         $pdf->SetXY($x , $y);
 
-        $pdf->Cell(15, 10, "P.J.HT\n",'TRB',0,'C',1);
+        $pdf->Cell(15, 10, "P.J\n",'TRB',0,'C',1);
 
         $x = $pdf->GetX();
 
@@ -181,7 +188,7 @@ class PdfService
 
         $pdf->SetXY($a +80 , $z);
 
-        $pdf->Cell(15, 10,$prixHT,'B',"","C", '0','');
+        $pdf->Cell(15, 10,$prix,'B',"","C", '0','');
 
         // traitement pour montant
 
@@ -223,7 +230,7 @@ class PdfService
         $pdf->SetXY($x,$y);
         $pdf->setFillColor(200);
 
-        $pdf->Cell(20,10, $prixTotalHT." euros","BR","","C","0");
+        $pdf->Cell(20,10, $prixTotal." euros","BR","","C","0");
 
         // traitement msg retard
 
@@ -255,7 +262,7 @@ class PdfService
 
         $pdf->Cell(40, 10, 'Total HT', 'TL', 'C', '',1); //border TL
 
-        $pdf->Cell(30, 10,$prixTotal." euros", 'TLR', '0','R');
+        $pdf->Cell(30, 10,$prixHT." euros", 'TLR', '0','R');
 
         $pdf->ln();
 
@@ -263,11 +270,7 @@ class PdfService
 
         $y = $pdf->GetY();
 
-        $TVA = 20;
 
-        $TotalTVA = $prixTotal*($TVA/100);
-
-        $prixTTC = $prixTotal;
 
 
 
@@ -297,9 +300,7 @@ class PdfService
 
         $pdf->SetXY($x + 120 , $y);
 
-        $retard = 0;
-
-        $pdf->Cell(40, 10, 'Retard', 'L', 'C','',1);
+        $pdf->Cell(40, 10, 'Majoration', 'L', 'C','',1);
 
         $pdf->Cell(30, 10, $retard.' euros ', 'LR', '0','R');
 
