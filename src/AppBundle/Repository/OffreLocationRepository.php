@@ -22,47 +22,41 @@ class OffreLocationRepository extends \Doctrine\ORM\EntityRepository
     public function findRecommandations($params)
     {
         $recommandations = array();
+        if($params->get('recherche')) {
+            $params = unserialize($params->get('recherche'));
+            if (!empty($params['idVehicule'])) {
+                //par vehicule
+                $query = $this->createQueryBuilder('o')
+                    ->select('o')
+                    ->where('o.vehicule = :idVehicule')
+                    ->setParameter('idVehicule', $params['idVehicule'])
+                    ->getQuery();
 
-        if (!empty($params->get('idVehicule'))) {
-            //par vehicule
-            $query = $this->createQueryBuilder('o')
-                ->select('o')
-                ->where('o.vehicule = :idVehicule')
-                ->setParameter('idVehicule', $params->get('idVehicule'))
-                ->getQuery();
-
-            if (isset($query->getResult()[0])) {
-                $recommandations[] = $query->getResult()[0];
-                $sameId = $query->getResult()[0]->getId();
+                if (isset($query->getResult()[0])) {
+                    $recommandations[] = $query->getResult()[0];
+                    $sameId = $query->getResult()[0]->getId();
+                }
             }
-        }
+            if ($params['prixMinJ'] && $params['prixMinJ'] > 0 && $params['prixMaxJ'] > 0) {
+                //par fourchette de prix
+                $query = $this->createQueryBuilder('ol')
+                    ->select('ol')
+                    ->where('ol.prixJournalier >= :prixMin AND ol.prixJournalier <= :prixMax')
+                    ->setParameter('prixMin', $params['prixMinJ'])
+                    ->setParameter('prixMax', $params['prixMaxJ'])
+                    ->setMaxResults(2)
+                    ->getQuery();
 
-        if ($params->get('prixMinJ') && $params->get('prixMinJ') > 0 && $params->get('prixMaxJ') > 0) {
-            //par fourchette de prix
-            $query = $this->createQueryBuilder('ol')
-                ->select('ol')
-                ->where('ol.prixJournalier >= :prixMin AND ol.prixJournalier <= :prixMax')
-                ->setParameter('prixMin', $params->get('prixMinJ'))
-                ->setParameter('prixMax', $params->get('prixMaxJ'))
-                ->setMaxResults(2)
-                ->getQuery();
-
-            for ($i = 0; $i < count($query->getResult()); $i++) {
-                if (isset($query->getResult()[$i])) {
-                    $recommandations[] = $query->getResult()[$i];
+                for ($i = 0; $i < count($query->getResult()); $i++) {
+                    if (isset($query->getResult()[$i])) {
+                        if($sameId != $query->getResult()[$i]->getId()){
+                            $recommandations[] = $query->getResult()[$i];
+                        }
+                    }
                 }
             }
         }
-
-        //enlève le potentiel doublon
-        if ($recommandations && isset($sameId)) {
-            for ($i=0;$i<count($recommandations);$i++) {
-                if ($sameId == $recommandations[$i]->getId()) {
-                    unset($recommandations[$i]);
-                }
-            }
-        }
-
+        
         if (!$recommandations) {
             $recommandations = $this->findBy(array(), array('id' => 'ASC'), 3);
         }
