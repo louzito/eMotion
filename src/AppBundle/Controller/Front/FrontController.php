@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ReservationType;
 use AppBundle\Entity\Reservation;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\VarDumper\Tests\Fixture\DumbFoo;
@@ -23,6 +24,25 @@ use Symfony\Component\VarDumper\Tests\Fixture\DumbFoo;
 class FrontController extends Controller
 {
     use filterRechercheTrait;
+
+    private $urlRedirect;
+
+    public function __construct(RequestStack $request)
+    {
+        // On stock les infos au cas ou si on est pas connecté.
+        // Permet de redirigé par la suite, Voir SecurityController, checkLoginAction
+        $request = $request->getCurrentRequest();
+
+
+        // todo la recherche ne reste pas stocker en session du coup on ne lui passe pas encore au this->urlRedirect
+        $recherche = $request->request->get('recherche');
+
+        $this->urlRedirect['path'] = $request->get('_route');
+        $this->urlRedirect['id'] = $request->get('id');
+
+        $session = new Session();
+        $session->set('paramsRedirect', $this->urlRedirect);
+    }
 
     /**
      * @Route("/", name="front_homepage")
