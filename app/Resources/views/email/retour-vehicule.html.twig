@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <base href="{{ site }}" />
+    <title>EMOTION : Retour de votre véhicule</title>
+</head>
+<body>
+<p>
+Bonjour {{ reservation.user.prenom }},<br />
+<br />
+Vous avez effectué une location du véhicule {{ reservation.vehicule.marque }} {{ reservation.vehicule.modele }} pour les dates du
+{{ reservation.dateDebut|date('d/m/Y')}} au {{ reservation.dateFin|date('d/m/Y')}}.<br />
+<br />
+Votre véhicule nous a bien été restituer vous pouvez consulter ci-joint la facture de cette location.<br />
+<br />
+Pour toutes questions n'hésitez pas à nous contacter.<br />
+<br/>
+Emotion  
+</body>
+</html>

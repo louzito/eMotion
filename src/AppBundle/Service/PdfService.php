@@ -34,7 +34,7 @@ class PdfService
         $this->container = $container;
     }
 
-    public function generate($id)
+    public function generate($id, $retour = false)
     {
 
         /*$reservation = $offreService->getReservationById($id);
@@ -329,7 +329,15 @@ class PdfService
 
         $pdf->MultiCell(0, 4, $siret, 'T', 'R');
 
-        $nomfact = $nom."_".$prenom."_"."facture".$id.'.pdf';
+        if($retour)
+        {
+            $nomfact = $nom."_".$prenom."_"."facture".$id.'-2.pdf';
+        }
+        else
+        {
+            $nomfact = $nom."_".$prenom."_"."facture".$id.'.pdf';
+        }
+        
 
         $pathfact = '../web/uploads/facture/';
 

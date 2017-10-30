@@ -21,50 +21,28 @@ class CookiesService
     {
         $rep = new Response();
 
-        if ($params['dateDebut']) {
-            $rep->headers->setCookie(new Cookie('dateDebut', $params['dateDebut']));
-        }
-
-        if ($params['dateFin']) {
-            $rep->headers->setCookie(new Cookie('dateFin', $params['dateFin']));
-        }
-
-        if ($params['ville']) {
-            $rep->headers->setCookie(new Cookie('ville', $params['ville']));
-        }
-
-        if ($params['typeVehicule']) {
-            $rep->headers->setCookie(new Cookie('typeVehicule', $params['typeVehicule']));
-        }
-
-        if ($params['prixMinJ'] && $params['prixMinJ'] > 0) {
-            $rep->headers->setCookie(new Cookie('prixMinJ', $params['prixMinJ']));
-        }
-
-        if ($params['prixMaxJ'] && $params['prixMaxJ'] > 0) {
-            $rep->headers->setCookie(new Cookie('prixMaxJ', $params['prixMaxJ']));
-        }
-
-        if ($params['idVehicule']) {
-            $rep->headers->setCookie(new Cookie('idVehicule', $params['idVehicule']));
+        if ($params) {
+            $rep->headers->setCookie(new Cookie('recherche', serialize($params), time() + 3600*24*30));
         }
 
         return $rep;
     }
 
-    public function setDataForm($request, $form)
+    public function setDataForm($request, $form, $params = null)
     {
-        $dateDebut = \DateTime::createFromFormat('d/m/Y', $request->cookies->get('dateDebut'));
-        $dateFin = \DateTime::createFromFormat('d/m/Y', $request->cookies->get('dateFin'));
+        if(!$params){
+            $params = unserialize($request->cookies->get('recherche'));
+        }
 
+        $dateDebut = \DateTime::createFromFormat('d/m/Y', $params['dateDebut']);
+        $dateFin = \DateTime::createFromFormat('d/m/Y', $params['dateFin']);
         if ($now = new \DateTime('NOW') < $dateFin) {
             $form->get('dateDebut')->setData($dateDebut);
             $form->get('dateFin')->setData($dateFin);
         }
-
-        $form->get('ville')->setData($request->cookies->get('ville'));
-        $form->get('typeVehicule')->setData($request->cookies->get('typeVehicule'));
-
+        $form->get('ville')->setData($params['ville']);
+        $form->get('typeVehicule')->setData($params['typeVehicule']);
+        
         return $form;
     }
 }

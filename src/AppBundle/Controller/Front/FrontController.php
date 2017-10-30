@@ -57,6 +57,7 @@ class FrontController extends Controller
 
         return $this->render('front/nos-offres.html.twig', [
             'offres' => $offres,
+            'params' => $params,
         ], $response);
     }
 
@@ -217,7 +218,7 @@ class FrontController extends Controller
         ));
     }
 
-    public function moduleRechercheAction(Request $request, CookiesService $cookiesService){
+    public function moduleRechercheAction(Request $request, CookiesService $cookiesService, $params = null){
         $em = $this->getDoctrine()->getManager();
         $minEtmaxPrix = $em->getRepository('AppBundle:OffreLocation')->findMinEtMaxPrix();
         $vehicules = $em->getRepository('AppBundle:Vehicule')->findAll();
@@ -227,7 +228,7 @@ class FrontController extends Controller
         'method' => 'POST',
         ));
 
-        $rechercheForm = $cookiesService->setDataForm($request, $rechercheForm);
+        $rechercheForm = $cookiesService->setDataForm($request, $rechercheForm, $params);
 
         return $this->render('front/module-de-recherche.html.twig', array(
             'form' => $rechercheForm->createView(),

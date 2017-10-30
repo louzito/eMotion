@@ -72,7 +72,7 @@ class ReservationController extends Controller
     /**
      * @Route("/location/{id}/retour", name="admin_retour_location")
      */
-    public function retourLocationAction(Request $request, OffreService $offreService, Reservation $reservation)
+    public function retourLocationAction(Request $request, OffreService $offreService, PdfService $pdfService, Reservation $reservation)
     {
         $form = $this->createForm(RetourVehiculeType::class);
 
@@ -106,6 +106,10 @@ class ReservationController extends Controller
             }
             $reservation->getVehicule()->setNbKilometres($rInfos['kmCptVehicule']);
             $reservation->setKmParcouru($kmParcouru);
+            if($reservation->getPrixInitial() != $reservation->getPrixTotal()){
+                $pdfService->generate($reservation->getId(), true);
+            }
+            $offreService->sendConfirmRetour($reservation);
             $reservation->setEtat($this->getParameter('terminee'));
             $em->flush();
             return $this->redirectToRoute('admin_show_locations');

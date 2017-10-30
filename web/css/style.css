@@ -11,12 +11,11 @@ h1 {font-size: 2em;margin-left: 50px;}
 h2 {font-size: 1.7em;}
 .mes-infos{margin-left: 100px;}
 .mes-infos > span{display: block;margin: 4px 0;}
-.mes-infos > span b{color: darkolivegreen;}
-.mes-infos a.modifier-btn, .mes-infos input[type=submit], #profil a.retour{background-color: darkolivegreen;text-transform: uppercase;font-weight: bold;text-align: center;color: #FFFFFF;font-size: 1.2em;line-height: 45px;display: inline-block;height: 45px;padding: 0 20px;margin: 20px auto;border: none;}
-.mes-infos a.modifier-btn:hover, .mes-infos input[type=submit]:hover, #profil a.retour:hover {background-color: #34421b;text-decoration: none;}
+.mes-infos a.modifier-btn, .mes-infos input[type=submit], #profil a.retour{background-color: #ca181a;text-transform: uppercase;font-weight: bold;text-align: center;color: #FFFFFF;font-size: 1.2em;line-height: 45px;display: inline-block;height: 45px;padding: 0 20px;margin: 20px auto;border: none;}
+.mes-infos a.modifier-btn:hover, .mes-infos input[type=submit]:hover, #profil a.retour:hover {background-color: #aa141e;text-decoration: none;}
 .retour{float: right;margin-right: 50px;}
 .mes-infos > form > div, .mes-infos > form > #fos_user_change_password_form > div, .mes-infos > form > #fos_user_registration_form > div  {padding: 2px 0;}
-.mes-infos form label{color: darkolivegreen;margin-right: 15px;}
+.mes-infos form label{margin-right: 15px;}
 .mes-infos form input, .mes-infos form select {padding: 3px 5px;}
 .header-image{position: relative;margin-top: -20px;}
 .header-image img{width: 100%}

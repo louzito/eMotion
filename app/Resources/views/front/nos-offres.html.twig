@@ -1,7 +1,7 @@
 {% extends ':front:layout.html.twig' %}
 
 {% block moduleDeRecherche %}
-    {{ render(controller('AppBundle:Front/Front:moduleRecherche')) }}
+    {{ render(controller('AppBundle:Front/Front:moduleRecherche', { 'params' : params})) }}
 {% endblock %}
 
 {%  block body %}

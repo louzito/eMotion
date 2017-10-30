@@ -170,6 +170,10 @@ class OffreService
         $this->mailer->sendConfirmationLocation($reservation);
     }
 
+    public function sendConfirmRetour($reservation){
+        $this->mailer->sendConfirmationRetour($reservation);
+    }
+
     public function infoReservation($id){
 
         $reservation = $this->repositoryReservation->findOneBy(array('id' => $id));
