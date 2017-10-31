@@ -97,6 +97,7 @@ class OffreService
         $dateFin = $this->session->get('dateFin');
         $interval = $this->getInterval();
         $prixInitial = $interval * $offre->getPrixJournalier();
+
         $kmInclus = $interval * $offre->getKmJournalier();
 
         $now = new \DateTime('now');
