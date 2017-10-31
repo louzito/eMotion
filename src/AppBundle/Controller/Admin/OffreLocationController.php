@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Controller\InitController;
 use AppBundle\Entity\OffreLocation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Route("manager/offrelocation")
  */
-class OffreLocationController extends Controller
+class OffreLocationController extends InitController
 {
     /**
      * Lists all offreLocation entities.

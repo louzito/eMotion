@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Controller\InitController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  * @Route("/manager")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class AdminController extends Controller
+class AdminController extends InitController
 {
     /**
      * @Route("/", name="home_admin")
