@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Controller\InitController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Reservation;
@@ -23,7 +24,7 @@ use AppBundle\Service\PdfService;
  * @Route("/manager")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class ReservationController extends Controller
+class ReservationController extends InitController
 {
     use filterRechercheTrait;
     /**

@@ -2,11 +2,13 @@
 
 namespace AppBundle\Controller\Front;
 
+use AppBundle\Controller\InitController;
 use AppBundle\Entity\OffreLocation;
 use AppBundle\Form\RechercheType;
 use AppBundle\Service\CookiesService;
 use AppBundle\Service\OffreService;
 use AppBundle\Service\PdfService;
+use AppBundle\Service\RedirectionService;
 use AppBundle\Traits\filterRechercheTrait;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Vehicule;
@@ -23,28 +25,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\VarDumper\Tests\Fixture\DumbFoo;
 use AppBundle\Form\ReservationParVoitureType;
 
-class FrontController extends Controller
+class FrontController extends InitController
 {
     use filterRechercheTrait;
-
-    private $urlRedirect;
-
-    public function __construct(RequestStack $request)
-    {
-        // On stock les infos au cas ou si on est pas connecté.
-        // Permet de redirigé par la suite, Voir SecurityController, checkLoginAction
-        $request = $request->getCurrentRequest();
-
-
-        // todo la recherche ne reste pas stocker en session du coup on ne lui passe pas encore au this->urlRedirect
-        $recherche = $request->request->get('recherche');
-
-        $this->urlRedirect['path'] = $request->get('_route');
-        $this->urlRedirect['id'] = $request->get('id');
-
-        $session = new Session();
-        $session->set('paramsRedirect', $this->urlRedirect);
-    }
 
     /**
      * @Route("/", name="front_homepage")

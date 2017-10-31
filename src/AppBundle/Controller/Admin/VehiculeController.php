@@ -2,17 +2,19 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Controller\InitController;
 use AppBundle\Entity\Vehicule;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Vehicule controller.
  *
  * @Route("manager/vehicule")
  */
-class VehiculeController extends Controller
+class VehiculeController extends InitController
 {
     /**
      * Lists all vehicule entities.

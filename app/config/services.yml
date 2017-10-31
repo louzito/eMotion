@@ -3,6 +3,8 @@
 parameters:
     #parameter_name: value
     offre.service.class: AppBundle\Service\OffreService
+    redirection.service.class: AppBundle\Service\RedirectionService
+    init.controller.class: AppBundle\Controller\InitController
 
 
 services:
@@ -62,4 +64,12 @@ services:
 
     mailer_service:
             class: AppBundle\Service\MailerService
+            public: true
+
+    redirection_service:
+            class: "%redirection.service.class%"
+            public: true
+
+    init_controller:
+            class: "%init.controller.class%"
             public: true
