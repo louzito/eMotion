@@ -151,14 +151,27 @@ h2 {font-size: 1.7em;}
     margin-top: 50px;
 }
 
+#btn-paid-form .stripe-button-el{
+    display: none;
+}
+
+.container {
+    min-height: 34vh;
+}
 
 /* FOOTER */
 #footer {
-    height: 120px;
-    background-color: darkred;
-
+    height: 60px;
+    background-image:linear-gradient(to top, lightgrey 0,#f8f8f8 100%);
+    width: 100%;
 }
 
-#btn-paid-form .stripe-button-el{
-    display: none;
+#footer p {
+    text-align: center;
+}
+
+#footer a {
+    display: inline-block;
+    text-align: center;
+    width: 33%;
 }

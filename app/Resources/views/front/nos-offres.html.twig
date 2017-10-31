@@ -6,7 +6,7 @@
 
 {%  block body %}
     <div class="resultat-listing">
-        {% if offres is not null %}
+        {% if offres is not empty %}
             {% for offre in offres %}
                 <div class="row vehicule">
                     <div class="col-lg-4 vehicule-image">
@@ -23,7 +23,16 @@
                     </div>
                 </div>
             {% endfor %}
+
+        {% else %}
+            <br><br>
+            <p style="text-align: center">
+                Votre recherche n'a pas abouti, essayez une recherche
+                avec des paramètres moins précis.
+            </p>
+            <br><br>
         {% endif %}
+
     </div>
 
 {% endblock %}
