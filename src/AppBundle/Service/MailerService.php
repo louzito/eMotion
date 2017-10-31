@@ -41,7 +41,7 @@ class MailerService
         
         $message = (new \Swift_Message('EMOTION : Retour de votre véhicule'))
             ->setFrom('emotion.paris.lyon@gmail.com')
-            ->setTo('zito.lou@gmail.com')
+            ->setTo($reservation->getUser()->getEmail())
             ->setContentType("text/html")
             ->attach(\Swift_Attachment::fromPath($pathPDF))
             ->setBody($this->container->get('templating')->render('email/retour-vehicule.html.twig', array('reservation' => $reservation)))

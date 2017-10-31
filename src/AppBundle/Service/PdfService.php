@@ -55,7 +55,7 @@ class PdfService
         $nbjours = $this->offreService->infoReservation($id)["days"];
         $prixTotal = $this->offreService->getReservationById($id)->getPrixTotal();
 
-        $prix = $this->offreService->infoReservation($id)['offre']->getprixJournalier();
+        $prix = $prixTotal / $nbjours;
         $TVA = 20;
         $TotalTVA = $prixTotal * 0.20;
         $prixTTC = $prixTotal;
