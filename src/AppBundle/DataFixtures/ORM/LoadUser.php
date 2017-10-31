@@ -35,6 +35,7 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setNumPermis("5A12DF56")
             ->setTelephone("0689457823")
             ->setEnabled(1)
+            ->setPointsFidelites(0)
             ;
 
         $user2
@@ -50,7 +51,9 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setPrenom("Pierre")
             ->setNumPermis("D5DF5255")
             ->setEnabled(1)
-            ->setTelephone("0645789545");
+            ->setTelephone("0645789545")
+            ->setPointsFidelites(0)
+            ;
 
         $user3
             ->setRoles(['ROLE_USER'])
@@ -65,7 +68,9 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface
             ->setPrenom("Julien")
             ->setEnabled(1)
             ->setNumPermis("5DFG2645")
-            ->setTelephone("0689457820");
+            ->setTelephone("0689457820")
+            ->setPointsFidelites(0)
+            ;
 
         $manager->persist($user1);
         $manager->persist($user2);

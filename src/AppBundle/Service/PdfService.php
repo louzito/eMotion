@@ -52,7 +52,9 @@ class PdfService
         $datefin = $reservation->getDateFin()->format('d/m/Y');
         $nom = $this->token->getNom();
         $prenom = $this->token->getPrenom();
+        $nbjours = $this->offreService->infoReservation($id)["days"];
         $prixTotal = $this->offreService->getReservationById($id)->getPrixTotal();
+
         $prix = $this->offreService->infoReservation($id)['offre']->getprixJournalier();
         $TVA = 20;
         $TotalTVA = $prixTotal * 0.20;
@@ -64,6 +66,7 @@ class PdfService
         $retard = $prixTotal - $prixInitial;
 
         $nbjours = $this->offreService->infoReservation($id)["days"];
+
 
         $pdf = new \FPDF();
 

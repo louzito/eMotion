@@ -87,16 +87,16 @@ class FrontController extends Controller
      */
     public function reservationAction(Request $request,$id, OffreService $offreService, PdfService $pdfService)
     {
-
-        $etat = $this->getParameter('nonpayee');
-        $reservation = $offreService->newReservation($id, $etat);
-
-        if ($request->get('stripeToken') != null) {
+        if ($request->get('stripeToken') != null || ($offreService->getResa() !== null && $offreService->getResa()->getPrixTotal() == 0 && $offreService->getResa()->getPrixInitial() > 0)) {
+            $reservation = $offreService->getResa();
             $etat = $this->getParameter('payee');
             $reservationPaid = $offreService->getIfPaid($etat);
             $pdfService->generate($reservationPaid->getId());
             $offreService->sendConfirm($reservationPaid);
             return $this->redirect($this->generateUrl('front_reservation_detail', array('id' => $reservationPaid->getId())));
+        } else {
+            $etat = $this->getParameter('nonpayee');
+            $reservation = $offreService->newReservation($id, $etat);
         }
         return $this->render('front/reservation-detail.html.twig',[
             'reservation' => $reservation['reservation'],
@@ -115,6 +115,11 @@ class FrontController extends Controller
     {
 
         $reservation = $offreService->infoReservation($id);
+
+        // si l'utilisateur essaye d'accéder à une réservation qui n'est pas a lui on le redirige
+        if($this->getUser() != $reservation['reservation']->getUser()){
+            return $this->redirectToRoute('front_reservation_list');
+        }
 
         return $this->render('front/reservation-detail.html.twig',[
             'reservation' => $reservation['reservation'],
@@ -184,6 +189,32 @@ class FrontController extends Controller
         }
 
         return new Response('Une erreur est survenue',400);
+
+    }
+
+    /**
+     * @Route("/reservation/use-points/ajax", name="use_points")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function usePointsAction(Request $request, OffreService $offreService)
+    {
+        $reservation = $offreService->getResa();
+
+        if($request->request->get('checkboxPoints') == 'true') {
+            $newPrix = $reservation->getPrixTotal() - ($this->getParameter('pointFideliteEnEuros') * $this->getUser()->getPointsFidelites());
+            if($newPrix <= 0){
+                $reservation->setPrixTotal(0);
+            } else {
+                $reservation->setPrixTotal($newPrix);
+            }
+        } else {
+            $reservation->setPrixTotal($reservation->getPrixInitial());
+        }
+        $offreService->setResa($reservation);
+        return $this->render('front/paiement-points-fidelites.html.twig', [
+            'reservation' => $reservation,
+            'offreId' => $request->request->get('offreId'),
+        ]);
 
     }
   

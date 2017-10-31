@@ -31,7 +31,7 @@ h2 {font-size: 1.7em;}
 #module-de-recherche .daterangepicker {top: 50px!important;left: 0px!important;position: absolute!important;background-color: #1a1103;background-color: rgba(26,17,3,.9);border-radius: 0;}
 #module-de-recherche .daterangepicker td.disabled,#module-de-recherche .daterangepicker option.disabled {text-decoration: none;}
 #module-de-recherche .daterangepicker td.active,#module-de-recherche .daterangepicker td.active:hover {background: #ca181a;}
-#module-de-recherche .daterangepicker td.active.off, #module-de-recherche .daterangepicker td.active.off:hover {background: none;}
+.daterangepicker td.active.off, .daterangepicker td.active.off:hover {background: none!important;}
 #module-de-recherche .daterangepicker .calendar.left .daterangepicker_input, #module-de-recherche .daterangepicker .calendar.right .daterangepicker_input{display: none;}
 #module-recherche-options{display: block!important;padding: 20px;position: relative;border: 1px solid lightgrey;}
 #module-recherche-options.hide{display: none!important;}
@@ -157,4 +157,8 @@ h2 {font-size: 1.7em;}
     height: 120px;
     background-color: darkred;
 
+}
+
+#btn-paid-form .stripe-button-el{
+    display: none;
 }
