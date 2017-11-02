@@ -156,7 +156,7 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setNbKilometres(0)
             ->setNumSerie("WZY45FT6")
             ->setPrixAchat(60500)
-            ->setType('scooter')
+            ->setType('voiture')
             ->setPlaqueImmatriculation("XE-666-WS");
 
         $vehicule7
