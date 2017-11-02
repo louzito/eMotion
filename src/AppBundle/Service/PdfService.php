@@ -50,8 +50,8 @@ class PdfService
         $couleur = $vehicule->getCouleur();
         $datedebut = $reservation->getDateDebut()->format('d/m/Y');
         $datefin = $reservation->getDateFin()->format('d/m/Y');
-        $nom = $this->token->getNom();
-        $prenom = $this->token->getPrenom();
+        $nom = $reservation->getUser()->getNom();
+        $prenom = $reservation->getUser()->getPrenom();
         $nbjours = $this->offreService->infoReservation($id)["days"];
         $prixTotal = $this->offreService->getReservationById($id)->getPrixTotal();
 
