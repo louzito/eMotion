@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Mathieu
- * Date: 26/09/2017
- * Time: 10:12
- */
 
 namespace AppBundle\DataFixtures\ORM;
 
@@ -30,6 +24,12 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
         $image4 = new Image();
         $image5 = new Image();
         $image6 = new Image();
+        $image7 = new Image();
+        $image8 = new Image();
+        $image9 = new Image();
+        $image10 = new Image();
+        $image11 = new Image();
+        $image12 = new Image();
 
         $image1
             ->setUrl("zoe.jpg")
@@ -54,7 +54,30 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
         $image6
             ->setUrl("bmw.jpg")
             ->setAlt("bmw.jpg");
+    
+        $image7
+            ->setUrl("govecs-s2.6.jpg")
+            ->setAlt("govecs-s2.6.jpg");
 
+        $image8
+            ->setUrl("pink-me.jpg")
+            ->setAlt("pink-me.jpg");
+
+        $image9
+            ->setUrl("govecs-s1.5.jpg")
+            ->setAlt("govecs-s1.5.jpg");
+
+        $image10
+            ->setUrl("govecs-s3.6.jpg")
+            ->setAlt("govecs-s3.6.jpg");
+
+        $image11
+            ->setUrl("muvi-50.jpg")
+            ->setAlt("muvi-50.jpg");
+
+        $image12
+            ->setUrl("super-soco.jpg")
+            ->setAlt("super-soco.jpg");
 
         $vehicule1 = new Vehicule();
         $vehicule2 = new Vehicule();
@@ -62,6 +85,12 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
         $vehicule4 = new Vehicule();
         $vehicule5 = new Vehicule();
         $vehicule6 = new Vehicule();
+        $vehicule7 = new Vehicule();
+        $vehicule8 = new Vehicule();
+        $vehicule9 = new Vehicule();
+        $vehicule10 = new Vehicule();
+        $vehicule11 = new Vehicule();
+        $vehicule12 = new Vehicule();
 
         $vehicule1
             ->setImage($image1)
@@ -130,7 +159,79 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             ->setType('scooter')
             ->setPlaqueImmatriculation("XE-666-WS");
 
-        for ($i=1;$i<=6;$i++) {
+        $vehicule7
+            ->setImage($image7)
+            ->setModele("Go ! S2.6")
+            ->setCouleur("Blanc")
+            ->setDateAchat(new \DateTime("2017-03-01"))
+            ->setMarque("Govecs")
+            ->setNbKilometres(1200)
+            ->setNumSerie("WZZ45QJ6")
+            ->setPrixAchat(7590)
+            ->setType('scooter')
+            ->setPlaqueImmatriculation("LK-654-DS");
+
+        $vehicule8
+            ->setImage($image8)
+            ->setModele("Electric Move")
+            ->setCouleur("Rouge")
+            ->setDateAchat(new \DateTime("2017-02-01"))
+            ->setMarque("Pink me")
+            ->setNbKilometres(8500)
+            ->setNumSerie("WADC5QJ6")
+            ->setPrixAchat(3490)
+            ->setType('scooter')
+            ->setPlaqueImmatriculation("GF-644-MS");
+
+        $vehicule9
+            ->setImage($image9)
+            ->setModele("Go ! S1.5")
+            ->setCouleur("Blanc")
+            ->setDateAchat(new \DateTime("2017-03-01"))
+            ->setMarque("Govecs")
+            ->setNbKilometres(1200)
+            ->setNumSerie("WZ589QJ6")
+            ->setPrixAchat(5990)
+            ->setType('scooter')
+            ->setPlaqueImmatriculation("PL-674-KO");
+
+        $vehicule10
+            ->setImage($image10)
+            ->setModele("Go ! S3.6")
+            ->setCouleur("Blanc")
+            ->setDateAchat(new \DateTime("2017-03-01"))
+            ->setMarque("Govecs")
+            ->setNbKilometres(12700)
+            ->setNumSerie("WZ789QJ6")
+            ->setPrixAchat(8690)
+            ->setType('scooter')
+            ->setPlaqueImmatriculation("PI-645-UI");
+
+        $vehicule11
+            ->setImage($image11)
+            ->setModele("50")
+            ->setCouleur("Noir")
+            ->setDateAchat(new \DateTime("2017-03-01"))
+            ->setMarque("Muvi")
+            ->setNbKilometres(12700)
+            ->setNumSerie("WZ78QUI6")
+            ->setPrixAchat(4690)
+            ->setType('scooter')
+            ->setPlaqueImmatriculation("QI-813-UI");
+
+        $vehicule12
+            ->setImage($image12)
+            ->setModele("SUPER SOCO")
+            ->setCouleur("Rouge")
+            ->setDateAchat(new \DateTime("2017-03-01"))
+            ->setMarque("Soco")
+            ->setNbKilometres(7500)
+            ->setNumSerie("WZJHUUI6")
+            ->setPrixAchat(2890)
+            ->setType('scooter')
+            ->setPlaqueImmatriculation("LO-813-PK");
+
+        for ($i=1;$i<=12;$i++) {
             $location = new OffreLocation();
             $vehicule = 'vehicule'.$i;
             $location->setVehicule($$vehicule);
@@ -138,7 +239,12 @@ class LoadVehicule extends AbstractFixture implements OrderedFixtureInterface
             $location->setDateFin(new \DateTime('2020-01-01'));
             $location->setPrixJournalier(rand(10, 50));
             $location->setKmJournalier(250);
-            $location->setVille('Paris');
+            if($i%2 == 0){
+                $location->setVille('Paris');
+            } else {
+                $location->setVille('Lyon');
+            }
+            
             $manager->persist($$vehicule);
             $manager->persist($location);
             $manager->flush();
