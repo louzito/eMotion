@@ -22,6 +22,7 @@ class OffreLocationRepository extends \Doctrine\ORM\EntityRepository
     public function findRecommandations($params)
     {
         $recommandations = array();
+        $sameId = null;
         if($params->get('recherche')) {
             $params = unserialize($params->get('recherche'));
             if (!empty($params['idVehicule'])) {
