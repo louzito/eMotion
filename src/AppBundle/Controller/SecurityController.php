@@ -24,10 +24,6 @@ use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class SecurityController extends BaseController
 {
-
-
-
-
     /**
      * @param Request $request
      *
@@ -84,7 +80,6 @@ class SecurityController extends BaseController
 
     public function checkAction(Request $request)
     {
-
         // On récupère l'url de la page d'avant et redirect dessus.
         $session = new Session();
         $params = $session->get('paramsRedirect');
@@ -94,45 +89,41 @@ class SecurityController extends BaseController
         $password = $request->request->get('_password');
         $token = $request->request->get('_csrf_token');
 
-        $encryptUser = $this->postPersist($username,$password);
+        $user = $this->postPersist($username,$password);
         $loginManager = $this->get('fos_user.security.login_manager');
-        if (!empty($username) && !empty($password) && !empty($token)){
+        if (!empty($username) && !empty($password) && !empty($token) && $user){
             $loginManager->logInUser($token,$encryptUser);
+            if (!is_null($params['id'])){
+                return $this->redirectToRoute($url, array('id' => $params['id']));
+            }
+            else{
+                return $this->redirectToRoute($url);
+            }
+        } else {
+            // ici l'user n'est pas connecté revoir la méthode si il a saisie de mauvais identifiant
+            return $this->redirectToRoute("front_homepage");
         }
-
-        if (!is_null($params['id'])){
-            return $this->redirectToRoute($url, array('id' => $params['id']));
-        }
-        else{
-            return $this->redirectToRoute($url);
-        }
-//        return new RedirectResponse($url);
     }
 
 
     /**
      * @param $username
      * @param $password
-     * Permet de vérifier si un mot de passe est déjà crypté, Si non on le cryte
+     * @return null
+     * Permet de vérifier si un mot de passe est correspond
      */
-    private function postPersist($username,$password) {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $repository = $em->getRepository('AppBundle:User');
+    private function postPersist($username,$password)
+    {
+        $em = $this->getDoctrine()->getRepository('AppBundle:User');
+        $user = $em->findOneBy(array("username" => $username));
+        $salt = $user->getSalt();
+        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
 
-        $user = $repository->findOneBy(array('username'=>$username));
-        $passwordEncod = password_hash($password, PASSWORD_BCRYPT);
-
-        $passwordVerifCryt = password_verify($password, $passwordEncod);
-        if($passwordVerifCryt){
-            if (!empty($user)){
-                //$user->setPlainPassword($passwordEncod);
-                $user->setPassword($passwordEncod);
-                $em->persist($user);
-                $em->flush();
-                return $user;
-            }
+        if ($encoder->isPasswordValid($user->getPassword(), $password, $salt)) {
+            return $user;
         }
 
+        return null;
     }
 
     public function logoutAction()
